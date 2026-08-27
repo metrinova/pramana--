@@ -412,9 +412,50 @@
     @media(max-width:1050px){.scan-trustbar{grid-template-columns:1fr 1fr 1fr}.scan-trustitem:first-child{grid-column:1/-1}.scan-heading-row{grid-template-columns:1fr}.scan-work-grid{grid-template-columns:1fr}.scan-side{display:grid;grid-template-columns:1fr 1fr}.scan-footer{grid-template-columns:1fr}.scan-footer-item{border-right:0;border-bottom:1px solid #ece7df}.scan-footer-item:last-child{border-bottom:0}}
     @media(max-width:650px){.scan-trustbar{grid-template-columns:1fr}.scan-trustitem:first-child{grid-column:auto}.scan-workspace{padding:14px}.scan-fields{grid-template-columns:1fr}.scan-side{display:flex}.scan-how-grid{grid-template-columns:1fr}.scan-how-arrow{display:none}}
 
-  </style>
+  
+    /* Live camera modal */
+    .camera-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(15,22,32,.72);backdrop-filter:blur(5px)}
+    .camera-modal.open{display:flex}
+    .camera-dialog{width:min(720px,96vw);background:var(--paper);border:1px solid rgba(31,26,20,.14);border-radius:20px;box-shadow:0 28px 80px rgba(0,0,0,.3);overflow:hidden}
+    .camera-dialog-head{display:flex;justify-content:space-between;gap:20px;padding:22px 24px 16px}
+    .camera-dialog-head h2{margin:3px 0 4px;font-family:var(--serif);font-size:28px;color:var(--navy)}
+    .camera-dialog-head p{margin:0;color:var(--muted);font-size:14px}
+    .camera-kicker{font:600 11px/1 var(--mono);letter-spacing:.16em;color:var(--saffron)}
+    .camera-close{border:0;background:transparent;font-size:32px;line-height:1;color:var(--muted);cursor:pointer;padding:0 4px}
+    .camera-preview-wrap{position:relative;margin:0 24px;background:#0b1422;border-radius:14px;overflow:hidden;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center}
+    #camera-video{width:100%;height:100%;object-fit:cover;display:block;background:#0b1422}
+    .camera-frame{position:absolute;inset:13%;border:2px solid rgba(255,255,255,.82);border-radius:14px;pointer-events:none;box-shadow:0 0 0 999px rgba(0,0,0,.16)}
+    .camera-frame span{position:absolute;inset:-2px;border:1px dashed rgba(255,255,255,.55);border-radius:14px}
+    .camera-status{position:absolute;left:14px;bottom:14px;background:rgba(8,16,28,.76);color:#fff;border-radius:999px;padding:7px 11px;font:500 11px var(--mono)}
+    .camera-actions{display:flex;justify-content:flex-end;gap:10px;padding:18px 24px 22px}
+    @media(max-width:600px){.camera-dialog-head{padding:18px}.camera-preview-wrap{margin:0 18px}.camera-actions{padding:14px 18px 18px}.camera-dialog-head h2{font-size:24px}}
+</style>
 </head>
 <body>
+  <!-- Live camera modal -->
+  <div id="camera-modal" class="camera-modal" aria-hidden="true">
+    <div class="camera-dialog">
+      <div class="camera-dialog-head">
+        <div>
+          <div class="camera-kicker">CAMERA VERIFICATION</div>
+          <h2>Capture instrument photo</h2>
+          <p>Position the instrument or nameplate inside the frame.</p>
+        </div>
+        <button type="button" class="camera-close" onclick="closeCamera()" aria-label="Close camera">×</button>
+      </div>
+      <div class="camera-preview-wrap">
+        <video id="camera-video" autoplay playsinline muted></video>
+        <div class="camera-frame"><span></span></div>
+        <div id="camera-status" class="camera-status">Starting camera…</div>
+      </div>
+      <div class="camera-actions">
+        <label class="btn btn-navy" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;">↥ &nbsp; Choose Photo<input id="camera-fallback-file" type="file" accept="image/*" capture="environment" style="display:none;"></label>
+        <button type="button" class="btn btn-navy" onclick="closeCamera()">Cancel</button>
+        <button type="button" class="btn btn-saffron" id="capture-camera-btn" onclick="captureCameraPhoto()" disabled>◎ &nbsp; Capture Photo</button>
+      </div>
+    </div>
+  </div>
+
   <div class="tri"></div>
   <div id="app"></div>
 
@@ -958,7 +999,7 @@
         drop.classList.remove("has-file");
         const inner = $("#drop-inner");
         if (inner) {
-          inner.innerHTML = '<div class="upload-icon">↥</div><h3>Drag &amp; drop an image here<br/>or use your camera / file</h3><p>Supported formats: JPG, PNG &nbsp;•&nbsp; Max size: 10MB</p><div class="scan-buttons"><label class="btn btn-saffron" style="cursor:pointer;">↥ &nbsp; Upload Picture<input id="photo" type="file" accept="image/*" style="display:none;" /></label><label class="btn btn-navy" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">▣ &nbsp; Use Camera<input id="camera-file" type="file" accept="image/*" capture="environment" style="display:none;" /></label></div><p class="tiny scan-samples">Or try sample: <button type="button" class="linkish" onclick="useSample(\'/static/img/scale-genuine.jpg\', \'LM-UP-000127\')">Genuine Scale</button> <button type="button" class="linkish" onclick="useSample(\'/static/img/scale-fake.jpg\', \'LM-UP-000431\')">Third-Party Clone</button></p>';
+          inner.innerHTML = '<div class="upload-icon">↥</div><h3>Drag &amp; drop an image here<br/>or use your camera / file</h3><p>Supported formats: JPG, PNG &nbsp;•&nbsp; Max size: 10MB</p><div class="scan-buttons"><label class="btn btn-saffron" style="cursor:pointer;">↥ &nbsp; Upload Picture<input id="photo" type="file" accept="image/*" style="display:none;" /></label><button type="button" class="btn btn-navy" onclick="openCamera()">▣ &nbsp; Use Camera</button></div><p class="tiny scan-samples">Or try sample: <button type="button" class="linkish" onclick="useSample(\'/static/img/scale-genuine.jpg\', \'LM-UP-000127\')">Genuine Scale</button> <button type="button" class="linkish" onclick="useSample(\'/static/img/scale-fake.jpg\', \'LM-UP-000431\')">Third-Party Clone</button></p>';
           bindPhotoCheckEvents();
         }
       }
@@ -982,7 +1023,7 @@
             '<div class="upload-icon">↥</div><h3>Drag &amp; drop an image here<br/>or use your camera / file</h3>' +
             '<p>Supported formats: JPG, PNG &nbsp;•&nbsp; Max size: 10MB</p>' +
             '<div class="scan-buttons"><label class="btn btn-saffron" style="cursor:pointer;">↥ &nbsp; Upload Picture<input id="photo" type="file" accept="image/*" style="display:none;" /></label>' +
-            '<label class="btn btn-navy" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">▣ &nbsp; Use Camera<input id="camera-file" type="file" accept="image/*" capture="environment" style="display:none;" /></label></div>' +
+            '<button type="button" class="btn btn-navy" onclick="openCamera()">▣ &nbsp; Use Camera</button></div>' +
             '<p class="tiny scan-samples">Or try sample: <button type="button" class="linkish" onclick="useSample(\'/static/img/scale-genuine.jpg\', \'LM-UP-000127\')">Genuine Scale</button> <button type="button" class="linkish" onclick="useSample(\'/static/img/scale-fake.jpg\', \'LM-UP-000431\')">Third-Party Clone</button></p>' +
           '</div></div>' +
           '<div class="scan-fields"><div class="field"><label>Serial on nameplate (optional)</label><input id="scan-serial" class="mono" value="LM-UP-000127" placeholder="e.g., LM-UP-000127" /></div>' +
@@ -1415,6 +1456,108 @@
       } catch (e) {}
       render();
     })();
-  </script>
+  
+    // Live camera capture (desktop + mobile). Uses getUserMedia instead of a file picker.
+    let CAMERA_STREAM = null;
+
+    async function openCamera() {
+      const modal = document.getElementById("camera-modal");
+      const video = document.getElementById("camera-video");
+      const status = document.getElementById("camera-status");
+      const captureBtn = document.getElementById("capture-camera-btn");
+      if (!modal || !video) return;
+
+      // A camera can only be requested from a secure, top-level/permission-enabled context.
+      // ChatGPT/other embedded HTML previews may intentionally block camera permissions.
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      if (captureBtn) captureBtn.disabled = true;
+      if (status) status.textContent = "Requesting camera permission…";
+
+      try {
+        if (!window.isSecureContext) {
+          throw new Error("Camera requires a secure connection. Run this page on localhost or HTTPS.");
+        }
+        if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== "function") {
+          throw new Error("This browser does not support live camera access.");
+        }
+
+        if (CAMERA_STREAM) stopCameraStream();
+
+        CAMERA_STREAM = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } },
+          audio: false
+        });
+
+        video.srcObject = CAMERA_STREAM;
+        await video.play();
+        if (status) status.textContent = "Camera ready · align the instrument";
+        if (captureBtn) captureBtn.disabled = false;
+      } catch (err) {
+        console.error("Camera access error:", err);
+        let message = "Camera could not be opened.";
+        if (err && err.name === "NotAllowedError") {
+          message = "Camera permission was blocked. Allow Camera for this site, then reload the page. If this is an embedded preview, open the site directly on localhost/HTTPS.";
+        } else if (err && err.name === "NotFoundError") {
+          message = "No camera was found on this device.";
+        } else if (err && err.name === "NotReadableError") {
+          message = "The camera is busy in another app. Close other apps using the camera and try again.";
+        } else if (err && err.name === "SecurityError") {
+          message = "The browser blocked camera access in this context. Open the website directly on localhost or HTTPS.";
+        } else if (err && err.message) {
+          message = err.message;
+        }
+        if (status) status.textContent = message;
+        if (captureBtn) captureBtn.disabled = true;
+      }
+    }
+
+    function stopCameraStream() {
+      if (CAMERA_STREAM) {
+        CAMERA_STREAM.getTracks().forEach(function(track) { track.stop(); });
+        CAMERA_STREAM = null;
+      }
+      const video = document.getElementById("camera-video");
+      if (video) video.srcObject = null;
+    }
+
+    function closeCamera() {
+      stopCameraStream();
+      const modal = document.getElementById("camera-modal");
+      if (modal) {
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden", "true");
+      }
+    }
+
+    function captureCameraPhoto() {
+      const video = document.getElementById("camera-video");
+      if (!video || !video.videoWidth || !video.videoHeight) return;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      canvas.toBlob(function(blob) {
+        if (!blob) return;
+        const file = new File([blob], "pramana-camera-" + Date.now() + ".jpg", { type: "image/jpeg" });
+        closeCamera();
+        setPhotoFile(file);
+      }, "image/jpeg", 0.92);
+    }
+
+    document.addEventListener("change", function(e) {
+      if (e.target && e.target.id === "camera-fallback-file") {
+        const f = e.target.files && e.target.files[0];
+        if (f) { closeCamera(); setPhotoFile(f); }
+      }
+    });
+
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") closeCamera();
+    });
+</script>
 </body>
 </html>
