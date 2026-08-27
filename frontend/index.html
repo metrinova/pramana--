@@ -677,6 +677,24 @@
           mpe_bands: { III: [[0, 500, 0.5], [500, 2000, 1.0], [2000, 1e12, 1.5]] }
         };
       }
+      if (path.indexOf("/api/public/verify") === 0) {
+        const qParam = path.split("?")[1] || "";
+        const q = new URLSearchParams(qParam).get("q") || "";
+        const needle = q.trim().toLowerCase();
+        const inst = DB.instruments.find(function(i) {
+          return String(i.serial || "").toLowerCase() === needle ||
+                 String(i.name || "").toLowerCase().indexOf(needle) !== -1;
+        });
+        if (!inst) return { found: false, note: "Instrument not found on registry." };
+        return Object.assign({ found: true }, inst, {
+          certificate: {
+            cert_no: "CERT-UP-2026-" + String(inst.id).padStart(4, "0"),
+            issue_date: inst.last_verified,
+            expiry_date: inst.next_due,
+            owner: inst.premises
+          }
+        });
+      }
       if (path === "/api/public/analyze" || path === "/api/analyze") {
         return {
           label: "GENUINE",
@@ -1104,6 +1122,30 @@
       $("#scan-out").innerHTML = '<div class="verdict-hero ' + r.label + '"><h2>' + r.headline + '</h2><p>Confidence ' + r.confidence + '% · visual match ' + (r.nearest_reference || "OEM Standard") + ' (hamming ' + r.hamming + ')</p></div><div class="card mb"><img src="' + r.photo_url + '" alt="" style="width:100%;border-radius:6px;max-height:200px;object-fit:cover" /><h3 class="mt">Forensic Findings</h3><ul>' + flags + '</ul></div><div class="card mb"><h3>Component Authenticity</h3>' + parts + '</div><div class="card"><h3>Compliance Engine · ' + (r.compliance?.verdict || "COMPLIANT") + '</h3><ul>' + passed + '</ul><ul>' + issues + '</ul></div>';
     }
 
+    async function publicResultView() {
+      const q = S.payload.q || "LM-UP-000127";
+      let d;
+      try {
+        d = await api("/api/public/verify?q=" + encodeURIComponent(q));
+      } catch (e) {
+        d = { found: false, note: "Instrument not found on registry." };
+      }
+
+      let body = "";
+      if (!d.found) {
+        body = '<div class="hero">' + topPublic() + '<p class="kicker">Certificate &amp; Instrument Verification</p><h1 class="display">Verification Result</h1><p class="lede">Queried Token / Serial: <b class="mono">' + q + '</b></p><div class="verdict-hero NON_COMPLIANT mt"><h2>Not Found on Registry</h2><p>' + d.note + '</p></div></div>';
+      } else {
+        let passedList = "";
+        (d.compliance.passed || []).forEach(function(x) { passedList += '<li class="ok-text" style="font-size:13px;margin-bottom:6px;">' + x + '</li>'; });
+        let issuesList = "";
+        (d.compliance.issues || []).forEach(function(x) { issuesList += '<li class="bad-text" style="font-size:13px;margin-bottom:6px;">' + x + '</li>'; });
+        const certNo = d.certificate ? d.certificate.cert_no : "CERT-UP-2026-4412";
+
+        body = '<div class="hero">' + topPublic() + '<p class="kicker">Certificate &amp; Instrument Verification</p><h1 class="display">Verification Result</h1><p class="lede">Queried Token / Serial: <b class="mono">' + q + '</b></p><div class="verdict-hero ' + d.compliance.verdict + ' mt"><h2>' + d.compliance.verdict.replace("_", " ") + '</h2><p>' + d.manufacturer + ' ' + d.model + ' · Serial <b class="mono">' + d.serial + '</b> · ' + (d.oem_status === "genuine" ? "Genuine OEM Approved" : "Third-party Unapproved") + '</p></div><div class="grid-2"><div class="card"><img src="data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'220\'><rect width=\'400\' height=\'220\' fill=\'%23eaf0f6\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'sans-serif\' font-size=\'16\' fill=\'%231f3a5f\'>Scale Inspection Image</text></svg>" alt="" style="width:100%;border-radius:6px;max-height:220px;object-fit:cover;" class="mb" /><table class="table"><tr><th>Establishment</th><td>' + d.premises + ', ' + d.district + ', ' + d.state + '</td></tr><tr><th>Accuracy Class</th><td>Class ' + d.accuracy_class + ' (Max ' + d.max_kg + ' kg)</td></tr><tr><th>Model Approval</th><td class="mono">' + (d.model_approval || "IND/09/2019/214") + '</td></tr><tr><th>LMO Stamp</th><td>' + d.stamp_lmo + ' · Year ' + d.stamp_year + ' · Qtr ' + d.stamp_quarter + '</td></tr><tr><th>Last Verified</th><td class="mono">' + d.last_verified + '</td></tr><tr><th>Next Due Date</th><td class="mono" style="color:var(--danger);font-weight:700;">' + d.next_due + '</td></tr><tr><th>Certificate No</th><td class="mono"><b>' + certNo + '</b></td></tr></table></div><div class="card"><h3>Compliance &amp; Inspection Audit</h3><h4 class="ok-text mt">Checks Passed</h4><ul>' + passedList + '</ul>' + (issuesList ? '<h4 class="bad-text mt">Issues &amp; Violations</h4><ul>' + issuesList + '</ul>' : '<p class="tiny mt">No violations reported. Lead seal wire and security stamp are fully intact.</p>') + '<div class="mt" style="padding-top:14px;border-top:1px solid var(--rule);"><button class="btn btn-danger btn-full" onclick="openComplaintModal()">Report an Issue on this Instrument</button></div></div></div></div>';
+      }
+      return body;
+    }
+
     async function adminHome() {
       const st = await api("/api/stats");
       const highRiskList = DB.instruments.filter(function(i) { return i.oem_status === "third_party" || i.status === "expired"; });
@@ -1412,6 +1454,7 @@
       landing: landing,
       "login-unified": unifiedLoginView,
       "scan-lab": scanLabView,
+      "public-result": publicResultView,
       guidelines: guidelinesView,
       "consumer-home": consumerHome,
       "verification-apply": verificationApplyView,
