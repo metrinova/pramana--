@@ -1067,12 +1067,12 @@
       } else {
         items = [
           ["consumer-home", "Trader Home", ""],
-          ["consumer-home", "My Instrument", ""],
+          ["consumer-instruments", "My Instrument", ""],
           ["verification-apply", "Register Instrument", ""],
           ["verification-apply", "Apply for Verification", ""],
           ["verification-applications", "My Application", ""],
-          ["verification-applications", "Fee & Payment", ""],
-          ["verification-applications", "My Instrument Certificate", ""],
+          ["fee-payment", "Fee & Payment", ""],
+          ["fee-payment", "My Instrument Certificate", ""],
           ["consumer-complaints", "My Grievance", ""]
         ];
       }
@@ -1115,6 +1115,82 @@
 
     function kpi(n, l) {
       return '<div class="card kpi"><b>' + n + '</b><span>' + l + '</span></div>';
+    }
+
+    async function consumerInstrumentsView() {
+      const rows = [
+        { name: "Fuel Dispenser", id: "LM-00127", status: "verified", certificate: "Valid", expiry: "12 Jan 2027", action: "View", serial: "LM-UP-000127" },
+        { name: "Fuel Dispenser", id: "LM-00128", status: "pending", certificate: "—", expiry: "—", action: "Track", serial: "LM-UP-000128" },
+        { name: "Weighing Scale", id: "LM-00431", status: "expired", certificate: "Expired", expiry: "20 Aug 2026", action: "Re-verify", serial: "LM-UP-000431" }
+      ];
+      let tableRows = "";
+      rows.forEach(function(r) {
+        let action = "";
+        if (r.action === "View") {
+          action = '<button class="linkish" onclick="go(\'public-result\',{q:\'' + r.serial + '\'})">View</button>';
+        } else if (r.action === "Track") {
+          action = '<button class="linkish" onclick="go(\'verification-applications\')">Track</button>';
+        } else {
+          action = '<button class="linkish" onclick="go(\'verification-apply\')">Re-verify</button>';
+        }
+        tableRows += '<tr>' +
+          '<td><b>' + r.name + '</b></td>' +
+          '<td class="mono">' + r.id + '</td>' +
+          '<td>' + chip(r.status) + '</td>' +
+          '<td>' + r.certificate + '</td>' +
+          '<td class="mono">' + r.expiry + '</td>' +
+          '<td>' + action + '</td>' +
+          '</tr>';
+      });
+      return shell("", '<p class="crumb">Owner / Trader Portal · My Instruments</p>' +
+        '<h1>My Instruments</h1>' +
+        '<p class="intro">View your registered instruments, verification status, certificate validity and expiry.</p>' +
+        '<div class="card" style="overflow-x:auto;">' +
+        '<h3 style="margin-bottom:14px;">My Instruments — Use an Instrument</h3>' +
+        '<table class="table"><thead><tr><th>Instrument</th><th>ID</th><th>Status</th><th>Certificate</th><th>Expiry</th><th>Action</th></tr></thead><tbody>' + tableRows + '</tbody></table>' +
+        '<p class="tiny" style="margin:14px 0 0;">(Clicking <b>View</b> opens the complete instrument history.)</p>' +
+        '</div>', "user");
+    }
+
+    async function feePaymentView() {
+      if (!S.user || S.user.role !== "user") return go("login-unified");
+      const apps = getOwnerApplications();
+      const paid = apps.find(function(a){ return a.status === "payment_paid" && a.payment; });
+      const pending = apps.find(function(a){ return a.status === "payment_pending" || a.status === "completed"; });
+      const defaultInst = paid ? paid.serial : (pending ? pending.serial : "LM-UP-000127");
+      const verified = DB.instruments.find(function(i){ return String(i.serial) === "LM-UP-000127"; }) || DB.instruments[0];
+      const certNo = verified ? "CERT-UP-2026-" + String(verified.id).padStart(4,"0") : "—";
+      const issueDate = verified && verified.last_verified ? verified.last_verified : new Date().toISOString().slice(0,10);
+      const expiryDate = verified && verified.next_due ? verified.next_due : "—";
+      const amount = pending ? verificationFeeForApplication(pending) : (paid ? Number(paid.payment.amount || verificationFeeForApplication(paid)) : 750);
+      const paymentCard = paid ?
+        '<div class="card" style="background:#e4f2ea;border-color:#b9ddc8;color:var(--green-d);"><div style="font-size:34px;line-height:1;margin-bottom:8px;">✓</div><h3 style="color:var(--green-d);margin-bottom:6px;">Payment Successful</h3><p style="margin:0 0 10px;color:inherit;">Your verification fee has been received.</p><div class="grid-2"><div><span class="tiny">TRANSACTION ID</span><br><b class="mono">' + paid.payment.payment_id + '</b></div><div><span class="tiny">AMOUNT PAID</span><br><b>₹' + Number(paid.payment.amount || 0).toLocaleString("en-IN") + '</b></div></div><div class="tiny" style="margin-top:10px;color:inherit;">Payment Date: ' + new Date(paid.payment.paid_on).toLocaleString("en-IN") + '</div></div>' :
+        '<div class="card" style="background:#fffaf0;border-color:#ead19b;"><h3>Verification Fee</h3><p class="tiny">Enter the instrument ID assigned to your verification application.</p><div class="field"><label>Instrument ID</label><input id="fee-instrument-id" class="mono" value="' + defaultInst + '" placeholder="LM-UP-000127"></div><div style="background:#f8f1e5;border:1px solid #ead9bf;border-radius:8px;padding:18px;margin-top:12px;text-align:center;"><div class="tiny">VERIFICATION FEE</div><div style="font-family:var(--serif);font-size:32px;color:var(--navy);font-weight:700;margin-top:4px;">₹' + Number(amount).toLocaleString("en-IN") + '</div></div><button class="btn btn-saffron btn-full mt" onclick="payFromFeePage()">Pay Now</button><div id="fee-payment-out" class="mt"></div></div>';
+      const certSection = '<div class="card mt"><div class="row"><div><h3>Certificate</h3><p class="tiny" style="margin:3px 0 0;">View your instrument certificate after successful payment.</p></div></div><div class="grid-2" style="margin-top:14px;"><div class="field"><label>Enter Instrument ID</label><input id="certificate-instrument-id" class="mono" value="' + defaultInst + '" placeholder="LM-UP-000127"></div><div style="display:flex;align-items:end;"><button class="btn btn-navy btn-full" onclick="viewCertificateFromFeePage()">View Certificate</button></div></div><div id="certificate-out" class="mt"></div></div>';
+      const body = '<p class="crumb">Owner / Trader Portal · Fee &amp; Payment</p><h1>Fee &amp; Payment</h1><p class="intro">Pay the verification fee and access your instrument certificate.</p><div class="grid-2"><div>' + paymentCard + certSection + '</div><div><div class="card" style="background:#f7f9fc;"><h3>Payment Status</h3><div class="part"><span>Verification fee</span>' + chip(paid ? "payment_paid" : (pending ? "payment_pending" : "unknown")) + '</div><div class="part"><span>Instrument</span><b class="mono">' + defaultInst + '</b></div><div class="part"><span>Certificate access</span><span class="tiny">Available after payment</span></div></div></div></div>';
+      return shell("", body, "user");
+    }
+
+    function payFromFeePage() {
+      const input = document.getElementById("fee-instrument-id");
+      const value = input ? input.value.trim().toUpperCase() : "";
+      const a = getOwnerApplications().find(function(x){ return String(x.serial || "").toUpperCase() === value || String(x.instrument_id) === value; });
+      if (!a) { const out=document.getElementById("fee-payment-out"); if(out) out.innerHTML='<div class="card" style="background:#f8e4df;color:var(--danger);">No matching verification application found for <b class="mono">' + value + '</b>. Complete the verification workflow first.</div>'; return; }
+      if (a.status !== "payment_pending" && a.status !== "completed") { const out=document.getElementById("fee-payment-out"); if(out) out.innerHTML='<div class="card" style="background:#fff7e6;color:var(--warn);">Payment is not available yet. The GATC instrument test must be passed first.</div>'; return; }
+      openVerificationPayment(a.id);
+    }
+
+    function viewCertificateFromFeePage() {
+      const input = document.getElementById("certificate-instrument-id");
+      const value = input ? input.value.trim().toUpperCase() : "";
+      const paid = getOwnerApplications().find(function(a){ return a.status === "payment_paid" && (String(a.serial || "").toUpperCase() === value || String(a.instrument_id) === value); });
+      const inst = DB.instruments.find(function(i){ return String(i.serial || "").toUpperCase() === value || String(i.id) === value; });
+      const out = document.getElementById("certificate-out");
+      if (!out) return;
+      if (!paid && (!inst || inst.status !== "verified")) { out.innerHTML='<div class="card" style="background:#fff7e6;color:var(--warn);">Certificate is not available yet. Complete payment and the verification process first.</div>'; return; }
+      if (!inst) { out.innerHTML='<div class="card" style="background:#f8e4df;color:var(--danger);">Instrument not found in your registry.</div>'; return; }
+      const certNo = "CERT-UP-2026-" + String(inst.id).padStart(4,"0");
+      out.innerHTML='<div class="card" style="background:#fffdf8;border:1px solid #ead9bf;"><div class="row"><h3>Certificate Details</h3>' + chip("valid") + '</div><table class="table" style="margin-top:10px;"><tr><th>Certificate No.</th><td class="mono"><b>' + certNo + '</b></td></tr><tr><th>Instrument ID</th><td class="mono">' + inst.serial + '</td></tr><tr><th>Instrument</th><td>' + inst.name + '</td></tr><tr><th>Issue Date</th><td class="mono">' + (inst.last_verified || "—") + '</td></tr><tr><th>Expiry Date</th><td class="mono">' + (inst.next_due || "—") + '</td></tr><tr><th>Owner / Establishment</th><td>' + inst.premises + '</td></tr><tr><th>Status</th><td>' + chip("valid") + '</td></tr></table><button class="btn btn-navy mt" onclick="go(\'public-result\',{q:\'' + inst.serial + '\'})">View Full Certificate</button></div>';
     }
 
     async function consumerHome() {
@@ -1916,8 +1992,10 @@
       "public-result": publicResultView,
       guidelines: guidelinesView,
       "consumer-home": consumerHome,
+      "consumer-instruments": consumerInstrumentsView,
       "verification-apply": verificationApplyView,
       "verification-applications": verificationApplicationsView,
+      "fee-payment": feePaymentView,
       "consumer-nearby": consumerNearby,
       "consumer-complaints": consumerComplaintsView,
       "admin-home": adminHome,
