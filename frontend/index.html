@@ -617,6 +617,7 @@
       view: "landing",
       payload: {},
       cache: {},
+      navActive: 0,
     };
 
     const TYPE_LABEL = {
@@ -706,20 +707,31 @@
 
     function verificationTimeline(a) {
       const status = a.status;
-      const step = status === "pending" ? 2 : (status === "approved" ? 3 : (status === "scheduled" ? 4 : (status === "completed" ? 5 : 0)));
+      const stepMap = { pending: 2, approved: 3, scheduled: 4, completed: 5, payment_pending: 5, payment_paid: 6 };
+      const step = stepMap[status] || 1;
       const items = [
         ["Application Submitted", 1],
         ["Pending Officer Review", 2],
         ["Approved by Metrology Officer", 3],
         ["Verification Scheduled", 4],
-        ["Verification Completed", 5]
+        ["Instrument Tested by GATC", 5],
+        ["Payment", 6]
       ];
       let html = '<div style="display:flex;flex-direction:column;gap:8px;margin-top:12px;">';
       items.forEach(function(item) {
         const active = step >= item[1];
         const current = step === item[1];
-        html += '<div class="part"><span>' + (active ? '✓ ' : '○ ') + item[0] + '</span>' + (current ? chip(status) : (active ? chip("verified") : chip("unknown"))) + '</div>';
+        let label = active ? "Verified" : "Pending";
+        if (item[1] === 5) label = a.gatc_test_result === "pass" ? "PASS" : (a.gatc_test_result === "fail" ? "FAIL" : "Pending");
+        if (item[1] === 6) label = status === "payment_paid" ? "Paid" : (status === "payment_pending" ? "Payment Required" : "Pending");
+        html += '<div class="part"><span>' + (active ? '✓ ' : '○ ') + item[0] + '</span>' + (current ? chip(item[1] === 5 ? (a.gatc_test_result || "pending") : status) : chip(active ? (item[1] === 5 ? (a.gatc_test_result || "verified") : (item[1] === 6 ? (status === "payment_paid" ? "payment_paid" : "payment_pending") : "verified")) : "unknown")) + '</div>';
       });
+      if (status === "payment_pending" || status === "completed") {
+        html += '<div class="card" style="background:#fff7e6;border:1px solid #ead19b;color:var(--warn);margin-top:6px;"><b>Payment required</b><div class="tiny" style="color:inherit;margin-top:4px;">Your instrument has passed the GATC test. Pay the verification fee to continue processing your application.</div><button class="btn btn-saffron mt" onclick="openVerificationPayment(' + a.id + ')">Pay Verification Fee</button></div>';
+      }
+      if (status === "payment_paid") {
+        html += '<div class="card" style="background:#e4f2ea;color:var(--green-d);margin-top:6px;"><b>Payment received ✓</b><div class="tiny" style="color:inherit;margin-top:4px;">Payment is confirmed. Your application has moved to the next government processing stage.</div></div>';
+      }
       if (status === "rejected") {
         html += '<div class="card" style="background:#f8e4df;color:var(--danger);margin-top:6px;"><b>Application Rejected</b><div class="tiny" style="color:inherit;margin-top:4px;">' + (a.rejection_reason || "Officer did not approve this application.") + '</div></div>';
       }
@@ -734,6 +746,8 @@
         approved: ["ok", "Approved"],
         scheduled: ["info", "Scheduled"],
         rejected: ["bad", "Rejected"],
+        payment_pending: ["warn", "Payment Required"],
+        payment_paid: ["info", "Payment Received"],
         expired: ["warn", "Expired"],
         sealed_tampered: ["bad", "Seal tampered"],
         genuine: ["ok", "Genuine OEM"],
@@ -852,9 +866,10 @@
       return { ok: true };
     }
 
-    function go(view, payload) {
+    function go(view, payload, navIndex) {
       S.view = view;
       S.payload = payload || {};
+      if (typeof navIndex === "number") S.navActive = navIndex;
       location.hash = view;
       render();
     }
@@ -1051,13 +1066,14 @@
         ];
       } else {
         items = [
-          ["consumer-home", "Owner / Trader Home", "Overview"],
-          ["verification-apply", "Apply for Verification", "New application"],
-          ["verification-applications", "My Applications", "Track status & schedule"],
-          ["scan-lab", "Scan / Verify QR", "Instant check"],
-          ["consumer-complaints", "My Complaints", "Tracking"],
-          ["consumer-nearby", "Nearby Verified", "Petrol pumps & scales"],
-          ["guidelines", "Rule Library", "Consumer guide"]
+          ["consumer-home", "Trader Home", ""],
+          ["consumer-home", "My Instrument", ""],
+          ["verification-apply", "Register Instrument", ""],
+          ["verification-apply", "Apply for Verification", ""],
+          ["verification-applications", "My Application", ""],
+          ["verification-applications", "Fee & Payment", ""],
+          ["verification-applications", "My Instrument Certificate", ""],
+          ["consumer-complaints", "My Grievance", ""]
         ];
       }
 
@@ -1078,9 +1094,14 @@
       }
 
       let navBtns = "";
-      items.forEach(function(item) {
-        const activeClass = S.view === item[0] ? "active" : "";
-        navBtns += '<button class="navbtn ' + activeClass + '" onclick="go(\'' + item[0] + '\')"><div>' + item[1] + '<small>' + item[2] + '</small></div></button>';
+      items.forEach(function(item, index) {
+        let activeClass = "";
+        if (role === "user") {
+          activeClass = S.navActive === index ? "active" : "";
+        } else {
+          activeClass = S.view === item[0] ? "active" : "";
+        }
+        navBtns += '<button class="navbtn ' + activeClass + '" onclick="go(\'' + item[0] + '\', {}, ' + index + ')"><div>' + item[1] + '<small>' + item[2] + '</small></div></button>';
       });
 
       let mobileBtns = "";
@@ -1103,7 +1124,7 @@
       const scheduled = apps.filter(function(a){return a.status === "scheduled";}).length;
       const latest = apps[0];
       const workflowCard = latest ? '<div class="card"><div class="row"><h3>Latest Verification Application</h3>' + chip(latest.status) + '</div><p class="tiny mono">' + latest.public_id + ' · ' + latest.serial + '</p>' + verificationTimeline(latest) + (latest.schedule ? '<div class="card" style="background:#e4f2ea;margin-top:12px;"><b style="color:var(--green-d);">Scheduled: ' + latest.schedule.date + ' at ' + latest.schedule.time + '</b><div class="tiny" style="color:var(--green-d);">Officer: ' + latest.schedule.officer + '</div></div>' : '') + '<button class="btn btn-navy mt" onclick="go(\'verification-applications\')">View My Applications</button></div>' : '<div class="card"><h3>Instrument Verification</h3><p class="tiny">Need your weighing or measuring instrument verified? Apply online first. The request goes to Pending, then a Metrology Officer approves it, and only then a date/time is scheduled.</p><button class="btn btn-saffron mt" onclick="go(\'verification-apply\')">Apply for Verification</button></div>';
-      return shell("", '<p class="crumb">Owner / Trader Portal · Instrument Safety</p><h1>Welcome, ' + (S.user?.name || "Citizen") + '.</h1><p class="intro">Manage instrument verification requests, track officer approval, view your verification schedule, scan instruments, and report issues.</p><div class="grid-3 mb"><div class="card" style="background:linear-gradient(135deg,#0e4a2e,#1a6b45);color:#fff;"><h3 style="color:#fff;">Apply for Verification</h3><p style="opacity:0.9;font-size:14px;margin-bottom:14px;">Submit your instrument for Legal Metrology verification. Approval comes before scheduling.</p><button class="btn btn-gold" onclick="go(\'verification-apply\')">Start Application ➔</button></div><div class="card" style="background:var(--navy);color:#fff;"><h3>My Applications</h3><p style="font-family:var(--serif);font-size:32px;margin:6px 0;">' + apps.length + '</p><p style="font-size:13px;opacity:0.8;margin:0;">' + pending + ' pending · ' + scheduled + ' scheduled</p></div><div class="card" style="background:#fff;border-left:4px solid var(--saffron);"><h3>Verification Schedule</h3><p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Your date and time appear only after officer approval.</p><button class="btn btn-navy" onclick="go(\'verification-applications\')">View Schedule</button></div></div><div class="grid-2"><div>' + workflowCard + '</div><div><div class="card"><h3>Scan Instrument</h3><p class="tiny">Upload a nameplate, scale, sensor, or seal image for authenticity and compliance analysis.</p><button class="btn btn-navy mt" onclick="openScanner()">Launch Scanner</button></div><div class="card mt"><h3>Active Complaints</h3><p style="font-family:var(--serif);font-size:32px;margin:6px 0;">' + complaints.length + '</p><button class="btn btn-danger mt" onclick="go(\'consumer-complaints\')">View Complaints</button></div></div></div>', "user");
+      return shell("", '<p class="crumb">Owner / Trader Portal · Instrument Safety</p><h1>Welcome, ' + (S.user?.name || "Citizen") + '.</h1><p class="intro">Manage instrument verification requests, track officer approval, view your verification schedule, scan instruments, and report issues.</p><div class="grid-3 mb"><div class="card" style="background:linear-gradient(135deg,#0e4a2e,#1a6b45);color:#fff;"><h3>Apply for Verification</h3><p style="opacity:0.9;font-size:14px;margin-bottom:14px;">Submit your instrument for Legal Metrology verification. Approval comes before scheduling.</p><button class="btn btn-gold" onclick="go(\'verification-apply\')">Start Application ➔</button></div><div class="card" style="background:var(--navy);color:#fff;"><h3>My Applications</h3><p style="font-family:var(--serif);font-size:32px;margin:6px 0;">' + apps.length + '</p><p style="font-size:13px;opacity:0.8;margin:0;">' + pending + ' pending · ' + scheduled + ' scheduled</p></div><div class="card" style="background:#fff;border-left:4px solid var(--saffron);"><h3>Verification Schedule</h3><p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Your date and time appear only after officer approval.</p><button class="btn btn-navy" onclick="go(\'verification-applications\')">View Schedule</button></div></div><div class="grid-2"><div>' + workflowCard + '</div><div><div class="card"><h3>Scan Instrument</h3><p class="tiny">Upload a nameplate, scale, sensor, or seal image for authenticity and compliance analysis.</p><button class="btn btn-navy mt" onclick="openScanner()">Launch Scanner</button></div><div class="card mt"><h3>Active Complaints</h3><p style="font-family:var(--serif);font-size:32px;margin:6px 0;">' + complaints.length + '</p><button class="btn btn-danger mt" onclick="go(\'consumer-complaints\')">View Complaints</button></div></div></div>', "user");
     }
 
     async function consumerNearby() {
@@ -1527,7 +1548,7 @@
           cards += '<div class="card mb"><div class="row"><div><span class="tiny">APPLICATION ID</span><h3 class="mono" style="margin:4px 0;">' + a.public_id + '</h3></div><div>' + chip(a.status) + '</div></div><div class="grid-2" style="margin-top:14px;"><div><span class="tiny">INSTRUMENT</span><br><b>' + a.instrument_name + '</b><div class="mono tiny">' + a.serial + '</div></div><div><span class="tiny">SUBMITTED</span><br><b class="mono">' + a.submitted_date + '</b><div class="tiny">' + a.org + '</div></div></div>' + verificationTimeline(a) + scheduleHtml + '</div>';
         });
       }
-      return shell("", '<p class="crumb">Owner / Trader Portal · Applications</p><div class="row"><h1>My Verification Applications</h1><button class="btn btn-saffron right" onclick="go(\'verification-apply\')">+ New Application</button></div><p class="intro">Track your application from submission to officer approval and scheduled verification.</p>' + cards, "user");
+      return shell("", '<p class="crumb">Owner / Trader Portal · Applications</p><div class="row"><h1>My Verification Applications</h1><button class="btn btn-saffron right" onclick="go(\'verification-apply\')">+ New Application</button></div><p class="intro">Track approval, instrument testing, and payment status.</p>' + cards, "user");
     }
 
     async function officerQueue() {
@@ -1538,6 +1559,8 @@
         if (a.status === "pending") action = '<button class="btn btn-saffron" style="padding:6px 12px;font-size:12px;" onclick="go(\'officer-review\',{aid:' + a.id + '})">Review</button>';
         else if (a.status === "approved") action = '<button class="btn btn-navy" style="padding:6px 12px;font-size:12px;" onclick="go(\'officer-schedule\',{aid:' + a.id + '})">Schedule</button>';
         else if (a.status === "scheduled") action = '<span class="tiny">Schedule confirmed</span>';
+        else if (a.status === "payment_paid") action = '<span class="tiny ok-text">Payment received</span>';
+        else if (a.status === "payment_pending") action = '<span class="tiny">Awaiting payment</span>';
         else action = '<span class="tiny">No action</span>';
         rows += '<tr><td class="mono"><b>' + a.public_id + '</b></td><td><b>' + a.applicant_name + '</b><div class="tiny">' + a.org + '</div></td><td><span class="mono">' + a.serial + '</span><div class="tiny">' + a.instrument_name + '</div></td><td class="mono">' + a.submitted_date + '</td><td>' + chip(a.status) + '</td><td>' + action + '</td></tr>';
       });
@@ -1767,13 +1790,46 @@
       a.gatc_test_remarks = remarks;
       a.gatc_tested_on = new Date().toISOString();
       a.gatc_tested_by = S.user ? S.user.name : "GATC Operator";
-      a.status = verdict === "pass" ? "completed" : "failed";
+      a.status = verdict === "pass" ? "payment_pending" : "failed";
       if (inst && verdict === "pass") { inst.status = "tested"; inst.last_tested = a.gatc_tested_on.slice(0,10); }
       if (inst && verdict === "fail") { inst.status = "test_failed"; }
       addNotification("admin", verdict === "pass" ? "GATC Test Passed" : "GATC Test Failed", a.public_id + " test result submitted by " + currentGatc().code + ".", verdict === "pass" ? "✅" : "⚠️", "admin-inspections");
       addNotification("gatc", "Test Result Submitted", a.public_id + " has been recorded as " + (verdict === "pass" ? "PASS" : "FAIL") + ".", verdict === "pass" ? "✅" : "⚠️", "gatc-results", {aid: aid});
       if ($("#gatc-result-out")) $("#gatc-result-out").innerHTML = '<div class="card" style="background:' + (verdict === "pass" ? '#e4f2ea;color:var(--green-d);' : '#f8e4df;color:var(--danger);') + '"><b>Instrument Test ' + (verdict === "pass" ? 'Passed ✓' : 'Failed') + '</b><br>Test result submitted to the government workflow. No certificate is generated by GATC.</div>';
       saveVerificationWorkflow();
+    }
+
+    function verificationFeeForApplication(a) {
+      const inst = DB.instruments.find(function(i){ return i.id === a.instrument_id; });
+      const type = inst ? String(TYPE_LABEL[inst.type] || inst.type || "").toLowerCase() : "";
+      let perUnit = 1000;
+      if (type.indexOf("cng") !== -1 || type.indexOf("lpg") !== -1 || type.indexOf("lng") !== -1 || type.indexOf("hydrogen") !== -1) perUnit = 10000;
+      else if (type.indexOf("petrol") !== -1 || type.indexOf("diesel") !== -1) perUnit = 5000;
+      const units = inst && Number(inst.nozzles) > 0 ? Number(inst.nozzles) : 1;
+      return perUnit * units;
+    }
+
+    function openVerificationPayment(aid) {
+      const a = DB.applications.find(function(x){ return x.id === aid && x.workflow === "verification"; });
+      if (!a || (a.status !== "completed" && a.status !== "payment_pending")) return;
+      const amount = verificationFeeForApplication(a);
+      const existing = document.getElementById("verification-payment-modal");
+      if (existing) existing.remove();
+      document.body.insertAdjacentHTML("beforeend", '<div id="verification-payment-modal" style="position:fixed;inset:0;background:rgba(0,0,0,.58);display:grid;place-items:center;z-index:10001;padding:18px;"><div class="card" style="width:100%;max-width:520px;background:#fff;"><div class="row"><h3 style="margin:0;">Verification Payment</h3><button class="btn btn-ghost right" onclick="document.getElementById(\'verification-payment-modal\').remove()">×</button></div><p class="tiny">Application <b class="mono">' + a.public_id + '</b></p><table class="table"><tr><th>Instrument</th><td>' + a.instrument_name + '</td></tr><tr><th>Serial</th><td class="mono">' + a.serial + '</td></tr><tr><th>Amount</th><td><b>₹' + amount.toLocaleString("en-IN") + '</b></td></tr></table><div style="background:#f6f8fb;border:1px solid #e1e7ed;border-radius:8px;padding:12px;font-size:12px;color:#66758a;">Demo payment screen — no real money is charged.</div><button class="btn btn-saffron btn-full mt" onclick="completeVerificationPayment(' + a.id + ',' + amount + ')">Pay ₹' + amount.toLocaleString("en-IN") + '</button></div></div>');
+    }
+
+    function completeVerificationPayment(aid, amount) {
+      const a = DB.applications.find(function(x){ return x.id === aid && x.workflow === "verification"; });
+      if (!a) return;
+      a.payment = { status: "paid", amount: amount, paid_on: new Date().toISOString(), payment_id: "PAY-" + Date.now() };
+      a.status = "payment_paid";
+      saveVerificationWorkflow();
+      addNotification("officer", "Payment Received", a.public_id + " payment received. Application is ready for the next processing stage.", "💳", "officer-queue");
+      addNotification("user", "Payment Received", "Payment for " + a.public_id + " was received. Your application has moved to the next processing stage.", "💳", "verification-applications", {aid:aid});
+      const modal = document.getElementById("verification-payment-modal");
+      if (modal) modal.remove();
+      alert("Payment received successfully. Your application has moved to the next processing stage.");
+      go("verification-applications");
     }
 
     async function gatcResults() {
