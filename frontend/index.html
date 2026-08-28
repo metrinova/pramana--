@@ -667,34 +667,24 @@
       ]
     };
 
-    // Role-based notification system
-    (function loadNotifications() {
-      try { const saved = JSON.parse(localStorage.getItem("pramana_notifications") || "null"); if (Array.isArray(saved)) DB.notifications = saved; } catch (e) {}
-    })();
-    function saveNotifications() { try { localStorage.setItem("pramana_notifications", JSON.stringify(DB.notifications.slice(0, 50))); } catch (e) {} }
-    function addNotification(role, title, message, icon, view, payload) { DB.notifications.unshift({id: Date.now()+Math.random(), role: role, title: title, message: message, icon: icon||"🔔", view: view||"", payload: payload||{}, time: "Just now", read:false}); saveNotifications(); }
+    // Backend-backed notification + verification workflow persistence.
+    function saveNotifications() {
+      try {
+        fetch("/api/notifications", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({notifications: DB.notifications.slice(0,50)})}).catch(function(){});
+      } catch(e) {}
+    }
+    function addNotification(role, title, message, icon, view, payload) {
+      DB.notifications.unshift({id: Date.now()+Math.random(), role: role, title: title, message: message, icon: icon||"🔔", view: view||"", payload: payload||{}, time: "Just now", read:false});
+      saveNotifications();
+    }
     function getNotificationsForCurrentUser() { const role = S.user ? S.user.role : "public"; return DB.notifications.filter(function(n){ return n.role === role || n.role === "all"; }); }
     function notificationBellHtml() { const count=getNotificationsForCurrentUser().filter(function(n){return !n.read;}).length; return '<div style="position:relative;display:inline-block;"><button class="bell-linkish" onclick="toggleNotifications(event)" title="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>' + (count ? '<span style="position:absolute;top:-3px;right:-3px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--danger);color:#fff;font:700 10px/17px Arial;text-align:center;">'+Math.min(count,99)+'</span>' : '') + '</button></div>'; }
     function markNotificationsRead() { const role=S.user?S.user.role:"public"; DB.notifications.forEach(function(n){if(n.role===role||n.role==="all") n.read=true;}); saveNotifications(); }
-    // Owner/Trader verification workflow state
-    (function loadVerificationWorkflow() {
-      try {
-        const saved = JSON.parse(localStorage.getItem("pramana_verification_applications") || "[]");
-        if (Array.isArray(saved)) {
-          saved.forEach(function(savedApp) {
-            const exists = DB.applications.some(function(a) { return a.public_id === savedApp.public_id; });
-            if (!exists) DB.applications.unshift(savedApp);
-          });
-        }
-      } catch (e) {}
-    })();
 
     function saveVerificationWorkflow() {
       try {
-        const workflowApps = DB.applications.filter(function(a) {
-          return a.workflow === "verification";
-        });
-        localStorage.setItem("pramana_verification_applications", JSON.stringify(workflowApps));
+        const workflowApps = DB.applications.filter(function(a) { return a.workflow === "verification"; });
+        fetch("/api/applications/bulk", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({applications:workflowApps})}).catch(function(){});
       } catch (e) {}
     }
 
@@ -776,95 +766,24 @@
     }
 
     async function api(path, opts = {}) {
-      await new Promise(function(r) { setTimeout(r, 100); });
-      let body = {};
-      try { if (opts.body && typeof opts.body === "string") body = JSON.parse(opts.body); } catch (e) {}
-
-      if (path === "/api/me") {
-        if (!S.user) throw new Error("Authentication required");
-        return { user: S.user };
+      const options = Object.assign({}, opts);
+      options.credentials = "same-origin";
+      if (options.body && !(options.body instanceof FormData) && typeof options.body !== "string") {
+        options.headers = Object.assign({"Content-Type":"application/json"}, options.headers || {});
+        options.body = JSON.stringify(options.body);
       }
-      if (path === "/api/login") {
-        const email = body.email;
-        const role = body.role;
-        if (role === "admin") {
-          S.user = { id: 99, name: "Director General", email: email || "admin@pramana.in", role: "admin", org: "Legal Metrology Dept, UP", district: "Lucknow", lmo_code: "LMO-HQ-00" };
-        } else if (role === "gatc") {
-          S.user = { id: 21, name: "GATC Operator", email: email || "gatc@pramana.in", role: "gatc", org: "ABC Legal Metrology Verification Centre", district: "Lucknow", gatc_id: 21, gatc_code: "GATC-021", title: "Authorized GATC Operator" };
-        } else if (role === "officer") {
-          S.user = { id: 2, name: "Rahul Sharma", email: email || "officer@pramana.in", role: "officer", org: "District Inspectorate", district: "Lucknow", lmo_code: "LMO-LKO-01", zone: "Zone 1" };
-        } else {
-          S.user = { id: 1, name: "Rajesh Sharma", email: email || "trader@pramana.in", role: "user", org: "Sharma Stores", district: "Lucknow" };
-        }
-        return { user: S.user };
-      }
-      if (path === "/api/logout") {
-        S.user = null;
-        return { ok: true };
-      }
-      if (path === "/api/instruments") return { instruments: DB.instruments };
-      if (path.indexOf("/api/instruments/") === 0) {
-        const id = parseInt(path.split("/").pop());
-        const inst = DB.instruments.find(function(i) { return i.id === id; }) || DB.instruments[0];
-        return inst;
-      }
-      if (path === "/api/applications") return { applications: DB.applications };
-      if (path === "/api/verification/apply" && opts.method === "POST") return { ok: true };
-      if (path === "/api/verification/approve" && opts.method === "POST") return { ok: true };
-      if (path === "/api/verification/schedule" && opts.method === "POST") return { ok: true };
-      if (path === "/api/stats") {
-        const thirdParty = DB.instruments.filter(function(i) { return i.oem_status === "third_party"; }).length;
-        return { instruments: DB.instruments.length, due_soon: 4, by_oem: { third_party: thirdParty }, audits: DB.audit.length, high_risk: 3, pending_complaints: DB.complaints.length };
-      }
-      if (path === "/api/complaints") return { complaints: DB.complaints };
-      if (path === "/api/audit") return { events: DB.audit };
-      if (path === "/api/guidelines") {
-        return {
-          guidelines: [
-            { id: "GL-01", jurisdiction: "India · Legal Metrology Act 2009", title: "Section 24 — Verification and Stamping", body: "Every weight or measure used in transaction of trade or commerce must be verified and stamped by a Legal Metrology Officer in prescribed intervals.", refs: ["Act No. 1 of 2010", "Rule 12"] },
-            { id: "GL-02", jurisdiction: "OIML R 76", title: "Non-Automatic Weighing Instruments", body: "Defines accuracy classes (I, II, III, IIII) and Maximum Permissible Errors (MPE) for verification and in-service testing.", refs: ["OIML R 76-1", "Table 6"] }
-          ],
-          reverify_months: { electronic_weighing: 12, platform_scale: 12, weighbridge: 12, fuel_dispenser: 12, counter_machine: 24, tape: 60 },
-          mpe_bands: { III: [[0, 500, 0.5], [500, 2000, 1.0], [2000, 1e12, 1.5]] }
-        };
-      }
-      if (path.indexOf("/api/public/verify") === 0) {
-        const qParam = path.split("?")[1] || "";
-        const q = new URLSearchParams(qParam).get("q") || "";
-        const needle = q.trim().toLowerCase();
-        const inst = DB.instruments.find(function(i) {
-          return String(i.serial || "").toLowerCase() === needle ||
-                 String(i.name || "").toLowerCase().indexOf(needle) !== -1;
-        });
-        if (!inst) return { found: false, note: "Instrument not found on registry." };
-        return Object.assign({ found: true }, inst, {
-          certificate: {
-            cert_no: "CERT-UP-2026-" + String(inst.id).padStart(4, "0"),
-            issue_date: inst.last_verified,
-            expiry_date: inst.next_due,
-            owner: inst.premises
-          }
-        });
-      }
-      if (path === "/api/public/analyze" || path === "/api/analyze") {
-        return {
-          label: "GENUINE",
-          headline: "Genuine OEM Instrument & Sealing Verified",
-          confidence: 96,
-          nearest_reference: "Essae-DS852-OEM",
-          hamming: 2,
-          photo_url: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='250' fill='%231f3a5f'><rect width='400' height='250' fill='%23eaf0f6'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='18' fill='%231f3a5f'>Verified Scale Preview</text></svg>",
-          flags: ["Nameplate typography matches registered mold", "Lead wire seal imprint corresponds to LMO-LKO-01", "Load cell resistance within OIML R 60 specification"],
-          parts: [
-            { part: "Indicator Head", status: "genuine", note: "Original firmware checksum verified" },
-            { part: "Load Cell Sensor", status: "genuine", note: "C3 precision strain gauge matches model approval" },
-            { part: "Verification Lead Seal", status: "ok", note: "Quarter stamp A / 2026 intact" }
-          ],
-          compliance: { verdict: "COMPLIANT", passed: ["Passed all structural OIML R 76 checks", "Model approval IND/09/2019/214 active"], issues: [], rules_applied: ["Legal Metrology Act s.24"] }
-        };
-      }
-      return { ok: true };
+      const response = await fetch(path, options);
+      let data = {};
+      try { data = await response.json(); } catch (e) {}
+      if (!response.ok) throw new Error(data.error || data.note || ("Request failed: " + response.status));
+      return data;
     }
+
+    async function persistInstrument(inst) {
+      if (!inst || !inst.id) return;
+      try { await api("/api/instruments/" + inst.id, {method:"PUT", body:inst}); } catch(e) {}
+    }
+
 
     function go(view, payload, navIndex) {
       S.view = view;
@@ -1009,23 +928,49 @@
     }
 
     async function doUnifiedLogin() {
-      const err = $("#auth-err");
-      err.innerHTML = "";
-      try {
-        const data = await api("/api/login", {
-          method: "POST",
-          body: JSON.stringify({ email: $("#em").value, role: currentLoginRole }),
-        });
-        S.user = data.user;
-        if (S.user.role === "admin") go("admin-home");
-        else if (S.user.role === "officer") go("officer-home");
-        else if (S.user.role === "gatc") go("gatc-home");
-        else go("consumer-home");
-      } catch (e) {
-        err.innerHTML = '<div class="err">' + e.message + '</div>';
+  const err = $("#auth-err");
+  err.innerHTML = "";
+
+  const email = $("#em").value.trim();
+  const password = $("#pw").value;
+  const role = currentLoginRole;
+
+  if (!email || !password) {
+    err.innerHTML = '<div class="err">Email and password are required</div>';
+    return;
+  }
+
+  try {
+    const data = await api("/api/login", {
+      method: "POST",
+      body: {
+        email: email,
+        password: password,
+        role: role
       }
+    });
+
+    if (!data || !data.user) {
+      throw new Error("Login response is invalid");
     }
 
+    S.user = data.user;
+
+    if (S.user.role === "admin") {
+      go("admin-home");
+    } else if (S.user.role === "officer") {
+      go("officer-home");
+    } else if (S.user.role === "gatc") {
+      go("gatc-home");
+    } else {
+      go("consumer-home");
+    }
+
+  } catch (e) {
+    console.error("Login error:", e);
+    err.innerHTML = '<div class="err">' + (e.message || "Login failed") + '</div>';
+  }
+}
     async function doLogout() {
       try { await api("/api/logout", { method: "POST", body: "{}" }); } catch (e) {}
       S.user = null;
@@ -1225,7 +1170,9 @@
       const type = $("#cmp-type").value;
       const desc = $("#cmp-desc").value;
       const newId = "CMP-" + (1026 + DB.complaints.length);
-      DB.complaints.unshift({ id: newId, instrument_id: 2, serial, type, description: desc, district: "Lucknow", date: "2026-08-27", priority: "High", status: "New", assigned_officer: "Unassigned" });
+      const complaintItem = { id: newId, instrument_id: 2, serial, type, description: desc, district: S.user?.district || "Lucknow", date: new Date().toISOString().slice(0,10), priority: "High", status: "New", assigned_officer: "Unassigned" };
+      DB.complaints.unshift(complaintItem);
+      api("/api/complaints", {method:"POST", body:complaintItem}).catch(function(){});
       document.getElementById('complaint-modal').remove();
       alert("Complaint successfully submitted with ID: " + newId);
       go("consumer-complaints");
@@ -1869,6 +1816,7 @@
       a.status = verdict === "pass" ? "payment_pending" : "failed";
       if (inst && verdict === "pass") { inst.status = "tested"; inst.last_tested = a.gatc_tested_on.slice(0,10); }
       if (inst && verdict === "fail") { inst.status = "test_failed"; }
+      persistInstrument(inst);
       addNotification("admin", verdict === "pass" ? "GATC Test Passed" : "GATC Test Failed", a.public_id + " test result submitted by " + currentGatc().code + ".", verdict === "pass" ? "✅" : "⚠️", "admin-inspections");
       addNotification("gatc", "Test Result Submitted", a.public_id + " has been recorded as " + (verdict === "pass" ? "PASS" : "FAIL") + ".", verdict === "pass" ? "✅" : "⚠️", "gatc-results", {aid: aid});
       if ($("#gatc-result-out")) $("#gatc-result-out").innerHTML = '<div class="card" style="background:' + (verdict === "pass" ? '#e4f2ea;color:var(--green-d);' : '#f8e4df;color:var(--danger);') + '"><b>Instrument Test ' + (verdict === "pass" ? 'Passed ✓' : 'Failed') + '</b><br>Test result submitted to the government workflow. No certificate is generated by GATC.</div>';
@@ -2039,6 +1987,15 @@
     (async function boot() {
       const h = location.hash.replace("#", "");
       if (h) S.view = h;
+      try {
+        const bootstrap = await api("/api/bootstrap");
+        if (Array.isArray(bootstrap.instruments)) DB.instruments = bootstrap.instruments;
+        if (Array.isArray(bootstrap.applications)) DB.applications = bootstrap.applications;
+        if (Array.isArray(bootstrap.complaints)) DB.complaints = bootstrap.complaints;
+        if (Array.isArray(bootstrap.certificates)) DB.certificates = bootstrap.certificates;
+        if (Array.isArray(bootstrap.audit)) DB.audit = bootstrap.audit;
+        if (Array.isArray(bootstrap.notifications)) DB.notifications = bootstrap.notifications;
+      } catch (e) {}
       try {
         const me = await api("/api/me");
         S.user = me.user;
