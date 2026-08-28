@@ -196,7 +196,7 @@
     }
     .login-card-unified h2 { font-family: var(--serif); font-size: 24px; margin: 0 0 4px; text-align: center; color: var(--navy); }
     .login-card-unified p.subt { text-align: center; color: var(--muted); font-size: 13px; margin: 0 0 24px; }
-    .role-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; background: #eee5d8; padding: 4px; border-radius: 8px; margin-bottom: 24px; }
+    .role-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: #eee5d8; padding: 4px; border-radius: 8px; margin-bottom: 24px; }
     .role-tab-btn { background: transparent; border: none; padding: 10px; color: var(--muted); font-weight: 600; font-size: 13px; border-radius: 6px; text-align: center; transition: all 0.2s; }
     .role-tab-btn.active { background: var(--saffron); color: #fff; box-shadow: 0 4px 12px rgba(224,112,32,0.3); }
     .auth-field { margin-bottom: 16px; }
@@ -408,11 +408,35 @@
     .scan-dropzone{min-height:310px;border:1.5px dashed #c89a52!important;border-radius:13px!important;background:repeating-linear-gradient(135deg,#fff 0,#fff 9px,#fcfaf7 9px,#fcfaf7 11px)!important;display:grid;place-items:center;padding:28px!important;text-align:center}.scan-dropzone .upload-icon{width:66px;height:66px;border-radius:50%;background:#fff0e3;color:var(--saffron);display:grid;place-items:center;margin:0 auto 14px;font-size:30px}.scan-dropzone h3{font-family:var(--serif);color:var(--navy);font-size:21px;margin:0 0 7px}.scan-dropzone p{margin:0;color:var(--muted);font-size:12px}.scan-buttons{display:flex;justify-content:center;gap:12px;margin-top:18px;flex-wrap:wrap}.scan-samples{margin-top:14px}.scan-samples .linkish{padding:7px 12px;border:1px solid #e1ddd6;border-radius:999px;background:#fff;margin-left:5px}
     .scan-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}.scan-fields .field{margin:0}.scan-check{margin-top:15px!important;font-size:14px!important;padding:13px 16px!important}
     .scan-footer{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:0;border:1px solid #e3ddd4;border-radius:14px;background:#fff;margin-top:16px;overflow:hidden}.scan-footer-item{padding:16px 20px;border-right:1px solid #ece7df;display:flex;gap:12px}.scan-footer-item:last-child{border-right:0}.scan-footer-item b{font-size:13px;color:var(--navy)}.scan-footer-item p{font-size:11px;color:var(--muted);margin:4px 0 0;line-height:1.45}.scan-footer-icon{font-size:21px;color:var(--navy)}
+    /* Centered scan workspace */
+    .scan-workspace .steps-row{justify-content:center}
+    .scan-workspace .scan-work-grid{grid-template-columns:minmax(0,920px);justify-content:center}
+    .scan-workspace .scan-main{width:100%;min-width:0}
     .scan-stage{height:235px!important;border-radius:11px!important;background:#eef2f6!important;border:1px solid #ccd5df!important;display:grid;place-items:center;position:relative;overflow:hidden}.scan-stage img{max-height:100%;max-width:100%;object-fit:contain}.scan-stage .scanline{position:absolute;left:0;right:0;top:45%;height:2px;background:var(--saffron);box-shadow:0 0 14px rgba(224,112,32,.55);animation:scanline 1.6s linear infinite}@keyframes scanline{0%{top:15%}100%{top:85%}}
     @media(max-width:1050px){.scan-trustbar{grid-template-columns:1fr 1fr 1fr}.scan-trustitem:first-child{grid-column:1/-1}.scan-heading-row{grid-template-columns:1fr}.scan-work-grid{grid-template-columns:1fr}.scan-side{display:grid;grid-template-columns:1fr 1fr}.scan-footer{grid-template-columns:1fr}.scan-footer-item{border-right:0;border-bottom:1px solid #ece7df}.scan-footer-item:last-child{border-bottom:0}}
     @media(max-width:650px){.scan-trustbar{grid-template-columns:1fr}.scan-trustitem:first-child{grid-column:auto}.scan-workspace{padding:14px}.scan-fields{grid-template-columns:1fr}.scan-side{display:flex}.scan-how-grid{grid-template-columns:1fr}.scan-how-arrow{display:none}}
 
   
+    .ocr-panel{margin:0 18px 14px;padding:12px;border:1px solid #e4e0d9;border-radius:12px;background:#faf9f6}
+    .ocr-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}
+    .ocr-head b{display:block;font-size:13px;color:var(--navy)}
+    .ocr-head div span{display:block;font:600 9px var(--mono);letter-spacing:.1em;color:var(--saffron);margin-top:2px}
+    #ocr-text{width:100%;box-sizing:border-box;border:1px solid #ddd6cb;border-radius:8px;padding:8px;font:12px/1.5 var(--mono);background:#fff;color:var(--ink);resize:vertical}
+    .ocr-fields{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+    .ocr-field{padding:7px 8px;background:#fff;border:1px solid #eee8de;border-radius:8px}
+    .ocr-field small{display:block;color:var(--muted);font-size:9px;text-transform:uppercase}
+    .ocr-field b{font-size:11px;word-break:break-word}
+    @media(max-width:600px){.ocr-fields{grid-template-columns:1fr}}
+    /* Direct QR scanner */
+    .scanner-dialog{max-width:560px}
+    .scanner-preview-wrap{aspect-ratio:1/1;max-height:70vh;background:#070d16}
+    .scanner-preview-wrap video{object-fit:cover}
+    .scanner-overlay{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+    .scanner-corners{width:58%;aspect-ratio:1;border:2px solid rgba(255,255,255,.9);border-radius:18px;box-shadow:0 0 0 999px rgba(0,0,0,.22)}
+    .scanner-line{position:absolute;width:54%;height:2px;background:var(--saffron);box-shadow:0 0 12px rgba(224,112,32,.7);animation:scannerSweep 1.8s ease-in-out infinite}
+    @keyframes scannerSweep{0%,100%{transform:translateY(-115px)}50%{transform:translateY(115px)}}
+    .scanner-dialog .camera-actions{justify-content:center}
+    @media(prefers-reduced-motion:reduce){.scanner-line{animation:none}}
     /* Live camera modal */
     .camera-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(15,22,32,.72);backdrop-filter:blur(5px)}
     .camera-modal.open{display:flex}
@@ -429,29 +453,134 @@
     .camera-status{position:absolute;left:14px;bottom:14px;background:rgba(8,16,28,.76);color:#fff;border-radius:999px;padding:7px 11px;font:500 11px var(--mono)}
     .camera-actions{display:flex;justify-content:flex-end;gap:10px;padding:18px 24px 22px}
     @media(max-width:600px){.camera-dialog-head{padding:18px}.camera-preview-wrap{margin:0 18px}.camera-actions{padding:14px 18px 18px}.camera-dialog-head h2{font-size:24px}}
+
+    /* ---------- GATC dashboard · redesigned admin workspace ---------- */
+    .gatc-shell{grid-template-columns:255px 1fr!important;min-height:calc(100vh - 4px);background:#f5f7fa}
+    .gatc-shell .gatc-side{
+      background:#0b2b52;color:#e8eef7;padding:0;display:flex;flex-direction:column;
+      border-right:1px solid rgba(255,255,255,.08);min-height:calc(100vh - 4px)
+    }
+    .gatc-side-brand{height:92px;padding:16px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.1)}
+    .gatc-side-brand .brand-emblem{width:46px;height:46px;background:#fff;color:#b8893a;border:1px solid #b8893a;box-shadow:none}
+    .gatc-side-brand .nm{font-family:var(--serif);font-size:21px;font-weight:720;color:#fff;letter-spacing:.04em}
+    .gatc-side-brand .sub{font-size:9px;letter-spacing:.04em;color:#b7c4d6;text-transform:none;margin-top:2px}
+    .gatc-nav{padding:14px 10px;display:flex;flex-direction:column;gap:4px}
+    .gatc-shell .gatc-nav .navbtn{
+      min-height:54px;text-align:left;background:transparent;border:0;color:#dce7f5;
+      padding:8px 12px;border-radius:8px;display:flex;gap:12px;align-items:center;
+      font-size:13px;font-weight:600;width:100%;transition:.15s
+    }
+    .gatc-shell .gatc-nav .navbtn:hover{background:rgba(255,255,255,.07);color:#fff}
+    .gatc-shell .gatc-nav .navbtn.active{background:#173f70;color:#fff;box-shadow:inset 3px 0 0 #2e79d6}
+    .gatc-nav-icon{width:28px;height:28px;border:1px solid rgba(255,255,255,.28);border-radius:6px;display:grid;place-items:center;font-size:14px;flex:0 0 auto}
+    .gatc-shell .gatc-nav .navbtn.active .gatc-nav-icon{background:#245487;border-color:#4c83bd}
+    .gatc-shell .gatc-nav .navbtn small{display:block;color:#91a5bd;font-weight:400;font-size:10px;margin-top:2px}
+    .gatc-shell .gatc-nav .navbtn.active small{color:#b9cbe0}
+    .gatc-side-bottom{margin-top:auto;padding:12px 10px 14px;border-top:1px solid rgba(255,255,255,.08)}
+    .gatc-side-user{display:flex;gap:10px;align-items:center;padding:10px 8px 12px}
+    .gatc-avatar{width:34px;height:34px;border-radius:50%;background:#dce8f5;color:#163b65;display:grid;place-items:center;font-weight:800}
+    .gatc-side-user b{display:block;color:#fff;font-size:12px}.gatc-side-user span{color:#91a5bd;font-size:10px}
+    .gatc-signout{width:100%;border:0;background:rgba(255,255,255,.07);color:#dce7f5;border-radius:7px;padding:9px;font-size:12px}
+    .gatc-shell .gatc-content{min-width:0}
+    .gatc-header{height:92px;background:#fff;border-bottom:1px solid #e2e7ed;display:flex;align-items:center;justify-content:space-between;padding:0 30px}
+    .gatc-header-brand{display:flex;align-items:center;gap:10px}
+    .gatc-header-brand .brand-emblem{width:42px;height:42px;background:#fff;color:#b8893a;border:0;box-shadow:none}
+    .gatc-header-brand .nm{font-family:var(--serif);font-size:20px;color:#173b67;font-weight:720}
+    .gatc-header-brand .sub{font-size:10px;color:#6e7b8d;margin-top:1px}
+    .gatc-header-right{display:flex;align-items:center;gap:18px}
+    .gatc-header-bell{position:relative;width:40px;height:40px;display:grid;place-items:center;border:0;background:transparent;color:#173b67;font-size:20px}
+    .gatc-header-badge{position:absolute;right:2px;top:1px;min-width:17px;height:17px;padding:0 4px;border-radius:10px;background:#e65b4d;color:#fff;font-size:9px;display:grid;place-items:center}
+    .gatc-account{display:flex;align-items:center;gap:10px;padding-left:16px;border-left:1px solid #e3e7ec}
+    .gatc-account .gatc-avatar{width:40px;height:40px;background:#173b67;color:#fff}
+    .gatc-account b{display:block;color:#162b47;font-size:13px}.gatc-account span{display:block;color:#6f7d8f;font-size:10px;margin-top:2px}
+    .gatc-account .chev{font-size:14px;color:#173b67;margin-left:4px}
+    .gatc-main{padding:28px 30px 42px;background:#f6f8fb;min-height:calc(100vh - 96px)}
+    .gatc-page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:24px}
+    .gatc-page-head h1{font-family:var(--sans);font-weight:700;font-size:30px;letter-spacing:-.02em;margin:0;color:#173b67}
+    .gatc-page-head p{margin:5px 0 0;color:#66758a;font-size:14px}
+    .gatc-date{background:#fff;border:1px solid #e0e6ed;border-radius:9px;padding:11px 15px;color:#56667a;font-size:12px;white-space:nowrap;box-shadow:0 3px 10px rgba(20,45,75,.03)}
+    .gatc-kpi-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-bottom:22px}
+    .gatc-kpi-card{background:#fff;border:1px solid #e0e6ed;border-radius:11px;padding:17px 18px;min-height:112px;position:relative;overflow:hidden;box-shadow:0 4px 14px rgba(18,47,79,.035)}
+    .gatc-kpi-card .kpi-icon{width:34px;height:34px;border-radius:8px;background:#edf4fc;color:#1d67b4;display:grid;place-items:center;font-size:18px;margin-bottom:8px}
+    .gatc-kpi-card b{display:block;font-size:27px;line-height:1;color:#173b67;margin-bottom:6px}
+    .gatc-kpi-card span{display:block;color:#5f6e80;font-size:11px;font-weight:700}
+    .gatc-kpi-card small{display:block;color:#8995a5;font-size:10px;margin-top:4px}
+    .gatc-kpi-card.warn .kpi-icon{background:#fff4df;color:#d48a00}.gatc-kpi-card.warn b{color:#222}
+    .gatc-kpi-card.ok .kpi-icon{background:#e8f7ef;color:#23935b}.gatc-kpi-card.ok b{color:#174d38}
+    .gatc-kpi-card.purple .kpi-icon{background:#f1eafd;color:#6842a0}.gatc-kpi-card.purple b{color:#4e3280}
+    .gatc-kpi-card.danger .kpi-icon{background:#fff0ee;color:#dc4f43}.gatc-kpi-card.danger b{color:#c63e35}
+    .gatc-two-col{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(320px,.95fr);gap:20px;margin-bottom:20px}
+    .gatc-panel{background:#fff;border:1px solid #e0e6ed;border-radius:11px;box-shadow:0 4px 14px rgba(18,47,79,.035);overflow:hidden}
+    .gatc-panel-head{padding:17px 18px 12px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .gatc-panel-head h3{margin:0;color:#173b67;font-family:var(--sans);font-size:17px;font-weight:700}
+    .gatc-link{border:0;background:transparent;color:#1665bd;font-size:11px;font-weight:700;cursor:pointer}
+    .gatc-table-wrap{overflow:auto;padding:0 12px 10px}
+    .gatc-table{width:100%;border-collapse:collapse;font-size:11px;min-width:620px}
+    .gatc-table th{text-align:left;color:#758398;font-size:9px;text-transform:uppercase;letter-spacing:.07em;padding:9px 8px;border-bottom:1px solid #e7ebf0}
+    .gatc-table td{padding:11px 8px;border-bottom:1px solid #edf0f3;color:#28384d;vertical-align:middle}
+    .gatc-table tr:last-child td{border-bottom:0}.gatc-table .mono{font-size:10px;color:#314a68}
+    .gatc-status{display:inline-flex;align-items:center;border-radius:6px;padding:4px 8px;font-size:9px;font-weight:700}
+    .gatc-status.scheduled,.gatc-status.in_progress{background:#e8f1ff;color:#1765bd}
+    .gatc-status.pending{background:#fff3db;color:#bd7700}.gatc-status.completed{background:#e6f6ed;color:#237c50}
+    .gatc-status.failed{background:#ffebe8;color:#c23e35}
+    .gatc-schedule-list{padding:0 12px 12px}
+    .gatc-schedule-item{display:grid;grid-template-columns:72px 1fr auto;gap:12px;padding:13px 8px;border-top:1px solid #edf0f3;align-items:start}
+    .gatc-time{background:#edf4fc;color:#1c5fa7;border-radius:6px;padding:7px 5px;text-align:center;font-weight:800;font-size:10px}
+    .gatc-schedule-item b{font-size:12px;color:#263950}.gatc-schedule-item p{margin:4px 0 0;font-size:10px;color:#738095;line-height:1.4}
+    .gatc-bottom-grid{display:grid;grid-template-columns:minmax(260px,.7fr) minmax(0,1.3fr);gap:20px}
+    .gatc-summary{padding:18px;display:flex;align-items:center;gap:24px;min-height:155px}
+    .gatc-donut{width:110px;height:110px;border-radius:50%;background:conic-gradient(#2eaa6d 0 82%,#e95a50 82% 88%,#a5acb5 88% 100%);position:relative;flex:0 0 auto}
+    .gatc-donut:after{content:"";position:absolute;inset:22px;background:#fff;border-radius:50%}
+    .gatc-legend{display:flex;flex-direction:column;gap:9px}.gatc-legend div{font-size:11px;color:#526175}.gatc-legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px;background:#2eaa6d}.gatc-legend .fail i{background:#e95a50}.gatc-legend .pend i{background:#a5acb5}.gatc-legend b{float:right;margin-left:18px;color:#263950}
+    .gatc-actions{padding:18px}.gatc-action-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .gatc-action-card{border:1px solid #e1e7ed;border-radius:9px;padding:14px;background:#fff;cursor:pointer;text-align:left;min-height:100px}
+    .gatc-action-card:hover{border-color:#9bbde2;background:#f8fbff}
+    .gatc-action-card .aicon{font-size:20px;color:#173b67;margin-bottom:11px}.gatc-action-card b{display:block;color:#173b67;font-size:11px}.gatc-action-card span{display:block;color:#7b8797;font-size:9px;margin-top:4px;line-height:1.35}
+    .gatc-shell .mobile-nav{display:none}
+    .gatc-check-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.gatc-check-item{border:1px solid #e1e7ed;border-radius:9px;padding:11px;background:#fff}.gatc-check-item label{display:block;font-size:10px;color:#66758a;font-weight:700;margin-bottom:6px}.gatc-check-item select{width:100%;padding:8px;border:1px solid #e1e7ed;border-radius:6px;background:#fff}@media(max-width:650px){.gatc-check-grid{grid-template-columns:1fr}}
+    @media(max-width:1100px){.gatc-kpi-grid{grid-template-columns:repeat(3,1fr)}.gatc-two-col,.gatc-bottom-grid{grid-template-columns:1fr}}
+    @media(max-width:800px){.gatc-shell{grid-template-columns:1fr!important}.gatc-shell .gatc-side{display:none}.gatc-header{padding:0 16px}.gatc-header-brand{display:none}.gatc-main{padding:20px 16px}.gatc-page-head{flex-direction:column}.gatc-kpi-grid{grid-template-columns:1fr 1fr}.gatc-action-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:520px){.gatc-kpi-grid{grid-template-columns:1fr}.gatc-account>div:not(.gatc-avatar){display:none}.gatc-action-grid{grid-template-columns:1fr}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
-  <!-- Live camera modal -->
+  <!-- Direct QR scanner modal -->
   <div id="camera-modal" class="camera-modal" aria-hidden="true">
-    <div class="camera-dialog">
+    <div class="camera-dialog scanner-dialog">
       <div class="camera-dialog-head">
         <div>
-          <div class="camera-kicker">CAMERA VERIFICATION</div>
-          <h2>Capture instrument photo</h2>
-          <p>Position the instrument or nameplate inside the frame.</p>
+          <div class="camera-kicker">PRAMĀṆA SCANNER</div>
+          <h2>Scan QR Code</h2>
+          <p>Point your camera at the instrument certificate QR.</p>
         </div>
-        <button type="button" class="camera-close" onclick="closeCamera()" aria-label="Close camera">×</button>
+        <button type="button" class="camera-close" onclick="closeCamera()" aria-label="Close scanner">×</button>
       </div>
-      <div class="camera-preview-wrap">
+
+      <div class="camera-preview-wrap scanner-preview-wrap">
         <video id="camera-video" autoplay playsinline muted></video>
-        <div class="camera-frame"><span></span></div>
-        <div id="camera-status" class="camera-status">Starting camera…</div>
+        <div class="scanner-overlay" aria-hidden="true">
+          <div class="scanner-corners"></div>
+          <div class="scanner-line"></div>
+        </div>
+        <div id="camera-status" class="camera-status">Starting scanner…</div>
       </div>
+
+      <div id="ocr-panel" class="ocr-panel" style="display:none;">
+        <div class="ocr-head">
+          <div><b>Text detected</b><span>PRAMĀṆA OCR</span></div>
+          <span id="ocr-status" class="tiny">Reading nameplate…</span>
+        </div>
+        <textarea id="ocr-text" rows="4" readonly placeholder="Detected text will appear here"></textarea>
+        <div id="ocr-fields" class="ocr-fields"></div>
+      </div>
+
       <div class="camera-actions">
-        <label class="btn btn-navy" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;">↥ &nbsp; Choose Photo<input id="camera-fallback-file" type="file" accept="image/*" capture="environment" style="display:none;"></label>
+        <label class="btn btn-navy" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+          ↥ &nbsp; Choose QR Image
+          <input id="camera-fallback-file" type="file" accept="image/*" style="display:none;">
+        </label>
         <button type="button" class="btn btn-navy" onclick="closeCamera()">Cancel</button>
-        <button type="button" class="btn btn-saffron" id="capture-camera-btn" onclick="captureCameraPhoto()" disabled>◎ &nbsp; Capture Photo</button>
       </div>
     </div>
   </div>
@@ -505,6 +634,11 @@
     };
 
     const DB = {
+      gatcs: [
+        { id: 21, code: "GATC-021", name: "ABC Legal Metrology Verification Centre", organization: "ABC Compliance Services Pvt. Ltd.", location: "Lucknow, Uttar Pradesh", district: "Lucknow", state: "Uttar Pradesh", contact: "+91-98765-21021", status: "active", approval_date: "2026-01-15", valid_until: "2027-12-31", authorized: ["CNG Dispenser", "LPG Dispenser", "Petrol/Diesel Dispenser", "Platform Scale", "Weighbridge"], equipment: ["Master Prover", "Standard Test Weights", "Flow Test Rig"], workload: "Low", availability: "Available", capacity: 40, completed: 124, failed: 5, avg_days: 2.1, staff: 8 },
+        { id: 34, code: "GATC-034", name: "North UP Verification Lab", organization: "North UP Testing Services", location: "Lucknow, Uttar Pradesh", district: "Lucknow", state: "Uttar Pradesh", contact: "+91-98765-34034", status: "active", approval_date: "2025-09-01", valid_until: "2027-08-31", authorized: ["CNG Dispenser", "LPG Dispenser", "Platform Scale"], equipment: ["Standard Test Weights", "Electrical Test Bench"], workload: "High", availability: "Limited", capacity: 30, completed: 98, failed: 8, avg_days: 3.4, staff: 6 },
+        { id: 41, code: "GATC-041", name: "Central Instrument Test Centre", organization: "Central Metrology Services", location: "Kanpur Nagar, Uttar Pradesh", district: "Kanpur Nagar", state: "Uttar Pradesh", contact: "+91-98765-41041", status: "active", approval_date: "2026-02-10", valid_until: "2028-02-09", authorized: ["CNG Dispenser", "Petrol/Diesel Dispenser", "Weighbridge"], equipment: ["Flow Test Rig", "Master Prover", "Calibrated Weights"], workload: "Medium", availability: "Available", capacity: 35, completed: 76, failed: 2, avg_days: 1.8, staff: 7 }
+      ],
       instruments: [
         { id: 1, serial: "LM-UP-000127", name: "Sharma Kirana Platform Scale", type: "platform_scale", accuracy_class: "III", max_kg: 300, e_value: 0.1, manufacturer: "Essae", model: "DS-852", model_approval: "IND/09/2019/214", premises: "Sharma Stores, Hazratganj", district: "Lucknow", state: "Uttar Pradesh", status: "verified", oem_status: "genuine", stamp_lmo: "LMO-LKO-01", stamp_year: "2026", stamp_quarter: "A", last_verified: "2026-01-12", next_due: "2027-01-12", lat: 26.8467, lng: 80.9462, compliance: { verdict: "COMPLIANT", score: 95, passed: ["Model approval valid", "Seals intact", "Within MPE tolerance", "Genuine OEM parts"], issues: [], rules_applied: ["Legal Metrology Act s.24", "OIML R 76"] } },
         { id: 2, serial: "LM-UP-000431", name: "Bharat Fuels Dispenser #3", type: "fuel_dispenser", accuracy_class: "0.5", max_kg: 50, e_value: 0.01, manufacturer: "Gilbarco", model: "Prime-S", model_approval: "IND/12/2021/88", premises: "Bharat Petroleum, Aliganj", district: "Lucknow", state: "Uttar Pradesh", status: "expired", oem_status: "third_party", stamp_lmo: "LMO-LKO-02", stamp_year: "2024", stamp_quarter: "C", last_verified: "2024-06-15", next_due: "2025-06-15", lat: 26.8917, lng: 80.9502, compliance: { verdict: "NON_COMPLIANT", score: 42, passed: ["Model approval active"], issues: ["Verification overdue", "Third-party flow meter detected", "Error exceeds MPE (+1.4e)"], rules_applied: ["OIML R 117", "Rule 27"] } },
@@ -514,7 +648,8 @@
       applications: [
         { id: 101, public_id: "APP-2026-881", instrument_id: 1, kind: "reverification", status: "verified", applicant_name: "Rajesh Sharma", org: "Sharma Stores", serial: "LM-UP-000127", instrument_name: "Sharma Kirana Platform Scale", district: "Lucknow", submitted_date: "2026-08-10", assigned_officer: "Rahul Sharma (LMO-01)" },
         { id: 102, public_id: "APP-2026-904", instrument_id: 2, kind: "repair", status: "inspected", applicant_name: "Anil Gupta", org: "Bharat Petroleum", serial: "LM-UP-000431", instrument_name: "Bharat Fuels Dispenser #3", district: "Lucknow", submitted_date: "2026-08-18", assigned_officer: "Priya Verma (LMO-02)" },
-        { id: 103, public_id: "APP-2026-920", instrument_id: 3, kind: "first_verification", status: "submitted", applicant_name: "Manoj Singh", org: "New Bharat Freight Carrier", serial: "LM-UP-000821", instrument_name: "Kanpur Central Weighbridge", district: "Kanpur Nagar", submitted_date: "2026-08-25", assigned_officer: "Unassigned" }
+        { id: 103, public_id: "APP-2026-920", instrument_id: 3, kind: "first_verification", status: "submitted", applicant_name: "Manoj Singh", org: "New Bharat Freight Carrier", serial: "LM-UP-000821", instrument_name: "Kanpur Central Weighbridge", district: "Kanpur Nagar", submitted_date: "2026-08-25", assigned_officer: "Unassigned" },
+        { id: 104, public_id: "APP-2026-926", instrument_id: 2, kind: "verification", status: "scheduled", applicant_name: "Anil Gupta", org: "ABC CNG Station", serial: "LM-UP-000431", instrument_name: "Bharat Fuels Dispenser #3", district: "Lucknow", submitted_date: "2026-08-26", assigned_officer: "Rahul Sharma (LMO-01)", gatc_id: 21, schedule: { date: "2026-08-28", time: "11:00", location: "ABC CNG Station, Lucknow", officer: "GATC-021" } }
       ],
       complaints: [
         { id: "CMP-1024", instrument_id: 2, serial: "LM-UP-000431", type: "Incorrect/Short measurement", description: "Dispenser showing 950ml for 1L delivery test.", district: "Lucknow", date: "2026-08-14", priority: "High", status: "Investigating", assigned_officer: "Priya Verma" },
@@ -640,6 +775,8 @@
         const role = body.role;
         if (role === "admin") {
           S.user = { id: 99, name: "Director General", email: email || "admin@pramana.in", role: "admin", org: "Legal Metrology Dept, UP", district: "Lucknow", lmo_code: "LMO-HQ-00" };
+        } else if (role === "gatc") {
+          S.user = { id: 21, name: "GATC Operator", email: email || "gatc@pramana.in", role: "gatc", org: "ABC Legal Metrology Verification Centre", district: "Lucknow", gatc_id: 21, gatc_code: "GATC-021", title: "Authorized GATC Operator" };
         } else if (role === "officer") {
           S.user = { id: 2, name: "Rahul Sharma", email: email || "officer@pramana.in", role: "officer", org: "District Inspectorate", district: "Lucknow", lmo_code: "LMO-LKO-01", zone: "Zone 1" };
         } else {
@@ -740,7 +877,7 @@
     }
 
     function toggleNotifications(event) {
-      event.stopPropagation();
+      if (event && typeof event.stopPropagation === "function") event.stopPropagation();
       const existing=document.getElementById("notif-dropdown"); if(existing){existing.remove();return;}
       const notes=getNotificationsForCurrentUser();
       let items="";
@@ -748,7 +885,10 @@
       notes.slice(0,8).forEach(function(n){ items += '<button style="display:block;width:100%;text-align:left;border:0;background:'+(n.read?'#fff':'#fbf7ef')+';padding:12px;border-bottom:1px solid #eee;cursor:pointer;" onclick="openNotification(\''+String(n.id).replace(/'/g,"\\'")+ '\',\''+(n.view||'')+'\')"><span style="font-size:17px;margin-right:6px;">'+(n.icon||'🔔')+'</span><b style="color:var(--navy);font-size:13px;">'+n.title+'</b><div style="font-size:12px;color:var(--muted);margin:4px 0 0 25px;line-height:1.4;">'+n.message+'</div><div style="font-size:10px;color:#9a8f84;margin:5px 0 0 25px;">'+n.time+'</div></button>'; });
       const d=document.createElement("div"); d.id="notif-dropdown"; d.style.cssText="position:absolute;top:50px;right:0;width:340px;max-width:calc(100vw - 30px);background:#fff;border:1px solid var(--rule);border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.15);z-index:10000;overflow:hidden;text-align:left;";
       d.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid var(--rule);"><b style="font-size:15px;font-family:var(--serif);color:var(--navy);">Notifications</b><button class="linkish" style="font-size:11px;padding:4px 7px;" onclick="markNotificationsRead();document.getElementById(\'notif-dropdown\').remove();render();">Mark all read</button></div>'+items;
-      event.currentTarget.parentElement.appendChild(d); markNotificationsRead();
+      const trigger = (event && event.currentTarget) ? event.currentTarget : document.querySelector(".gatc-header-bell, .bell-linkish");
+      if (trigger && trigger.parentElement) trigger.parentElement.appendChild(d);
+      else document.body.appendChild(d);
+      markNotificationsRead();
     }
     function openNotification(id, view){ const n=DB.notifications.find(function(x){return String(x.id)===String(id);}); if(n){n.read=true;saveNotifications();} const d=document.getElementById("notif-dropdown");if(d)d.remove(); if(view)go(view,n?n.payload:{}); }
 
@@ -758,7 +898,7 @@
     });
 
     function topPublic() {
-      return '<div class="topbar">' + brand() + '<div class="toplinks"><button class="bell-linkish" onclick="toggleNotifications(event)" title="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span class="bell-badge"></span></button><button class="linkish" onclick="go(\'scan-lab\')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>Scan / Verify</button><button class="linkish" onclick="go(\'guidelines\')">Guidelines</button><button class="linkish" onclick="go(\'login-unified\')" style="background:var(--saffron);color:#fff;border-color:var(--saffron)">Sign In</button></div></div>';
+      return '<div class="topbar">' + brand() + '<div class="toplinks"><button class="bell-linkish" onclick="toggleNotifications(event)" title="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span class="bell-badge"></span></button><button class="linkish" onclick="openScanner()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>Scan / Verify</button><button class="linkish" onclick="go(\'guidelines\')">Guidelines</button><button class="linkish" onclick="go(\'login-unified\')" style="background:var(--saffron);color:#fff;border-color:var(--saffron)">Sign In</button></div></div>';
     }
 
     function officialGovFooter() {
@@ -775,7 +915,7 @@
             <p class="lede">PRAMĀṆA is the digital verification lifecycle for weighing and measuring instruments — from application and officer review to field inspection, scheduling, QR verification and authenticity checks.</p>
             <div class="pschip">SIH26036 · Software · Transportation &amp; Logistics</div>
             <div class="home-actions">
-              <button class="linkish home-primary" onclick="go('scan-lab')">⌕&nbsp; Scan / Verify</button>
+              <button class="linkish home-primary" onclick="openScanner()">⌕&nbsp; Scan / Verify</button>
               <button class="linkish" onclick="go('login-unified')">Apply for Verification →</button>
             </div>
           </div>
@@ -815,7 +955,7 @@
       <section class="home-section">
         <div class="home-section-head"><div><p class="kicker">Citizen Services</p><h2>What can you do?</h2></div><p>Quick access to the most important PRAMĀṆA services.</p></div>
         <div class="home-actions-grid">
-          <div class="home-action-card"><div class="home-action-icon">⌕</div><h3>Verify an Instrument</h3><p>Check registry status, verification details and instrument identity using a serial number.</p><button onclick="go('scan-lab')">Scan / Verify →</button></div>
+          <div class="home-action-card"><div class="home-action-icon">⌕</div><h3>Verify an Instrument</h3><p>Check registry status, verification details and instrument identity using a serial number.</p><button onclick="openScanner()">Scan / Verify →</button></div>
           <div class="home-action-card"><div class="home-action-icon">＋</div><h3>Apply for Verification</h3><p>Owners and traders can submit a new verification request online in a few steps.</p><button onclick="go('login-unified')">Start Application →</button></div>
           <div class="home-action-card"><div class="home-action-icon">◷</div><h3>Track Application</h3><p>Follow your request from Pending to Approved and then to its scheduled appointment.</p><button onclick="go('login-unified')">Track Status →</button></div>
           <div class="home-action-card"><div class="home-action-icon">§</div><h3>Rule Library</h3><p>Explore Legal Metrology guidance, standards and practical verification references.</p><button onclick="go('guidelines')">View Guidelines →</button></div>
@@ -841,8 +981,11 @@
     function unifiedLoginView() {
       const isA = currentLoginRole === 'admin';
       const isO = currentLoginRole === 'officer';
+      const isG = currentLoginRole === 'gatc';
       const isU = currentLoginRole === 'user';
-      return '<div class="auth-shell-center"><div class="login-card-unified"><button class="linkish" style="margin-bottom:16px;color:var(--navy);border-color:var(--rule)" onclick="go(\'landing\')">← Back to Home</button><div class="brand-center"><div class="emblem-lg">⚖️</div><h2>प्रमाण PRAMANA</h2><p class="subt">Legal Metrology Verification Platform</p></div><div class="role-tabs"><button class="role-tab-btn ' + (isU ? 'active' : '') + '" onclick="setLoginRole(\'user\')">Trader</button><button class="role-tab-btn ' + (isO ? 'active' : '') + '" onclick="setLoginRole(\'officer\')">Officer</button><button class="role-tab-btn ' + (isA ? 'active' : '') + '" onclick="setLoginRole(\'admin\')">Admin</button></div><div id="auth-err"></div><div class="auth-field"><label>Email or Mobile</label><input id="em" type="text" value="' + (isA ? 'admin@pramana.in' : isO ? 'officer@pramana.in' : 'trader@pramana.in') + '" /></div><div class="auth-field"><label>Password</label><input id="pw" type="password" value="password123" /></div><button class="btn-auth-submit" onclick="doUnifiedLogin()">Sign In (' + currentLoginRole.toUpperCase() + ')</button><div class="tiny mt" style="text-align:center;color:var(--muted);">Demo credentials auto-filled. Click sign in.</div></div></div>';
+      const roleLabel = isG ? 'GATC' : isA ? 'Admin' : isO ? 'Officer' : 'Trader';
+      const emailValue = isG ? 'gatc@pramana.in' : isA ? 'admin@pramana.in' : isO ? 'officer@pramana.in' : 'trader@pramana.in';
+      return '<div class="auth-shell-center"><div class="login-card-unified"><button class="linkish" style="margin-bottom:16px;color:var(--navy);border-color:var(--rule)" onclick="go(\'landing\')">← Back to Home</button><div class="brand-center"><div class="emblem-lg">⚖️</div><h2>प्रमाण PRAMANA</h2><p class="subt">Legal Metrology Verification Platform</p></div><div class="role-tabs"><button class="role-tab-btn ' + (isU ? 'active' : '') + '" onclick="setLoginRole(\'user\')">Trader</button><button class="role-tab-btn ' + (isO ? 'active' : '') + '" onclick="setLoginRole(\'officer\')">Officer</button><button class="role-tab-btn ' + (isA ? 'active' : '') + '" onclick="setLoginRole(\'admin\')">Admin</button><button class="role-tab-btn ' + (isG ? 'active' : '') + '" onclick="setLoginRole(\'gatc\')">GATC</button></div><div id="auth-err"></div><div class="auth-field"><label>Email or Mobile</label><input id="em" type="text" value="' + emailValue + '" /></div><div class="auth-field"><label>Password</label><input id="pw" type="password" value="password123" /></div><button class="btn-auth-submit" onclick="doUnifiedLogin()">Sign In (' + roleLabel.toUpperCase() + ')</button><div class="tiny mt" style="text-align:center;color:var(--muted);">Demo credentials auto-filled. Click sign in.</div></div></div>';
     }
 
     function setLoginRole(role) {
@@ -861,6 +1004,7 @@
         S.user = data.user;
         if (S.user.role === "admin") go("admin-home");
         else if (S.user.role === "officer") go("officer-home");
+        else if (S.user.role === "gatc") go("gatc-home");
         else go("consumer-home");
       } catch (e) {
         err.innerHTML = '<div class="err">' + e.message + '</div>';
@@ -880,6 +1024,7 @@
           ["admin-home", "Dashboard", "Overview"],
           ["admin-registry", "Instrument Registry", "Database"],
           ["admin-applications", "Applications", "Workflows"],
+          ["admin-gatc-network", "GATC Network", "Approved centres"],
           ["admin-inspections", "Inspections", "Field tests"],
           ["admin-risk", "Risk & Enforcement", "Priority queue"],
           ["admin-complaints", "Complaints", "Grievances"],
@@ -895,6 +1040,15 @@
           ["scan-lab", "Photo Authenticity", "Genuine vs clone"],
           ["guidelines", "Rule Library", "Standards"]
         ];
+      } else if (role === "gatc") {
+        items = [
+          ["gatc-home", "GATC Dashboard", "Centre overview"],
+          ["gatc-requests", "Assigned Instruments", "Instruments assigned for testing"],
+          ["gatc-schedule", "Test Schedule", "Upcoming tests"],
+          ["gatc-results", "Test Results", "Submitted test results"],
+          ["gatc-history", "Test History", "Instrument test lifecycle"],
+          ["gatc-notifications", "Notifications", "Alerts & updates"]
+        ];
       } else {
         items = [
           ["consumer-home", "Owner / Trader Home", "Overview"],
@@ -905,6 +1059,22 @@
           ["consumer-nearby", "Nearby Verified", "Petrol pumps & scales"],
           ["guidelines", "Rule Library", "Consumer guide"]
         ];
+      }
+
+      if (role === "gatc") {
+        const u = S.user || {name:"GATC Operator", role:"GATC Operator", org:"ABC Legal Metrology", gatc_id:21};
+        const iconMap = {
+          "gatc-home":"▦","gatc-requests":"▤","gatc-schedule":"▣","gatc-results":"☑",
+          "gatc-history":"◷","gatc-notifications":"🔔"
+        };
+        let navBtns = "";
+        items.forEach(function(item) {
+          const activeClass = S.view === item[0] ? "active" : "";
+          navBtns += '<button class="navbtn ' + activeClass + '" onclick="go(\'' + item[0] + '\')"><span class="gatc-nav-icon">' + (iconMap[item[0]] || "•") + '</span><div>' + item[1] + '<small>' + item[2] + '</small></div></button>';
+        });
+        const initials = (u.name || "G").split(" ").map(function(x){return x[0]}).slice(0,2).join("").toUpperCase();
+        const g = currentGatc();
+        return '<div class="app gatc-shell"><aside class="gatc-side"><div class="gatc-side-brand"><div class="brand-emblem">⚖</div><div><div class="nm">PRAMĀṆA</div><div class="sub">Legal Metrology Verification Platform</div></div></div><nav class="gatc-nav">' + navBtns + '</nav><div class="gatc-side-bottom"><div class="gatc-side-user"><div class="gatc-avatar">' + initials + '</div><div><b>' + (u.name || "GATC Operator") + '</b><span>' + (g.code || "GATC") + '</span></div></div><button class="gatc-signout" onclick="doLogout()">↪ &nbsp; Logout</button></div></aside><div class="gatc-content"><header class="gatc-header"><div class="gatc-header-brand"><div class="brand-emblem">⚖</div><div><div class="nm">प्रमाण PRAMĀṆA</div><div class="sub">Legal Metrology Verification Platform</div></div></div><div class="gatc-header-right"><button class="gatc-header-bell" onclick="toggleNotifications(event)" title="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span class="gatc-header-badge">3</span></button><div class="gatc-account"><div class="gatc-avatar">' + initials + '</div><div><b>ABC Legal Metrology</b><span>' + (g.code || "GATC-021") + '</span></div><span class="chev">⌄</span></div></div></header><div class="main gatc-main">' + body + '</div></div></div>';
       }
 
       let navBtns = "";
@@ -933,7 +1103,7 @@
       const scheduled = apps.filter(function(a){return a.status === "scheduled";}).length;
       const latest = apps[0];
       const workflowCard = latest ? '<div class="card"><div class="row"><h3>Latest Verification Application</h3>' + chip(latest.status) + '</div><p class="tiny mono">' + latest.public_id + ' · ' + latest.serial + '</p>' + verificationTimeline(latest) + (latest.schedule ? '<div class="card" style="background:#e4f2ea;margin-top:12px;"><b style="color:var(--green-d);">Scheduled: ' + latest.schedule.date + ' at ' + latest.schedule.time + '</b><div class="tiny" style="color:var(--green-d);">Officer: ' + latest.schedule.officer + '</div></div>' : '') + '<button class="btn btn-navy mt" onclick="go(\'verification-applications\')">View My Applications</button></div>' : '<div class="card"><h3>Instrument Verification</h3><p class="tiny">Need your weighing or measuring instrument verified? Apply online first. The request goes to Pending, then a Metrology Officer approves it, and only then a date/time is scheduled.</p><button class="btn btn-saffron mt" onclick="go(\'verification-apply\')">Apply for Verification</button></div>';
-      return shell("", '<p class="crumb">Owner / Trader Portal · Instrument Safety</p><h1>Welcome, ' + (S.user?.name || "Citizen") + '.</h1><p class="intro">Manage instrument verification requests, track officer approval, view your verification schedule, scan instruments, and report issues.</p><div class="grid-3 mb"><div class="card" style="background:linear-gradient(135deg,#0e4a2e,#1a6b45);color:#fff;"><h3>Apply for Verification</h3><p style="opacity:0.9;font-size:14px;margin-bottom:14px;">Submit your instrument for Legal Metrology verification. Approval comes before scheduling.</p><button class="btn btn-gold" onclick="go(\'verification-apply\')">Start Application ➔</button></div><div class="card" style="background:var(--navy);color:#fff;"><h3>My Applications</h3><p style="font-family:var(--serif);font-size:32px;margin:6px 0;">' + apps.length + '</p><p style="font-size:13px;opacity:0.8;margin:0;">' + pending + ' pending · ' + scheduled + ' scheduled</p></div><div class="card" style="background:#fff;border-left:4px solid var(--saffron);"><h3>Verification Schedule</h3><p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Your date and time appear only after officer approval.</p><button class="btn btn-navy" onclick="go(\'verification-applications\')">View Schedule</button></div></div><div class="grid-2"><div>' + workflowCard + '</div><div><div class="card"><h3>Scan Instrument</h3><p class="tiny">Upload a nameplate, scale, sensor, or seal image for authenticity and compliance analysis.</p><button class="btn btn-navy mt" onclick="go(\'scan-lab\')">Launch Scanner</button></div><div class="card mt"><h3>Active Complaints</h3><p style="font-family:var(--serif);font-size:32px;margin:6px 0;">' + complaints.length + '</p><button class="btn btn-danger mt" onclick="go(\'consumer-complaints\')">View Complaints</button></div></div></div>', "user");
+      return shell("", '<p class="crumb">Owner / Trader Portal · Instrument Safety</p><h1>Welcome, ' + (S.user?.name || "Citizen") + '.</h1><p class="intro">Manage instrument verification requests, track officer approval, view your verification schedule, scan instruments, and report issues.</p><div class="grid-3 mb"><div class="card" style="background:linear-gradient(135deg,#0e4a2e,#1a6b45);color:#fff;"><h3 style="color:#fff;">Apply for Verification</h3><p style="opacity:0.9;font-size:14px;margin-bottom:14px;">Submit your instrument for Legal Metrology verification. Approval comes before scheduling.</p><button class="btn btn-gold" onclick="go(\'verification-apply\')">Start Application ➔</button></div><div class="card" style="background:var(--navy);color:#fff;"><h3>My Applications</h3><p style="font-family:var(--serif);font-size:32px;margin:6px 0;">' + apps.length + '</p><p style="font-size:13px;opacity:0.8;margin:0;">' + pending + ' pending · ' + scheduled + ' scheduled</p></div><div class="card" style="background:#fff;border-left:4px solid var(--saffron);"><h3>Verification Schedule</h3><p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Your date and time appear only after officer approval.</p><button class="btn btn-navy" onclick="go(\'verification-applications\')">View Schedule</button></div></div><div class="grid-2"><div>' + workflowCard + '</div><div><div class="card"><h3>Scan Instrument</h3><p class="tiny">Upload a nameplate, scale, sensor, or seal image for authenticity and compliance analysis.</p><button class="btn btn-navy mt" onclick="openScanner()">Launch Scanner</button></div><div class="card mt"><h3>Active Complaints</h3><p style="font-family:var(--serif);font-size:32px;margin:6px 0;">' + complaints.length + '</p><button class="btn btn-danger mt" onclick="go(\'consumer-complaints\')">View Complaints</button></div></div></div>', "user");
     }
 
     async function consumerNearby() {
@@ -973,8 +1143,6 @@
           '<div class="scan-trustitem"><div class="scan-trusticon">♜</div><div><b>Legal Metrology</b><span>Built around applicable rules.</span></div></div>' +
           '<div class="scan-trustitem"><div class="scan-trusticon">✓</div><div><b>Trusted Workflow</b><span>Designed for fair trade &amp; safety.</span></div></div>' +
         '</div>' +
-        '<div class="scan-heading-row"><div><p class="crumb">Authenticity &amp; Compliance Lab</p><h1>Scan, Photograph &amp; Verify</h1><p class="intro">Upload a picture of an instrument, nameplate, load cell, or lead seal. PRAMĀṆA checks instrument identity, authenticity signals and Legal Metrology compliance.</p></div>' +
-          '<div class="scan-how"><h3>How it works</h3><div class="scan-how-grid"><div class="scan-how-step"><div class="scan-how-num">1</div><div><b>Upload</b><span>Upload or capture an instrument image.</span></div></div><div class="scan-how-arrow">→</div><div class="scan-how-step"><div class="scan-how-num">2</div><div><b>Tap Check</b><span>Our system analyses and verifies instantly.</span></div></div></div></div>' +
         '</div>' +
         photoCheckMarkup({ publicMode: !S.user }) +
         '<div class="scan-footer"><div class="scan-footer-item"><div class="scan-footer-icon">🛡</div><div><b>Your privacy is our priority</b><p>Uploaded images are used only for verification purposes.</p></div></div><div class="scan-footer-item"><div class="scan-footer-icon">⚖</div><div><b>Legal compliance</b><p>Results are presented in the context of Legal Metrology requirements.</p></div></div><div class="scan-footer-item"><div class="scan-footer-icon">◉</div><div><b>Need help?</b><p>Use the Pramāṇa Sahayak assistant or contact your local office.</p></div></div></div>' +
@@ -989,7 +1157,6 @@
       LAST_FILE = file;
       const drop = $("#photo-drop");
       const pill = $("#pill-1");
-      const btn = $("#check-btn");
       if (!file) return;
       const url = previewUrl || URL.createObjectURL(file);
       if (drop) {
@@ -1000,14 +1167,13 @@
           const input = $("#photo");
           if (input) input.addEventListener("change", function(e) {
             const f = e.target.files && e.target.files[0];
-            if (f) setPhotoFile(f);
+            if (f) { setPhotoFile(f); runOCR(f); }
           });
         }
       }
       if (pill) pill.classList.add("ready");
-      if (btn) btn.disabled = false;
       const out = $("#scan-out");
-      if (out) out.innerHTML = '<div class="scan-stage"><img src="' + url + '" alt="preview" /><div class="scanline"></div></div><p class="tiny mt" style="text-align:center;">Picture uploaded successfully. Tap <b>Check Genuine or Third-Party</b> below.</p>';
+      if (out) out.innerHTML = '<div class="scan-stage"><img src="' + url + '" alt="preview" /><div class="scanline"></div></div><p class="tiny mt" style="text-align:center;">Picture uploaded successfully.</p>';
     }
 
     function retakePhoto() {
@@ -1017,7 +1183,7 @@
         drop.classList.remove("has-file");
         const inner = $("#drop-inner");
         if (inner) {
-          inner.innerHTML = '<div class="upload-icon">↥</div><h3>Drag &amp; drop an image here<br/>or use your camera / file</h3><p>Supported formats: JPG, PNG &nbsp;•&nbsp; Max size: 10MB</p><div class="scan-buttons"><label class="btn btn-saffron" style="cursor:pointer;">↥ &nbsp; Upload Picture<input id="photo" type="file" accept="image/*" style="display:none;" /></label><button type="button" class="btn btn-navy" onclick="openCamera()">▣ &nbsp; Use Camera</button></div><p class="tiny scan-samples">Or try sample: <button type="button" class="linkish" onclick="useSample(\'/static/img/scale-genuine.jpg\', \'LM-UP-000127\')">Genuine Scale</button> <button type="button" class="linkish" onclick="useSample(\'/static/img/scale-fake.jpg\', \'LM-UP-000431\')">Third-Party Clone</button></p>';
+          inner.innerHTML = '<div class="upload-icon">↥</div><h3>Drag &amp; drop an image here<br/>or use your camera / file</h3><p>Supported formats: JPG, PNG &nbsp;•&nbsp; Max size: 10MB</p><div class="scan-buttons"><label class="btn btn-saffron" style="cursor:pointer;">↥ &nbsp; Upload Picture<input id="photo" type="file" accept="image/*" style="display:none;" /></label><button type="button" class="btn btn-navy" onclick="openCamera()">▣ &nbsp; Use Camera</button></div>';
           bindPhotoCheckEvents();
         }
       }
@@ -1025,31 +1191,26 @@
       if (pill1) pill1.classList.remove("ready");
       const pill2 = $("#pill-2");
       if (pill2) pill2.classList.remove("ready");
-      const btn = $("#check-btn");
-      if (btn) btn.disabled = true;
       const out = $("#scan-out");
-      if (out) out.innerHTML = '<div class="scan-stage"><p class="tiny">Step 1: upload a picture. Step 2: tap Check.</p></div>';
+      if (out) out.innerHTML = '<div class="scan-stage"><p class="tiny">Upload a picture to preview it here.</p></div>';
     }
 
     function photoCheckMarkup(opts) {
       opts = opts || {};
       const compact = !!opts.compact;
       return '<div class="scan-workspace photo-lab">' +
-        '<div class="steps-row"><div class="step-pill ready" id="pill-1"><span class="n">1</span> Upload picture</div><div class="step-pill" id="pill-2"><span class="n">2</span> Tap Check</div></div>' +
+        '<div class="steps-row"><div class="step-pill ready" id="pill-1"><span class="n">1</span> Upload picture</div></div>' +
         '<div class="scan-work-grid"><div class="scan-main">' +
           '<div class="dropzone scan-dropzone" id="photo-drop"><div id="drop-inner">' +
             '<div class="upload-icon">↥</div><h3>Drag &amp; drop an image here<br/>or use your camera / file</h3>' +
             '<p>Supported formats: JPG, PNG &nbsp;•&nbsp; Max size: 10MB</p>' +
             '<div class="scan-buttons"><label class="btn btn-saffron" style="cursor:pointer;">↥ &nbsp; Upload Picture<input id="photo" type="file" accept="image/*" style="display:none;" /></label>' +
             '<button type="button" class="btn btn-navy" onclick="openCamera()">▣ &nbsp; Use Camera</button></div>' +
-            '<p class="tiny scan-samples">Or try sample: <button type="button" class="linkish" onclick="useSample(\'/static/img/scale-genuine.jpg\', \'LM-UP-000127\')">Genuine Scale</button> <button type="button" class="linkish" onclick="useSample(\'/static/img/scale-fake.jpg\', \'LM-UP-000431\')">Third-Party Clone</button></p>' +
+            '' +
           '</div></div>' +
-          '<div class="scan-fields"><div class="field"><label>Serial on nameplate (optional)</label><input id="scan-serial" class="mono" value="LM-UP-000127" placeholder="e.g., LM-UP-000127" /></div>' +
-          '<div class="field"><label>What did you photograph?</label><select id="scan-type"><option value="electronic_weighing">Complete instrument</option><option value="load_cell">Load cell / sensor</option><option value="indicator">Indicator / head</option><option value="seal">Verification seal / stamp</option><option value="fuel_dispenser">Fuel dispenser meter</option></select></div></div>' +
-          '<button class="btn btn-saffron btn-full scan-check" id="check-btn" disabled onclick="runScan()">2 · Check Genuine or Third-Party <span style="float:right">→</span></button>' +
         '</div>' +
-        '<div class="scan-side"><div class="scan-side-card"><h3>Image Preview</h3><div id="scan-out"><div class="scan-preview"><div class="scan-preview-placeholder"><div class="preview-icon">▧</div>Your image preview will appear here<br/>after upload</div></div></div></div>' +
-        '<div class="scan-side-card"><h3>Best Results Tips</h3><ul class="scan-tips"><li>Ensure good lighting and clear focus</li><li>Capture the full instrument or nameplate</li><li>Make sure nameplate text is readable</li><li>Avoid reflections and heavy shadows</li></ul></div></div>' +
+        '' +
+        '</div>' +
       '</div></div>';
     }
     function bindPhotoCheckEvents() {
@@ -1058,24 +1219,22 @@
       const input = $("#photo");
       if (input) input.addEventListener("change", function(e) {
         const f = e.target.files && e.target.files[0];
-        if (f) setPhotoFile(f);
+        if (f) { setPhotoFile(f); runOCR(f); }
       });
       const camInput = $("#camera-file");
       if (camInput) camInput.addEventListener("change", function(e) {
         const f = e.target.files && e.target.files[0];
-        if (f) setPhotoFile(f);
+        if (f) { setPhotoFile(f); runOCR(f); }
       });
       ["dragenter", "dragover"].forEach(function(ev) { drop.addEventListener(ev, function(e) { e.preventDefault(); drop.classList.add("hot"); }); });
       ["dragleave", "drop"].forEach(function(ev) { drop.addEventListener(ev, function(e) { e.preventDefault(); drop.classList.remove("hot"); }); });
       drop.addEventListener("drop", function(e) {
         const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-        if (f) setPhotoFile(f);
+        if (f) { setPhotoFile(f); runOCR(f); }
       });
     }
 
     async function useSample(url, serial) {
-      const ser = $("#scan-serial");
-      if (ser) ser.value = serial;
       try {
         const blob = await fetch(url).then(function(r) { return r.blob(); });
         const file = new File([blob], url.split("/").pop(), { type: blob.type || "image/jpeg" });
@@ -1096,8 +1255,8 @@
       out.innerHTML = '<div class="scan-stage"><p>Analyzing nameplate · stamp · seal · OEM fingerprint…</p><div class="scanline"></div></div><ul class="steps mt"><li><span class="dot on"></span> Image optical resolution &amp; clarity</li><li><span class="dot on"></span> Component &amp; sensor classification</li><li><span class="dot on"></span> OEM digital fingerprint comparison</li><li><span class="dot on"></span> Model approval registry check</li><li><span class="dot on"></span> Legal Metrology &amp; OIML R 76 compliance</li></ul>';
       const fd = new FormData();
       fd.append("photo", LAST_FILE);
-      fd.append("serial", ($("#scan-serial") && $("#scan-serial").value) || "");
-      fd.append("claimed_type", ($("#scan-type") && $("#scan-type").value) || "electronic_weighing");
+      fd.append("serial", "");
+      fd.append("claimed_type", "electronic_weighing");
 
       try {
         const r = await api(S.user ? "/api/analyze" : "/api/public/analyze", { method: "POST", body: fd });
@@ -1185,7 +1344,7 @@
     async function adminApplications() {
       let appRows = "";
       DB.applications.forEach(function(a) {
-        appRows += '<tr><td class="mono"><b>' + a.public_id + '</b></td><td><span class="mono">' + a.serial + '</span><div class="tiny">' + a.instrument_name + '</div></td><td>' + a.applicant_name + '<div class="tiny">' + a.org + '</div></td><td>' + a.district + '</td><td>' + a.kind + '</td><td>' + chip(a.status) + '</td><td>' + a.assigned_officer + '</td><td>' + (a.workflow === "verification" ? '<span class="tiny">Officer workflow</span>' : '<button class="btn btn-saffron" style="padding:6px 12px;font-size:12px;" onclick="go(\'admin-assign\', {iid:' + a.instrument_id + ', aid:' + a.id + '})">Assign Inspector</button>') + '</td></tr>';
+        appRows += '<tr><td class="mono"><b>' + a.public_id + '</b></td><td><span class="mono">' + a.serial + '</span><div class="tiny">' + a.instrument_name + '</div></td><td>' + a.applicant_name + '<div class="tiny">' + a.org + '</div></td><td>' + a.district + '</td><td>' + a.kind + '</td><td>' + chip(a.status) + '</td><td>' + a.assigned_officer + '</td><td>' + (a.gatc_id ? '<span class="tiny">GATC: ' + ((DB.gatcs.find(function(g){return g.id === a.gatc_id;}) || {}).code || "Assigned") + '</span>' : '<button class="btn btn-saffron" style="padding:6px 12px;font-size:12px;" onclick="go(\'admin-gatc-assign\', {aid:' + a.id + '})">Assign GATC</button>') + '</td></tr>';
       });
       return shell("", '<p class="crumb">Government Dashboard</p><h1>Application Management</h1><p class="intro">Review first-time verifications, re-verifications, and repair filings under Section 24.</p><div class="card"><table class="table"><thead><tr><th>App ID</th><th>Instrument</th><th>Applicant</th><th>District</th><th>Kind</th><th>Status</th><th>Assigned Officer</th><th>Action</th></tr></thead><tbody>' + appRows + '</tbody></table></div>', "admin");
     }
@@ -1199,6 +1358,72 @@
     function confirmAssignment() {
       $("#assign-out").innerHTML = '<div class="card" style="background:#e4f2ea;color:var(--green-d);border:1px solid var(--green);">Inspection successfully assigned to <b>Rahul Sharma</b> for 28 Aug 2026. Status updated to <b>Scheduled</b>.</div>';
       setTimeout(function() { go("admin-inspections"); }, 1500);
+    }
+
+
+    function gatcEligibilityScore(g, inst) {
+      if (!g || !inst || g.status !== "active" || g.availability === "Unavailable") return -1;
+      const category = TYPE_LABEL[inst.type] || inst.type;
+      const authorized = g.authorized.some(function(x){
+        return x.toLowerCase() === category.toLowerCase() ||
+               x.toLowerCase().replace(" dispenser","") === category.toLowerCase().replace(" dispenser","");
+      });
+      if (!authorized) return -1;
+      let score = 100;
+      if (g.district !== inst.district) score -= 20;
+      if (g.workload === "High") score -= 30;
+      else if (g.workload === "Medium") score -= 15;
+      if (g.availability === "Limited") score -= 10;
+      score -= Math.min(20, Math.max(0, Math.round((g.completed / Math.max(1,g.capacity)) * 10)));
+      return score;
+    }
+
+    async function adminGatcNetwork() {
+      const total = DB.gatcs.length;
+      const active = DB.gatcs.filter(function(g){return g.status === "active";}).length;
+      const review = DB.gatcs.filter(function(g){return g.status === "under_review";}).length;
+      const suspended = DB.gatcs.filter(function(g){return g.status === "suspended";}).length;
+      const expiring = DB.gatcs.filter(function(g){return new Date(g.valid_until) <= new Date("2027-09-30");}).length;
+      const rows = DB.gatcs.map(function(g){
+        const auth = g.authorized.map(function(x){return '<span class="gatc-auth">✓ ' + x + '</span>';}).join("");
+        const workloadClass = g.workload === "High" ? "bad" : g.workload === "Medium" ? "warn" : "ok";
+        return '<tr><td class="mono"><b>' + g.code + '</b><div class="tiny">' + g.name + '</div></td><td>' + g.organization + '<div class="tiny">' + g.location + '</div></td><td><span class="chip ok">ACTIVE</span><div class="tiny mt">Valid until ' + g.valid_until + '</div></td><td><div class="gatc-auth-list">' + auth + '</div></td><td><span class="chip ' + workloadClass + '">' + g.workload + '</span><div class="tiny">' + g.availability + ' · ' + g.capacity + '/month</div></td><td><button class="btn btn-navy" style="padding:6px 12px;font-size:12px;" onclick="go(\'admin-gatc-assign\',{aid:103})">Test Assignment</button></td></tr>';
+      }).join("");
+      return shell("", '<p class="crumb">Government Dashboard · GATC Network</p><div class="row"><div><h1>GATC Network</h1><p class="intro">Manage Government Approved Test Centres, review category authorizations, monitor capacity and route test assignments to eligible centres.</p></div><button class="btn btn-saffron" onclick="go(\'admin-gatc-assign\',{aid:103})">Smart Assignment</button></div><div class="grid-4 mb"><div class="card kpi"><b>' + total + '</b><span>Total GATCs</span></div><div class="card kpi"><b>' + active + '</b><span>Active</span></div><div class="card kpi"><b>' + review + '</b><span>Under Review</span></div><div class="card kpi"><b>' + suspended + '</b><span>Suspended</span></div></div><div class="card mb"><div class="row"><h3>Approval &amp; Capacity Overview</h3><span class="chip warn right">' + expiring + ' expiring approval</span></div><table class="table"><thead><tr><th>GATC</th><th>Organization / Location</th><th>Approval</th><th>Authorized Categories</th><th>Workload / Capacity</th><th>Action</th></tr></thead><tbody>' + rows + '</tbody></table></div><div class="card"><h3>Test Assignment Rule</h3><p class="tiny">A GATC can only receive an instrument assignment when its approval is active and its authorized instrument category matches. Recommendations also consider district, workload, availability and verification capacity.</p></div>', "admin");
+    }
+
+    async function adminGatcAssign() {
+      const aid = S.payload.aid || 103;
+      const a = DB.applications.find(function(x){ return x.id === aid; }) || DB.applications[0];
+      const inst = DB.instruments.find(function(i){ return i.id === a.instrument_id; }) || DB.instruments[0];
+      const recommendations = DB.gatcs.map(function(g){
+        return {g:g, score:gatcEligibilityScore(g,inst)};
+      }).filter(function(x){return x.score >= 0;}).sort(function(a,b){return b.score-a.score;});
+      const rows = recommendations.map(function(x, idx){
+        const g=x.g;
+        return '<tr><td><b>' + (idx === 0 ? '★ Recommended · ' : '') + g.code + '</b><div class="tiny">' + g.name + '</div></td><td>' + (g.district === inst.district ? 'Same district' : g.district + ' district') + '</td><td><span class="chip ok">Authorized ✓</span></td><td>' + g.workload + '</td><td>' + g.availability + '</td><td><b>' + x.score + '</b> / 100</td><td><button class="btn ' + (idx === 0 ? 'btn-saffron' : 'btn-navy') + '" onclick="assignGatcToApplication(' + a.id + ',' + g.id + ')">Assign</button></td></tr>';
+      }).join("");
+      const blocked = DB.gatcs.filter(function(g){ return gatcEligibilityScore(g,inst) < 0; }).map(function(g){ return '<span class="gatc-auth no">✕ ' + g.code + ' — category/approval not eligible</span>'; }).join("");
+      return shell("", '<p class="crumb">Government Dashboard · GATC Assignment</p><h1>Smart GATC Assignment</h1><p class="intro">Eligible centres are ranked using authorization, location/district, workload, availability, verification capacity and approval status.</p><div class="card mb"><h3>Application</h3><div class="grid-2"><div><b class="mono">' + a.public_id + '</b><div class="tiny">' + a.applicant_name + ' · ' + a.org + '</div></div><div><b>' + inst.name + '</b><div class="tiny">' + (TYPE_LABEL[inst.type] || inst.type) + ' · ' + inst.district + '</div></div></div></div><div class="card"><h3>Recommended GATCs</h3><table class="table"><thead><tr><th>GATC</th><th>Location</th><th>Authorization</th><th>Workload</th><th>Availability</th><th>Match Score</th><th>Action</th></tr></thead><tbody>' + (rows || '<tr><td colspan="7" class="tiny">No eligible GATC found.</td></tr>') + '</tbody></table><div class="gatc-status-strip mt">' + blocked + '</div></div>', "admin");
+    }
+
+    function assignGatcToApplication(aid, gid) {
+      const a = DB.applications.find(function(x){ return x.id === aid; });
+      const g = DB.gatcs.find(function(x){ return x.id === gid; });
+      if (!a || !g) return;
+      const inst = DB.instruments.find(function(i){ return i.id === a.instrument_id; });
+      if (gatcEligibilityScore(g,inst) < 0) {
+        alert("Assignment blocked: this GATC is not eligible for the instrument category or approval/capacity rules.");
+        return;
+      }
+      a.gatc_id = g.id;
+      a.gatc_assigned_on = new Date().toISOString().slice(0,10);
+      a.status = "gatc_assigned";
+      addNotification("gatc", "New Test Assignment", a.public_id + " has been assigned to " + g.code + " for instrument testing.", "📋", "gatc-requests");
+      addNotification("admin", "GATC Assigned", a.public_id + " assigned to " + g.code + ".", "✅", "admin-applications");
+      saveVerificationWorkflow();
+      alert(a.public_id + " assigned successfully to " + g.code + ".");
+      go("admin-applications");
     }
 
     async function adminInspections() {
@@ -1408,6 +1633,184 @@
       }
     }
 
+
+    function currentGatc() {
+      const id = S.user && S.user.gatc_id ? S.user.gatc_id : 21;
+      return DB.gatcs.find(function(g) { return g.id === id; }) || DB.gatcs[0];
+    }
+
+    // GATC is a Government Approved TEST Centre: it tests only instruments assigned to it.
+    function gatcApps() {
+      const g = currentGatc();
+      return DB.applications.filter(function(a) { return Number(a.gatc_id) === Number(g.id); });
+    }
+
+    function gatcAssignedApps() {
+      return gatcApps().filter(function(a) { return !a.gatc_tested_on || a.status === "scheduled" || a.status === "gatc_assigned" || a.status === "in_progress"; });
+    }
+
+    function gatcEligibleForInstrument(inst) {
+      const g = currentGatc();
+      if (!inst || !g) return false;
+      const category = TYPE_LABEL[inst.type] || inst.type;
+      return g.authorized.some(function(x) {
+        return x.toLowerCase() === category.toLowerCase() ||
+               x.toLowerCase().replace(" dispenser", "") === category.toLowerCase().replace(" dispenser", "");
+      });
+    }
+
+    function gatcTestResultLabel(a) {
+      if (a.gatc_test_result === "pass") return "Passed";
+      if (a.gatc_test_result === "fail") return "Failed";
+      return "Pending";
+    }
+
+    function gatcStatus(status) {
+      const cls = status === "in_progress" ? "in_progress" : status === "scheduled" ? "scheduled" : status === "pending" ? "pending" : status === "failed" ? "failed" : "completed";
+      const label = status === "in_progress" ? "In Progress" : status === "certificate_generated" ? "Completed" : String(status || "Pending").replace(/_/g," ");
+      return '<span class="gatc-status ' + cls + '">' + label.charAt(0).toUpperCase() + label.slice(1) + '</span>';
+    }
+
+    async function gatcHome() {
+      const g = currentGatc();
+      const apps = gatcApps();
+      const assigned = apps.filter(function(a){ return !a.gatc_tested_on || a.status === "scheduled" || a.status === "gatc_assigned" || a.status === "in_progress"; });
+      const today = new Date().toISOString().slice(0,10);
+      const todayTests = apps.filter(function(a){ return a.schedule && a.schedule.date === today; }).length;
+      const pending = assigned.filter(function(a){ return !a.gatc_test_result; }).length;
+      const passed = apps.filter(function(a){ return a.gatc_test_result === "pass"; }).length;
+      const failed = apps.filter(function(a){ return a.gatc_test_result === "fail"; }).length;
+      const recent = apps.slice(0,5);
+      const requestRows = recent.map(function(a){
+        const result = gatcTestResultLabel(a);
+        const resultHtml = result === "Passed" ? '<span class="gatc-status completed">Passed</span>' : result === "Failed" ? '<span class="gatc-status failed">Failed</span>' : '<span class="gatc-status pending">Pending Test</span>';
+        return '<tr><td class="mono"><b>' + a.public_id + '</b></td><td>' + a.instrument_name + '<div class="tiny">' + a.serial + '</div></td><td>' + (a.org || a.applicant_name || "—") + '</td><td>' + resultHtml + '</td><td>' + (a.schedule ? (a.schedule.date + '<br>' + a.schedule.time) : "—") + '</td></tr>';
+      }).join("");
+      const scheduledApps = apps.filter(function(a){ return a.schedule && !a.gatc_tested_on; });
+      const scheduleItems = scheduledApps.slice(0,3).map(function(a, idx){
+        const time = a.schedule && a.schedule.time ? a.schedule.time : (idx === 0 ? "11:00 AM" : idx === 1 ? "02:30 PM" : "04:30 PM");
+        return '<div class="gatc-schedule-item"><div class="gatc-time">' + time + '</div><div><b>' + (a.org || a.applicant_name || "Test appointment") + '</b><p>' + a.instrument_name + ' · ' + a.serial + '<br>' + a.public_id + '</p></div><button class="btn btn-navy" style="padding:6px 9px;font-size:9px;" onclick="go(\'gatc-test\',{aid:' + a.id + '})">Start Test</button></div>';
+      }).join("");
+
+      return shell("", '<div class="gatc-page-head"><div><h1>GATC Dashboard</h1><p>Welcome back, ' + (g.name || "Government Approved Test Centre") + '</p></div><div class="gatc-date">▣ &nbsp; 28 August 2026, Thursday</div></div>' +
+        '<div class="gatc-kpi-grid">' +
+          '<div class="gatc-kpi-card"><div class="kpi-icon">▤</div><b>' + assigned.length + '</b><span>Assigned Instruments</span><small>Instruments assigned for testing</small></div>' +
+          '<div class="gatc-kpi-card warn"><div class="kpi-icon">◷</div><b>' + todayTests + '</b><span>Today’s Tests</span><small>Scheduled for today</small></div>' +
+          '<div class="gatc-kpi-card ok"><div class="kpi-icon">▣</div><b>' + pending + '</b><span>Pending Tests</span><small>Awaiting instrument testing</small></div>' +
+          '<div class="gatc-kpi-card purple"><div class="kpi-icon">✓</div><b>' + passed + '</b><span>Tests Passed</span><small>Successful test results</small></div>' +
+          '<div class="gatc-kpi-card danger"><div class="kpi-icon">×</div><b>' + failed + '</b><span>Tests Failed</span><small>Failed test results</small></div>' +
+        '</div>' +
+        '<div class="gatc-two-col">' +
+          '<section class="gatc-panel"><div class="gatc-panel-head"><h3>Assigned Instruments</h3><button class="gatc-link" onclick="go(\'gatc-requests\')">View all →</button></div><div class="gatc-table-wrap"><table class="gatc-table"><thead><tr><th>Application ID</th><th>Instrument</th><th>Owner</th><th>Test Status</th><th>Scheduled On</th></tr></thead><tbody>' + (requestRows || '<tr><td colspan="5">No instruments assigned.</td></tr>') + '</tbody></table></div></section>' +
+          '<section class="gatc-panel"><div class="gatc-panel-head"><h3>Today’s Test Schedule</h3><button class="gatc-link" onclick="go(\'gatc-schedule\')">View schedule →</button></div><div class="gatc-schedule-list">' + (scheduleItems || '<div style="padding:18px 8px;color:#7b8797;font-size:11px;">No tests scheduled.</div>') + '</div></section>' +
+        '</div>' +
+        '<div class="gatc-bottom-grid">' +
+          '<section class="gatc-panel"><div class="gatc-panel-head"><h3>Test Summary</h3></div><div class="gatc-summary"><div class="gatc-donut"></div><div class="gatc-legend"><div><i></i>Passed <b>' + passed + '</b></div><div class="fail"><i></i>Failed <b>' + failed + '</b></div><div class="pend"><i></i>Pending <b>' + pending + '</b></div></div></div></section>' +
+          '<section class="gatc-panel"><div class="gatc-panel-head"><h3>Quick Actions</h3></div><div class="gatc-actions"><div class="gatc-action-grid">' +
+            '<button class="gatc-action-card" onclick="go(\'gatc-requests\')"><div class="aicon">▤</div><b>Assigned Instruments</b><span>View instruments assigned for testing</span></button>' +
+            '<button class="gatc-action-card" onclick="go(\'gatc-schedule\')"><div class="aicon">▣</div><b>Test Schedule</b><span>View upcoming instrument tests</span></button>' +
+            '<button class="gatc-action-card" onclick="go(\'gatc-results\')"><div class="aicon">☑</div><b>Test Results</b><span>Review submitted test results</span></button>' +
+            '<button class="gatc-action-card" onclick="go(\'gatc-history\')"><div class="aicon">◷</div><b>Test History</b><span>View instrument testing history</span></button>' +
+          '</div></div></section>' +
+        '</div>', "gatc");
+    }
+
+    async function gatcRequests() {
+      const apps = gatcApps();
+      const rows = apps.map(function(a){
+        const inst = DB.instruments.find(function(i){ return i.id === a.instrument_id; });
+        const eligible = gatcEligibleForInstrument(inst);
+        const tested = !!a.gatc_tested_on;
+        return '<tr><td class="mono"><b>' + a.public_id + '</b></td><td>' + a.applicant_name + '<div class="tiny">' + a.org + '</div></td><td>' + a.instrument_name + '<div class="tiny mono">' + a.serial + '</div></td><td>' + (eligible ? '<span class="chip ok">Authorized</span>' : '<span class="chip bad">Not Authorized</span>') + '<div class="tiny mt">' + (tested ? '<span class="chip ' + (a.gatc_test_result === "fail" ? "bad" : "ok") + '">' + gatcTestResultLabel(a) + '</span>' : '<span class="chip warn">Pending Test</span>') + '</div></td><td><button class="btn btn-navy gatc-action" ' + (!eligible || tested ? 'disabled title="Only authorized and untested assigned instruments can be tested"' : '') + ' onclick="go(\'gatc-test\',{aid:' + a.id + '})">Start Test</button></td></tr>';
+      }).join("");
+      return shell("", '<p class="crumb">GATC Portal · Assigned Instruments</p><h1>Assigned Instruments</h1><p class="intro">This centre can test only instruments assigned to it. Open an assigned instrument to record its test readings, evidence and PASS/FAIL result.</p><div class="card"><table class="table"><thead><tr><th>Application</th><th>Applicant</th><th>Instrument</th><th>Authorization / Test Status</th><th>Action</th></tr></thead><tbody>' + (rows || '<tr><td colspan="5" class="tiny">No instruments assigned to this GATC.</td></tr>') + '</tbody></table></div>', "gatc");
+    }
+
+    async function gatcSchedule() {
+      const apps = gatcApps().filter(function(a){ return a.schedule && !a.gatc_tested_on; });
+      const rows = apps.map(function(a){ return '<tr><td class="mono">' + a.schedule.date + '<br>' + a.schedule.time + '</td><td><b>' + a.org + '</b><div class="tiny">' + a.schedule.location + '</div></td><td>' + a.instrument_name + '<div class="tiny mono">' + a.serial + '</div></td><td>' + (a.gatc_test_result ? '<span class="chip ok">Tested</span>' : '<span class="chip warn">Pending Test</span>') + '</td><td><button class="btn btn-navy" onclick="go(\'gatc-test\',{aid:' + a.id + '})">Start Test</button></td></tr>'; }).join("");
+      return shell("", '<p class="crumb">GATC Portal · Test Schedule</p><h1>Test Schedule</h1><p class="intro">Upcoming instrument tests assigned to your Government Approved Test Centre.</p><div class="card"><table class="table"><thead><tr><th>Date / Time</th><th>Establishment</th><th>Instrument</th><th>Status</th><th>Action</th></tr></thead><tbody>' + (rows || '<tr><td colspan="5" class="tiny">No upcoming tests.</td></tr>') + '</tbody></table></div>', "gatc");
+    }
+
+    async function gatcTest() {
+      const aid = S.payload.aid || (gatcApps()[0] && gatcApps()[0].id);
+      const a = DB.applications.find(function(x){ return x.id === aid && Number(x.gatc_id) === Number(currentGatc().id); });
+      if (!a) return shell("", '<div class="card"><h3>Assigned instrument not found</h3><button class="btn btn-navy mt" onclick="go(\'gatc-requests\')">Back to Assigned Instruments</button></div>', "gatc");
+      const inst = DB.instruments.find(function(i){ return i.id === a.instrument_id; });
+      const authorized = gatcEligibleForInstrument(inst);
+      return shell("", '<p class="crumb">GATC Portal · Instrument Test</p><div class="row"><div><h1>Instrument Test Desk</h1><p class="intro">GATC performs the instrument test only. The assigned instrument must be tested and the result submitted to the government workflow.</p></div>' + (authorized ? '<span class="chip ok">✓ CATEGORY AUTHORIZED</span>' : '<span class="chip bad">✕ CATEGORY NOT AUTHORIZED</span>') + '</div><div class="grid-2"><div><div class="card"><h3>Assigned Instrument</h3><table class="table"><tr><th>Application</th><td class="mono">' + a.public_id + '</td></tr><tr><th>Instrument</th><td>' + a.instrument_name + '</td></tr><tr><th>Serial</th><td class="mono">' + a.serial + '</td></tr><tr><th>Owner</th><td>' + a.applicant_name + '</td></tr><tr><th>Establishment</th><td>' + a.org + '</td></tr><tr><th>Location</th><td>' + a.district + '</td></tr><tr><th>Scheduled Test</th><td>' + (a.schedule ? a.schedule.date + ' · ' + a.schedule.time : 'Not scheduled') + '</td></tr></table></div><div class="card"><h3>Instrument Information</h3><p class="tiny">Manufacturer: ' + (inst ? inst.manufacturer : "—") + ' · Model: ' + (inst ? inst.model : "—") + '</p><p class="tiny">Current status: ' + (inst ? chip(inst.status) : "—") + '</p></div></div><div class="card"><h3>Instrument Test</h3><div class="gatc-check-grid"><div class="gatc-check-item"><label>Instrument Identification</label><select id="gatc-ident"><option value="pass">PASS</option><option value="fail">FAIL</option><option value="na">NOT APPLICABLE</option></select></div><div class="gatc-check-item"><label>Seal Inspection</label><select id="gatc-seal"><option value="pass">PASS</option><option value="fail">FAIL</option><option value="na">NOT APPLICABLE</option></select></div><div class="gatc-check-item"><label>Measurement Accuracy</label><select id="gatc-accuracy"><option value="pass">PASS</option><option value="fail">FAIL</option><option value="na">NOT APPLICABLE</option></select></div><div class="gatc-check-item"><label>Display / Nozzle Inspection</label><select id="gatc-display"><option value="pass">PASS</option><option value="fail">FAIL</option><option value="na">NOT APPLICABLE</option></select></div></div><div class="field mt"><label>Test Readings</label><textarea id="gatc-readings" rows="4" placeholder="Enter measured readings, applied loads, observed values or other test readings..."></textarea></div><div class="gatc-evidence mt"><label style="display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:7px;">Photo / Evidence</label><input id="gatc-evidence" type="file" accept="image/*,.pdf" multiple></div><div class="field mt"><label>Test Result</label><select id="gatc-verdict"><option value="pass">PASS</option><option value="fail">FAIL</option></select></div><div class="field"><label>Remarks</label><textarea id="gatc-remarks" rows="3" placeholder="Add test remarks..."></textarea></div><button class="btn btn-ok btn-full" ' + (!authorized ? 'disabled title="GATC is not authorized for this instrument category"' : '') + ' onclick="submitGatcTest(' + a.id + ')">Submit Test Result</button><div id="gatc-result-out" class="mt"></div></div></div>', "gatc");
+    }
+
+    function submitGatcTest(aid) {
+      const a = DB.applications.find(function(x){ return x.id === aid && Number(x.gatc_id) === Number(currentGatc().id); });
+      if (!a) return;
+      const inst = DB.instruments.find(function(i){ return i.id === a.instrument_id; });
+      if (!gatcEligibleForInstrument(inst)) {
+        const out = $("#gatc-result-out");
+        if (out) out.innerHTML = '<div class="card" style="background:#f8e4df;color:var(--danger);"><b>Test blocked.</b><br>This GATC is not authorized for the instrument category.</div>';
+        return;
+      }
+      const verdict = $("#gatc-verdict") ? $("#gatc-verdict").value : "pass";
+      const remarks = $("#gatc-remarks") ? $("#gatc-remarks").value.trim() : "";
+      const readings = $("#gatc-readings") ? $("#gatc-readings").value.trim() : "";
+      const evidence = $("#gatc-evidence") && $("#gatc-evidence").files ? Array.from($("#gatc-evidence").files).map(function(f){ return f.name; }) : [];
+      const checks = {
+        identification: $("#gatc-ident") ? $("#gatc-ident").value : "pass",
+        seal: $("#gatc-seal") ? $("#gatc-seal").value : "pass",
+        accuracy: $("#gatc-accuracy") ? $("#gatc-accuracy").value : "pass",
+        display: $("#gatc-display") ? $("#gatc-display").value : "pass"
+      };
+      a.gatc_test_result = verdict;
+      a.gatc_test_checks = checks;
+      a.gatc_test_readings = readings;
+      a.gatc_test_evidence = evidence;
+      a.gatc_test_remarks = remarks;
+      a.gatc_tested_on = new Date().toISOString();
+      a.gatc_tested_by = S.user ? S.user.name : "GATC Operator";
+      a.status = verdict === "pass" ? "completed" : "failed";
+      if (inst && verdict === "pass") { inst.status = "tested"; inst.last_tested = a.gatc_tested_on.slice(0,10); }
+      if (inst && verdict === "fail") { inst.status = "test_failed"; }
+      addNotification("admin", verdict === "pass" ? "GATC Test Passed" : "GATC Test Failed", a.public_id + " test result submitted by " + currentGatc().code + ".", verdict === "pass" ? "✅" : "⚠️", "admin-inspections");
+      addNotification("gatc", "Test Result Submitted", a.public_id + " has been recorded as " + (verdict === "pass" ? "PASS" : "FAIL") + ".", verdict === "pass" ? "✅" : "⚠️", "gatc-results", {aid: aid});
+      if ($("#gatc-result-out")) $("#gatc-result-out").innerHTML = '<div class="card" style="background:' + (verdict === "pass" ? '#e4f2ea;color:var(--green-d);' : '#f8e4df;color:var(--danger);') + '"><b>Instrument Test ' + (verdict === "pass" ? 'Passed ✓' : 'Failed') + '</b><br>Test result submitted to the government workflow. No certificate is generated by GATC.</div>';
+      saveVerificationWorkflow();
+    }
+
+    async function gatcResults() {
+      const apps = gatcApps().filter(function(a){ return !!a.gatc_tested_on; });
+      const rows = apps.map(function(a){
+        return '<tr><td class="mono"><b>' + a.public_id + '</b></td><td>' + a.instrument_name + '<div class="tiny mono">' + a.serial + '</div></td><td>' + (a.gatc_tested_on || '—') + '</td><td>' + (a.gatc_test_result === "pass" ? '<span class="chip ok">PASS</span>' : '<span class="chip bad">FAIL</span>') + '</td><td>' + (a.gatc_tested_by || 'GATC Operator') + '</td><td><button class="btn btn-navy" style="padding:6px 10px;font-size:11px;" onclick="go(\'gatc-test\',{aid:' + a.id + '})">View</button></td></tr>';
+      }).join("");
+      return shell("", '<p class="crumb">GATC Portal · Test Results</p><h1>Test Results</h1><p class="intro">Results submitted by this GATC for instruments assigned to the centre.</p><div class="card"><table class="table"><thead><tr><th>Application</th><th>Instrument</th><th>Tested On</th><th>Result</th><th>Tested By</th><th>Action</th></tr></thead><tbody>' + (rows || '<tr><td colspan="6" class="tiny">No test results submitted yet.</td></tr>') + '</tbody></table></div>', "gatc");
+    }
+
+    async function gatcHistory() {
+      const apps = gatcApps();
+      const grouped = {};
+      apps.forEach(function(a){
+        const key = a.serial || a.instrument_id;
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push(a);
+      });
+      let cards = "";
+      Object.keys(grouped).forEach(function(key){
+        const history = grouped[key].sort(function(x,y){ return String(x.gatc_tested_on || x.submitted_date || '').localeCompare(String(y.gatc_tested_on || y.submitted_date || '')); });
+        const latest = history[history.length-1];
+        cards += '<div class="card"><div class="row"><div><h3 style="margin-bottom:4px;">' + latest.instrument_name + '</h3><div class="tiny mono">' + latest.serial + ' · ' + latest.org + '</div></div><span class="right">' + (latest.gatc_test_result === "pass" ? '<span class="chip ok">PASS</span>' : latest.gatc_test_result === "fail" ? '<span class="chip bad">FAIL</span>' : '<span class="chip warn">PENDING</span>') + '</span></div><div style="margin-top:14px;">' + history.map(function(a){
+          const when = a.gatc_tested_on ? a.gatc_tested_on.slice(0,10) : (a.submitted_date || '—');
+          const result = a.gatc_test_result === "pass" ? '✓ Passed' : a.gatc_test_result === "fail" ? '✗ Failed' : 'Pending Test';
+          return '<div style="padding:10px 0;border-top:1px solid #edf0f3;"><b>' + result + '</b><span class="tiny right">' + when + '</span><div class="tiny">' + (a.gatc_test_remarks || 'No remarks recorded') + '</div></div>';
+        }).join("") + '</div></div>';
+      });
+      return shell("", '<p class="crumb">GATC Portal · Test History</p><h1>Test History</h1><p class="intro">Instrument lifecycle history for tests performed by this GATC.</p>' + (cards || '<div class="card"><p class="tiny">No assigned instrument history available.</p></div>'), "gatc");
+    }
+
+    async function gatcNotifications() {
+      const notes = getNotificationsForCurrentUser();
+      const rows = notes.map(function(n){ return '<div class="card" style="margin-bottom:10px;cursor:pointer;" onclick="openNotification(' + n.id + ',\'' + (n.view || '') + '\')"><div class="row"><b style="color:var(--navy);">' + (n.icon || '🔔') + ' &nbsp;' + n.title + '</b><span class="tiny right">' + (n.time || '') + '</span></div><p class="tiny" style="margin:7px 0 0;">' + n.message + '</p></div>'; }).join("");
+      return shell("", '<p class="crumb">GATC Portal · Notifications</p><div class="row"><div><h1>Notifications</h1><p class="intro">Alerts and updates for instruments assigned to this GATC.</p></div><button class="btn btn-navy right" onclick="markNotificationsRead();render();">Mark all read</button></div>' + (rows || '<div class="card"><p class="tiny">No notifications.</p></div>'), "gatc");
+    }
+
     async function guidelinesView() {
       const g = await api("/api/guidelines");
       let inner = "";
@@ -1465,6 +1868,8 @@
       "admin-registry": adminRegistry,
       "admin-instrument-detail": adminInstrumentDetail,
       "admin-applications": adminApplications,
+      "admin-gatc-network": adminGatcNetwork,
+      "admin-gatc-assign": adminGatcAssign,
       "admin-assign": adminAssign,
       "admin-inspections": adminInspections,
       "admin-risk": adminRisk,
@@ -1477,6 +1882,13 @@
       "officer-review": officerReview,
       "officer-schedule": officerSchedule,
       "officer-inspect": officerInspect,
+      "gatc-home": gatcHome,
+      "gatc-requests": gatcRequests,
+      "gatc-schedule": gatcSchedule,
+      "gatc-test": gatcTest,
+      "gatc-results": gatcResults,
+      "gatc-history": gatcHistory,
+      "gatc-notifications": gatcNotifications,
     };
 
     async function render() {
@@ -1500,8 +1912,16 @@
       render();
     })();
   
-    // Live camera capture (desktop + mobile). Uses getUserMedia instead of a file picker.
+    // Direct QR scanner + OCR.
     let CAMERA_STREAM = null;
+    let QR_SCAN_ACTIVE = false;
+    let QR_SCAN_TIMER = null;
+
+    function openScanner() {
+      if (typeof S !== "undefined") S.view = "scan-lab";
+      if (typeof render === "function") render();
+      setTimeout(function(){ openCamera(); }, 60);
+    }
 
     async function openCamera() {
       const modal = document.getElementById("camera-modal");
@@ -1510,54 +1930,183 @@
       const captureBtn = document.getElementById("capture-camera-btn");
       if (!modal || !video) return;
 
-      // A camera can only be requested from a secure, top-level/permission-enabled context.
-      // ChatGPT/other embedded HTML previews may intentionally block camera permissions.
       modal.classList.add("open");
-      modal.setAttribute("aria-hidden", "false");
+      modal.setAttribute("aria-hidden","false");
       if (captureBtn) captureBtn.disabled = true;
       if (status) status.textContent = "Requesting camera permission…";
 
       try {
-        if (!window.isSecureContext) {
-          throw new Error("Camera requires a secure connection. Run this page on localhost or HTTPS.");
-        }
-        if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== "function") {
-          throw new Error("This browser does not support live camera access.");
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          throw new Error("Live camera is unavailable here. Open PRAMĀṆA on localhost or HTTPS.");
         }
 
-        if (CAMERA_STREAM) stopCameraStream();
-
+        stopCameraStream();
         CAMERA_STREAM = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } },
-          audio: false
+          video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}},
+          audio:false
         });
 
         video.srcObject = CAMERA_STREAM;
         await video.play();
-        if (status) status.textContent = "Camera ready · align the instrument";
+        if (status) status.textContent = "Point at a QR code or nameplate";
         if (captureBtn) captureBtn.disabled = false;
-      } catch (err) {
-        console.error("Camera access error:", err);
+        startQrDetection(video);
+      } catch(err) {
+        console.error("Scanner camera error:", err);
         let message = "Camera could not be opened.";
-        if (err && err.name === "NotAllowedError") {
-          message = "Camera permission was blocked. Allow Camera for this site, then reload the page. If this is an embedded preview, open the site directly on localhost/HTTPS.";
-        } else if (err && err.name === "NotFoundError") {
-          message = "No camera was found on this device.";
-        } else if (err && err.name === "NotReadableError") {
-          message = "The camera is busy in another app. Close other apps using the camera and try again.";
-        } else if (err && err.name === "SecurityError") {
-          message = "The browser blocked camera access in this context. Open the website directly on localhost or HTTPS.";
-        } else if (err && err.message) {
-          message = err.message;
-        }
+        if (err && err.name === "NotAllowedError") message = "Camera permission is blocked. Allow camera access for this site.";
+        else if (err && err.name === "NotFoundError") message = "No camera was found on this device.";
+        else if (err && err.name === "NotReadableError") message = "Camera is busy in another app.";
+        else if (err && err.message) message = err.message;
         if (status) status.textContent = message;
-        if (captureBtn) captureBtn.disabled = true;
       }
     }
 
+    function startQrDetection(video) {
+      stopQrDetection();
+      QR_SCAN_ACTIVE = true;
+      if (!("BarcodeDetector" in window)) {
+        const status = document.getElementById("camera-status");
+        if (status) status.textContent = "QR auto-scan unavailable. Capture the nameplate to read text.";
+        return;
+      }
+
+      let detector;
+      try { detector = new BarcodeDetector({formats:["qr_code"]}); }
+      catch(e) {
+        const status = document.getElementById("camera-status");
+        if (status) status.textContent = "QR scanner unavailable. Capture the nameplate to read text.";
+        return;
+      }
+
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d",{willReadFrequently:true});
+
+      async function scanFrame() {
+        if (!QR_SCAN_ACTIVE || !video.videoWidth) return;
+        const scale = Math.min(1,720/video.videoWidth);
+        canvas.width = Math.max(1,Math.round(video.videoWidth*scale));
+        canvas.height = Math.max(1,Math.round(video.videoHeight*scale));
+        ctx.drawImage(video,0,0,canvas.width,canvas.height);
+        try {
+          const codes = await detector.detect(canvas);
+          if (codes && codes.length) {
+            const raw = (codes[0].rawValue || "").trim();
+            if (raw) { handleScannedValue(raw); return; }
+          }
+        } catch(e) {}
+        if (QR_SCAN_ACTIVE) QR_SCAN_TIMER = requestAnimationFrame(scanFrame);
+      }
+      QR_SCAN_TIMER = requestAnimationFrame(scanFrame);
+    }
+
+    function stopQrDetection() {
+      QR_SCAN_ACTIVE = false;
+      if (QR_SCAN_TIMER) {
+        cancelAnimationFrame(QR_SCAN_TIMER);
+        QR_SCAN_TIMER = null;
+      }
+    }
+
+    function handleScannedValue(raw) {
+      stopQrDetection();
+      let query = raw;
+      try {
+        const url = new URL(raw);
+        query = url.searchParams.get("q") || url.searchParams.get("serial") || url.searchParams.get("id") || raw;
+      } catch(e) {}
+      closeCamera();
+      if (typeof go === "function") go("public-result",{q:query});
+    }
+
+    function captureCameraPhoto() {
+      const video = document.getElementById("camera-video");
+      if (!video || !video.videoWidth || !video.videoHeight) return;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(video,0,0,canvas.width,canvas.height);
+
+      canvas.toBlob(function(blob) {
+        if (!blob) return;
+        const file = new File([blob],"camera-nameplate.jpg",{type:"image/jpeg"});
+        const previewUrl = URL.createObjectURL(blob);
+        stopQrDetection();
+        runOCR(file);
+        setPhotoFile(file,previewUrl);
+        const status = document.getElementById("camera-status");
+        if (status) status.textContent = "Photo captured · reading text…";
+      },"image/jpeg",0.92);
+    }
+
+    async function runOCR(file) {
+      const panel = document.getElementById("ocr-panel");
+      const status = document.getElementById("ocr-status");
+      const output = document.getElementById("ocr-text");
+      const fields = document.getElementById("ocr-fields");
+      if (!panel || !output) return;
+
+      panel.style.display = "block";
+      output.value = "";
+      if (fields) fields.innerHTML = "";
+      if (!window.Tesseract) {
+        if (status) status.textContent = "OCR engine unavailable. Check internet and reload.";
+        return;
+      }
+
+      if (status) status.textContent = "Reading image… 0%";
+      try {
+        const result = await Tesseract.recognize(file,"eng",{
+          logger:function(m){
+            if (status && typeof m.progress === "number")
+              status.textContent = "Reading image… " + Math.round(m.progress*100) + "%";
+          }
+        });
+
+        const raw = ((result.data && result.data.text) || "").trim();
+        output.value = raw || "No readable text found. Try a closer, brighter photo.";
+
+        if (raw) {
+          renderOcrFields(extractInstrumentFields(raw));
+          if (status) status.textContent = "Text extracted successfully.";
+        } else if (status) status.textContent = "No readable text found.";
+      } catch(err) {
+        console.error("OCR error:",err);
+        if (status) status.textContent = "OCR failed. Try a clearer image.";
+      }
+    }
+
+    function extractInstrumentFields(value) {
+      const joined = value.split(/\r?\n/).map(function(x){return x.trim();}).filter(Boolean).join(" ");
+      function pick(re){const m=joined.match(re);return m?m[1].trim():"";}
+      return {
+        manufacturer:pick(/(?:manufacturer|mfr|make)\s*[:\-]?\s*([A-Za-z0-9 .&'_-]{2,50})/i),
+        model:pick(/(?:model|model no\.?)\s*[:\-]?\s*([A-Za-z0-9._\/-]{2,40})/i),
+        serial:pick(/(?:serial(?: no\.?| number)?|s\/n|sr\.?\s*no\.?)\s*[:#\-]?\s*([A-Za-z0-9._\/-]{4,50})/i),
+        capacity:pick(/(?:capacity|max(?:imum)?|max)\s*[:\-]?\s*([0-9.]+\s*(?:kg|g|t|ton|l|ml)?)/i),
+        accuracy:pick(/(?:accuracy class|class)\s*[:\-]?\s*([A-Za-z0-9 ._-]{1,20})/i),
+        approval:pick(/(?:approval(?: no\.?| number)?|type approval)\s*[:#\-]?\s*([A-Za-z0-9._\/-]{4,60})/i)
+      };
+    }
+
+    function renderOcrFields(data) {
+      const fields = document.getElementById("ocr-fields");
+      if (!fields) return;
+      const items = [
+        ["Manufacturer",data.manufacturer],["Model",data.model],["Serial Number",data.serial],
+        ["Capacity",data.capacity],["Accuracy Class",data.accuracy],["Approval Number",data.approval]
+      ].filter(function(x){return x[1];});
+      fields.innerHTML = items.length ? items.map(function(x){
+        return '<div class="ocr-field"><small>'+x[0]+'</small><b>'+x[1]+'</b></div>';
+      }).join("") : "";
+    }
+
     function stopCameraStream() {
+      stopQrDetection();
       if (CAMERA_STREAM) {
-        CAMERA_STREAM.getTracks().forEach(function(track) { track.stop(); });
+        CAMERA_STREAM.getTracks().forEach(function(t){t.stop();});
         CAMERA_STREAM = null;
       }
       const video = document.getElementById("camera-video");
@@ -1569,38 +2118,14 @@
       const modal = document.getElementById("camera-modal");
       if (modal) {
         modal.classList.remove("open");
-        modal.setAttribute("aria-hidden", "true");
+        modal.setAttribute("aria-hidden","true");
       }
     }
 
-    function captureCameraPhoto() {
-      const video = document.getElementById("camera-video");
-      if (!video || !video.videoWidth || !video.videoHeight) return;
-
-      const canvas = document.createElement("canvas");
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      canvas.toBlob(function(blob) {
-        if (!blob) return;
-        const file = new File([blob], "pramana-camera-" + Date.now() + ".jpg", { type: "image/jpeg" });
-        closeCamera();
-        setPhotoFile(file);
-      }, "image/jpeg", 0.92);
-    }
-
-    document.addEventListener("change", function(e) {
-      if (e.target && e.target.id === "camera-fallback-file") {
-        const f = e.target.files && e.target.files[0];
-        if (f) { closeCamera(); setPhotoFile(f); }
-      }
-    });
-
-    document.addEventListener("keydown", function(e) {
+    document.addEventListener("keydown",function(e){
       if (e.key === "Escape") closeCamera();
     });
+
 </script>
 </body>
 </html>
