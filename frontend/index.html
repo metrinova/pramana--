@@ -543,6 +543,7 @@
     @media(max-width:520px){.gatc-kpi-grid{grid-template-columns:1fr}.gatc-account>div:not(.gatc-avatar){display:none}.gatc-action-grid{grid-template-columns:1fr}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body>
   <!-- Direct QR scanner modal -->
@@ -1135,7 +1136,7 @@
       if (!paid && (!inst || inst.status !== "verified")) { out.innerHTML='<div class="card" style="background:#fff7e6;color:var(--warn);">Certificate is not available yet. Complete payment and the verification process first.</div>'; return; }
       if (!inst) { out.innerHTML='<div class="card" style="background:#f8e4df;color:var(--danger);">Instrument not found in your registry.</div>'; return; }
       const certNo = "CERT-UP-2026-" + String(inst.id).padStart(4,"0");
-      out.innerHTML='<div class="card" style="background:#fffdf8;border:1px solid #ead9bf;"><div class="row"><h3>Certificate Details</h3>' + chip("valid") + '</div><table class="table" style="margin-top:10px;"><tr><th>Certificate No.</th><td class="mono"><b>' + certNo + '</b></td></tr><tr><th>Instrument ID</th><td class="mono">' + inst.serial + '</td></tr><tr><th>Instrument</th><td>' + inst.name + '</td></tr><tr><th>Issue Date</th><td class="mono">' + (inst.last_verified || "—") + '</td></tr><tr><th>Expiry Date</th><td class="mono">' + (inst.next_due || "—") + '</td></tr><tr><th>Owner / Establishment</th><td>' + inst.premises + '</td></tr><tr><th>Status</th><td>' + chip("valid") + '</td></tr></table><button class="btn btn-navy mt" onclick="go(\'public-result\',{q:\'' + inst.serial + '\'})">View Full Certificate</button></div>';
+      out.innerHTML='<div class="card" style="background:#fffdf8;border:1px solid #ead9bf;"><div class="row"><h3>Certificate Details</h3>' + chip("valid") + '</div><table class="table" style="margin-top:10px;"><tr><th>Certificate No.</th><td class="mono"><b>' + certNo + '</b></td></tr><tr><th>Instrument ID</th><td class="mono">' + inst.serial + '</td></tr><tr><th>Instrument</th><td>' + inst.name + '</td></tr><tr><th>Issue Date</th><td class="mono">' + (inst.last_verified || "—") + '</td></tr><tr><th>Expiry Date</th><td class="mono">' + (inst.next_due || "—") + '</td></tr><tr><th>Owner / Establishment</th><td>' + inst.premises + '</td></tr><tr><th>Status</th><td>' + chip("valid") + '</td></tr></table><button class="btn btn-navy mt" onclick="go(\'certificate\',{q:\'' + inst.serial + '\'})">View Full Certificate</button></div>';
     }
 
     async function consumerHome() {
@@ -1207,7 +1208,7 @@
         drop.classList.add("has-file");
         const inner = $("#drop-inner");
         if (inner) {
-          inner.innerHTML = '<img class="preview-frame" src="' + url + '" alt="Uploaded instrument" /><div class="fname">Ready · ' + (file.name || "photo.jpg") + '</div><div class="row" style="justify-content:center;gap:10px;"><label class="btn btn-saffron" style="padding:8px 14px;font-size:13px;">Upload Different<input id="photo" type="file" accept="image/*" capture="environment" /></label><button type="button" class="btn btn-danger" style="padding:8px 14px;font-size:13px;" onclick="retakePhoto()">Retake / Reset</button></div>';
+          inner.innerHTML = '<img class="preview-frame" src="' + url + '" alt="Uploaded instrument" /><div class="fname" style="font-weight:700;color:var(--navy);">Photo uploaded · Ready for verification</div><div class="tiny" style="margin:6px 0 12px;">Review the image, then run the authenticity &amp; compliance check.</div><div class="row" style="justify-content:center;gap:10px;flex-wrap:wrap;"><button type="button" class="btn btn-saffron" style="padding:10px 18px;font-size:14px;" onclick="runScan()">✓ Check Photo &amp; Analyze</button><label class="btn btn-navy" style="padding:10px 18px;font-size:14px;cursor:pointer;">Upload Different<input id="photo" type="file" accept="image/*" capture="environment" style="display:none;" /></label><button type="button" class="btn btn-danger" style="padding:10px 18px;font-size:14px;" onclick="retakePhoto()">↻ Retake / Reset</button></div>';
           const input = $("#photo");
           if (input) input.addEventListener("change", function(e) {
             const f = e.target.files && e.target.files[0];
@@ -1243,7 +1244,7 @@
       opts = opts || {};
       const compact = !!opts.compact;
       return '<div class="scan-workspace photo-lab">' +
-        '<div class="steps-row"><div class="step-pill ready" id="pill-1"><span class="n">1</span> Upload picture</div></div>' +
+        '<div class="steps-row"><div class="step-pill ready" id="pill-1"><span class="n">1</span> Upload picture</div><div class="step-pill" id="pill-2"><span class="n">2</span> Analyze &amp; verify</div></div>' +
         '<div class="scan-work-grid"><div class="scan-main">' +
           '<div class="dropzone scan-dropzone" id="photo-drop"><div id="drop-inner">' +
             '<div class="upload-icon">↥</div><h3>Drag &amp; drop an image here<br/>or use your camera / file</h3>' +
@@ -1289,26 +1290,63 @@
     }
 
     async function runScan() {
-      const out = $("#scan-out");
-      const pill2 = $("#pill-2");
-      if (!LAST_FILE) {
-        out.innerHTML = '<div class="err">Step 1 first: upload a picture, then tap Check.</div>';
-        return;
-      }
-      if (pill2) pill2.classList.add("ready");
-      out.innerHTML = '<div class="scan-stage"><p>Analyzing nameplate · stamp · seal · OEM fingerprint…</p><div class="scanline"></div></div><ul class="steps mt"><li><span class="dot on"></span> Image optical resolution &amp; clarity</li><li><span class="dot on"></span> Component &amp; sensor classification</li><li><span class="dot on"></span> OEM digital fingerprint comparison</li><li><span class="dot on"></span> Model approval registry check</li><li><span class="dot on"></span> Legal Metrology &amp; OIML R 76 compliance</li></ul>';
-      const fd = new FormData();
-      fd.append("photo", LAST_FILE);
-      fd.append("serial", "");
-      fd.append("claimed_type", "electronic_weighing");
+    const out = $("#scan-out");
+    const pill2 = $("#pill-2");
 
-      try {
-        const r = await api(S.user ? "/api/analyze" : "/api/public/analyze", { method: "POST", body: fd });
-        renderScan(r);
-      } catch (e) {
-        out.innerHTML = '<div class="err">' + e.message + '</div>';
-      }
+    if (!LAST_FILE) {
+        out.innerHTML =
+            '<div class="err">Step 1 first: upload a picture, then tap Check.</div>';
+        return;
     }
+
+    if (pill2) {
+        pill2.classList.add("ready");
+    }
+
+    out.innerHTML =
+        '<div class="scan-stage">' +
+        '<p>Analyzing nameplate · stamp · seal · OEM fingerprint…</p>' +
+        '<div class="scanline"></div>' +
+        '</div>' +
+
+        '<ul class="steps mt">' +
+        '<li><span class="dot on"></span> Image optical resolution & clarity</li>' +
+        '<li><span class="dot on"></span> Component & sensor classification</li>' +
+        '<li><span class="dot on"></span> OEM digital fingerprint comparison</li>' +
+        '<li><span class="dot on"></span> Model approval registry check</li>' +
+        '<li><span class="dot on"></span> Legal Metrology & OIML R 76 compliance</li>' +
+        '</ul>';
+
+    const fd = new FormData();
+
+    fd.append("photo", LAST_FILE);
+    fd.append("serial", "");
+    fd.append("claimed_type", "electronic_weighing");
+
+    try {
+
+        const r = await api(
+            S.user
+                ? "/api/analyze"
+                : "/api/public/analyze",
+            {
+                method: "POST",
+                body: fd
+            }
+        );
+
+        LAST_ANALYSIS = r;
+
+        renderScan(r);
+
+    } catch (e) {
+
+        out.innerHTML =
+            '<div class="err">' +
+            e.message +
+            '</div>';
+    }
+}
 
     function renderScan(r) {
       let parts = "";
@@ -1339,13 +1377,43 @@
         body = '<div class="hero">' + topPublic() + '<p class="kicker">Certificate &amp; Instrument Verification</p><h1 class="display">Verification Result</h1><p class="lede">Queried Token / Serial: <b class="mono">' + q + '</b></p><div class="verdict-hero NON_COMPLIANT mt"><h2>Not Found on Registry</h2><p>' + d.note + '</p></div></div>';
       } else {
         let passedList = "";
-        (d.compliance.passed || []).forEach(function(x) { passedList += '<li class="ok-text" style="font-size:13px;margin-bottom:6px;">' + x + '</li>'; });
+        ((d.compliance || {}).passed || []).forEach(function(x) { passedList += '<li class="ok-text" style="font-size:13px;margin-bottom:6px;">' + x + '</li>'; });
         let issuesList = "";
-        (d.compliance.issues || []).forEach(function(x) { issuesList += '<li class="bad-text" style="font-size:13px;margin-bottom:6px;">' + x + '</li>'; });
-        const certNo = d.certificate ? d.certificate.cert_no : "CERT-UP-2026-4412";
+        ((d.compliance || {}).issues || []).forEach(function(x) { issuesList += '<li class="bad-text" style="font-size:13px;margin-bottom:6px;">' + x + '</li>'; });
+        const certNo = d.certificate ? d.certificate.cert_no : "—";
+        const certButton = d.certificate ? '<button class="btn btn-navy" onclick="go(\'certificate\',{q:\'' + (d.certificate.cert_no || d.serial) + '\'})">View Official Certificate</button>' : '';
 
-        body = '<div class="hero">' + topPublic() + '<p class="kicker">Certificate &amp; Instrument Verification</p><h1 class="display">Verification Result</h1><p class="lede">Queried Token / Serial: <b class="mono">' + q + '</b></p><div class="verdict-hero ' + d.compliance.verdict + ' mt"><h2>' + d.compliance.verdict.replace("_", " ") + '</h2><p>' + d.manufacturer + ' ' + d.model + ' · Serial <b class="mono">' + d.serial + '</b> · ' + (d.oem_status === "genuine" ? "Genuine OEM Approved" : "Third-party Unapproved") + '</p></div><div class="grid-2"><div class="card"><img src="data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'220\'><rect width=\'400\' height=\'220\' fill=\'%23eaf0f6\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'sans-serif\' font-size=\'16\' fill=\'%231f3a5f\'>Scale Inspection Image</text></svg>" alt="" style="width:100%;border-radius:6px;max-height:220px;object-fit:cover;" class="mb" /><table class="table"><tr><th>Establishment</th><td>' + d.premises + ', ' + d.district + ', ' + d.state + '</td></tr><tr><th>Accuracy Class</th><td>Class ' + d.accuracy_class + ' (Max ' + d.max_kg + ' kg)</td></tr><tr><th>Model Approval</th><td class="mono">' + (d.model_approval || "IND/09/2019/214") + '</td></tr><tr><th>LMO Stamp</th><td>' + d.stamp_lmo + ' · Year ' + d.stamp_year + ' · Qtr ' + d.stamp_quarter + '</td></tr><tr><th>Last Verified</th><td class="mono">' + d.last_verified + '</td></tr><tr><th>Next Due Date</th><td class="mono" style="color:var(--danger);font-weight:700;">' + d.next_due + '</td></tr><tr><th>Certificate No</th><td class="mono"><b>' + certNo + '</b></td></tr></table></div><div class="card"><h3>Compliance &amp; Inspection Audit</h3><h4 class="ok-text mt">Checks Passed</h4><ul>' + passedList + '</ul>' + (issuesList ? '<h4 class="bad-text mt">Issues &amp; Violations</h4><ul>' + issuesList + '</ul>' : '<p class="tiny mt">No violations reported. Lead seal wire and security stamp are fully intact.</p>') + '<div class="mt" style="padding-top:14px;border-top:1px solid var(--rule);"><button class="btn btn-danger btn-full" onclick="openComplaintModal()">Report an Issue on this Instrument</button></div></div></div></div>';
+        body = '<div class="hero">' + topPublic() + '<p class="kicker">Certificate &amp; Instrument Verification</p><div class="row"><div><h1 class="display">Verification Result</h1><p class="lede">Queried Token / Serial: <b class="mono">' + q + '</b></p></div><div class="no-print">' + certButton + '</div></div><div class="verdict-hero ' + ((d.compliance || {}).verdict || "NON_COMPLIANT") + ' mt"><h2>' + ((d.compliance || {}).verdict || "UNKNOWN").replace("_", " ") + '</h2><p>' + (d.manufacturer || "") + ' ' + (d.model || "") + ' · Serial <b class="mono">' + (d.serial || "—") + '</b> · ' + (d.oem_status === "genuine" ? "Genuine OEM Approved" : "Third-party / Review Required") + '</p></div><div class="grid-2"><div class="card"><img src="data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'220\'><rect width=\'400\' height=\'220\' fill=\'%23eaf0f6\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'sans-serif\' font-size=\'16\' fill=\'%231f3a5f\'>Instrument Verification Record</text></svg>" alt="" style="width:100%;border-radius:6px;max-height:220px;object-fit:cover;" class="mb" /><table class="table"><tr><th>Establishment</th><td>' + (d.premises || "—") + ', ' + (d.district || "—") + ', ' + (d.state || "—") + '</td></tr><tr><th>Accuracy Class</th><td>Class ' + (d.accuracy_class || "—") + ' (Max ' + (d.max_kg || "—") + ' kg)</td></tr><tr><th>Model Approval</th><td class="mono">' + (d.model_approval || "—") + '</td></tr><tr><th>LMO Stamp</th><td>' + (d.stamp_lmo || "—") + ' · Year ' + (d.stamp_year || "—") + ' · Qtr ' + (d.stamp_quarter || "—") + '</td></tr><tr><th>Last Verified</th><td class="mono">' + (d.last_verified || "—") + '</td></tr><tr><th>Next Due Date</th><td class="mono">' + (d.next_due || "—") + '</td></tr><tr><th>Certificate No</th><td class="mono"><b>' + certNo + '</b></td></tr></table></div><div class="card"><h3>Compliance &amp; Inspection Audit</h3><h4 class="ok-text mt">Checks Passed</h4><ul>' + passedList + '</ul>' + (issuesList ? '<h4 class="bad-text mt">Issues &amp; Violations</h4><ul>' + issuesList + '</ul>' : '<p class="tiny mt">No violations reported in the public verification record.</p>') + '<div class="mt no-print" style="padding-top:14px;border-top:1px solid var(--rule);display:flex;gap:8px;flex-wrap:wrap;">' + certButton + '<button class="btn btn-danger" onclick="openComplaintModal()">Report an Issue</button></div></div></div></div>';
       }
+      return body;
+    }
+
+    async function certificateView() {
+      const q = S.payload.q || "LM-UP-000127";
+      let d;
+      try {
+        d = await api("/api/public/certificate?q=" + encodeURIComponent(q));
+      } catch (e) {
+        return '<div class="hero">' + topPublic() + '<div class="verdict-hero NON_COMPLIANT"><h2>Certificate unavailable</h2><p>' + e.message + '</p></div></div>';
+      }
+      if (!d.found) return '<div class="hero">' + topPublic() + '<div class="verdict-hero NON_COMPLIANT"><h2>Certificate not found</h2><p>' + (d.note || 'No public certificate record exists for this reference.') + '</p></div></div>';
+
+      const c = d.certificate || {};
+      const i = d.instrument || {};
+      const status = String(c.status || "Valid").toLowerCase();
+      const ribbonClass = status === "expired" ? "expired" : (status === "expiring" ? "expiring" : "valid");
+      const authority = c.authority || i.stamp_lmo || "Legal Metrology Authority";
+      const verificationUrl = c.verification_url || (location.origin + "/?verify=" + encodeURIComponent(c.cert_no || i.serial || q));
+
+      const body = '<div class="hero"><div class="print-actions no-print"><button class="btn btn-navy" onclick="go(\'public-result\',{q:\'' + (i.serial || q) + '\'})">← Back to Verification</button><button class="btn btn-saffron" onclick="window.print()">Print / Save as PDF</button></div><article class="certificate-page"><div class="certificate-inner"><header class="cert-head"><div class="cert-emblem">⚖️</div><div class="cert-subtitle">Government Verification Record</div><h1 class="cert-title">प्रमाण PRAMĀṆA</h1><div class="cert-subtitle">Legal Metrology Verification Certificate</div><div class="cert-ribbon ' + ribbonClass + '">' + String(c.status || "VALID").toUpperCase() + '</div></header><div class="cert-number"><div class="cert-subtitle">Certificate Number</div><div class="mono">' + (c.cert_no || "—") + '</div></div><div class="cert-grid"><section class="cert-section"><h3>Instrument Details</h3><table class="cert-table"><tr><th>Instrument ID</th><td class="mono">' + (i.serial || c.serial || "—") + '</td></tr><tr><th>Instrument Type</th><td>' + (i.type_label || i.type || "—") + '</td></tr><tr><th>Manufacturer</th><td>' + (i.manufacturer || "—") + '</td></tr><tr><th>Model</th><td>' + (i.model || "—") + '</td></tr><tr><th>Model Approval</th><td class="mono">' + (i.model_approval || "—") + '</td></tr><tr><th>Accuracy / Capacity</th><td>Class ' + (i.accuracy_class || "—") + ' · Max ' + (i.max_kg || "—") + ' kg</td></tr></table></section><section class="cert-section"><h3>Owner &amp; Verification</h3><table class="cert-table"><tr><th>Owner / Establishment</th><td>' + (c.owner || i.premises || "—") + '</td></tr><tr><th>Location</th><td>' + [i.district,i.state].filter(Boolean).join(", ") + '</td></tr><tr><th>Verification Date</th><td class="mono">' + (c.issue_date || i.last_verified || "—") + '</td></tr><tr><th>Valid Until</th><td class="mono"><b>' + (c.expiry_date || i.next_due || "—") + '</b></td></tr><tr><th>Verification Result</th><td><b>' + (((i.compliance || {}).verdict) || "VERIFIED") + '</b></td></tr><tr><th>Authority / Stamp</th><td>' + authority + '</td></tr></table></section></div><div class="cert-bottom"><div class="cert-authority"><b>Certification Authority</b><div class="tiny" style="margin-top:6px;">This digital certificate corresponds to the public registry record identified above. Verify authenticity using the QR code before relying on the certificate.</div><div class="cert-sign-line">Authorized Verification Officer</div></div><div class="cert-qr"><div id="certificate-qr" class="cert-qr-box"></div><div class="tiny mono">Scan to verify</div></div></div><footer class="cert-footer">PRAMĀṆA · Digital Legal Metrology Verification Platform<br>Public verification exposes only certificate and instrument information required for authenticity checking.</footer></div></article></div>';
+
+      setTimeout(function(){
+        const el = document.getElementById("certificate-qr");
+        if (el && window.QRCode) {
+          el.innerHTML = "";
+          new QRCode(el, {text: verificationUrl, width:128, height:128, correctLevel:QRCode.CorrectLevel.M});
+        }
+      }, 0);
       return body;
     }
 
@@ -1596,14 +1664,112 @@
 
     async function officerReview() {
       const aid = S.payload.aid;
-      const a = DB.applications.find(function(x) { return x.id === aid && x.workflow === "verification"; });
+      const a = DB.applications.find(function(x) { return Number(x.id) === Number(aid) && x.workflow === "verification"; });
       if (!a) return shell("", '<div class="card">Application not found.</div>', "officer");
       const inst = DB.instruments.find(function(i) { return i.id === a.instrument_id; }) || DB.instruments[0];
-      return shell("", '<p class="crumb">Metrology Officer · Application Review</p><h1>Review Verification Application</h1><p class="intro">Check the owner/trader and instrument details before approving the request.</p><div class="grid-2"><div class="card"><h3>Applicant Details</h3><table class="table"><tr><th>Application ID</th><td class="mono">' + a.public_id + '</td></tr><tr><th>Owner / Trader</th><td>' + a.applicant_name + '</td></tr><tr><th>Establishment</th><td>' + a.org + '</td></tr><tr><th>District</th><td>' + a.district + '</td></tr><tr><th>Contact</th><td class="mono">' + (a.phone || "Not provided") + '</td></tr><tr><th>Submitted</th><td class="mono">' + a.submitted_date + '</td></tr></table></div><div class="card"><h3>Instrument Details</h3><table class="table"><tr><th>Serial</th><td class="mono"><b>' + a.serial + '</b></td></tr><tr><th>Name</th><td>' + a.instrument_name + '</td></tr><tr><th>Manufacturer</th><td>' + inst.manufacturer + '</td></tr><tr><th>Model</th><td>' + inst.model + '</td></tr><tr><th>Type</th><td>' + TYPE_LABEL[inst.type] + '</td></tr><tr><th>Current Registry Status</th><td>' + chip(inst.status) + '</td></tr></table></div></div><div class="card mt"><h3>Officer Decision</h3><p class="tiny">Preferred date from applicant: ' + (a.preferred_date || "Not specified") + '</p><p class="tiny">Notes: ' + (a.notes || "No additional notes") + '</p><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;"><button class="btn btn-ok" onclick="approveVerificationApplication(' + a.id + ')">✓ Approve Application</button><button class="btn btn-danger" onclick="rejectVerificationApplication(' + a.id + ')">Reject Application</button><button class="btn btn-ghost" onclick="go(\'officer-queue\')">Back to Queue</button></div><div id="review-out" class="mt"></div></div>', "officer");
+      return shell("", '<p class="crumb">Metrology Officer · Application Review</p><h1>Review Verification Application</h1><p class="intro">Check the owner/trader and instrument details before approving the request.</p><div class="grid-2"><div class="card"><h3>Applicant Details</h3><table class="table"><tr><th>Application ID</th><td class="mono">' + a.public_id + '</td></tr><tr><th>Owner / Trader</th><td>' + a.applicant_name + '</td></tr><tr><th>Establishment</th><td>' + a.org + '</td></tr><tr><th>District</th><td>' + a.district + '</td></tr><tr><th>Contact</th><td class="mono">' + (a.phone || "Not provided") + '</td></tr><tr><th>Submitted</th><td class="mono">' + a.submitted_date + '</td></tr></table></div><div class="card"><h3>Instrument Details</h3><table class="table"><tr><th>Serial</th><td class="mono"><b>' + a.serial + '</b></td></tr><tr><th>Name</th><td>' + a.instrument_name + '</td></tr><tr><th>Manufacturer</th><td>' + inst.manufacturer + '</td></tr><tr><th>Model</th><td>' + inst.model + '</td></tr><tr><th>Type</th><td>' + TYPE_LABEL[inst.type] + '</td></tr><tr><th>Current Registry Status</th><td>' + chip(inst.status) + '</td></tr></table></div></div><div class="card mt"><h3>Officer Decision</h3><p class="tiny">Preferred date from applicant: ' + (a.preferred_date || "Not specified") + '</p><p class="tiny">Notes: ' + (a.notes || "No additional notes") + '</p><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;"><button class="btn btn-ok" onclick="approveVerificationApplication(' + a.id + ')">✓ Approve Application</button><button class="btn btn-danger" onclick="rejectVerificationApplication(' + a.id + ')">Reject Application</button><button class="btn btn-saffron" onclick="forwardVerificationToGatc(' + a.id + ')">→ Forward to GATC</button><button class="btn btn-ghost" onclick="go(\'officer-queue\')">Back to Queue</button></div><div id="review-out" class="mt"></div></div>', "officer");
+    }
+
+    async function forwardVerificationToGatc(aid) {
+      const a = DB.applications.find(function(x) {
+        return Number(x.id) === Number(aid) && x.workflow === "verification";
+      });
+
+      if (!a) {
+        alert("Application not found.");
+        return;
+      }
+
+      const inst = DB.instruments.find(function(i) {
+        return Number(i.id) === Number(a.instrument_id);
+      });
+
+      if (!inst) {
+        alert("Instrument details not found.");
+        return;
+      }
+
+      const recommendations = DB.gatcs
+        .map(function(g) {
+          return { g: g, score: gatcEligibilityScore(g, inst) };
+        })
+        .filter(function(x) { return x.score >= 0; })
+        .sort(function(a, b) { return b.score - a.score; });
+
+      if (!recommendations.length) {
+        alert("No eligible GATC is available for this instrument.");
+        return;
+      }
+
+      const selected = recommendations[0].g;
+      const confirmed = confirm(
+        "Forward " + a.public_id + " to " + selected.code +
+        " (" + selected.name + ")?\n\nMatch score: " +
+        recommendations[0].score + "/100"
+      );
+
+      if (!confirmed) return;
+
+      try {
+        const response = await fetch("/api/verification/forward-gatc", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            id: a.id,
+            gatc_id: selected.id
+          })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || "Could not forward the application.");
+        }
+
+        if (result.application) {
+          Object.assign(a, result.application);
+        }
+
+        addNotification(
+          "gatc",
+          "New Test Assignment",
+          a.public_id + " has been forwarded to " + selected.code + " for instrument testing.",
+          "📋",
+          "gatc-requests",
+          { aid: a.id }
+        );
+
+        addNotification(
+          "admin",
+          "Application Forwarded to GATC",
+          a.public_id + " was forwarded to " + selected.code + ".",
+          "✅",
+          "admin-applications",
+          { aid: a.id }
+        );
+
+        addNotification(
+          "user",
+          "Application Forwarded",
+          a.public_id + " has been forwarded to a Government Approved Test Centre for instrument testing.",
+          "📋",
+          "verification-applications",
+          { aid: a.id }
+        );
+
+        alert(a.public_id + " successfully forwarded to " + selected.code + ".");
+        go("officer-queue");
+      } catch (error) {
+        alert(
+          "Forwarding failed.\n\n" +
+          (error && error.message ? error.message : "Could not save the GATC assignment.")
+        );
+      }
     }
 
     function approveVerificationApplication(aid) {
-      const a = DB.applications.find(function(x) { return x.id === aid && x.workflow === "verification"; });
+      const a = DB.applications.find(function(x) { return Number(x.id) === Number(aid) && x.workflow === "verification"; });
       if (!a) return;
       a.status = "approved";
       a.approved_by = S.user ? S.user.name : "Metrology Officer";
@@ -1617,7 +1783,7 @@
     }
 
     function rejectVerificationApplication(aid) {
-      const a = DB.applications.find(function(x) { return x.id === aid && x.workflow === "verification"; });
+      const a = DB.applications.find(function(x) { return Number(x.id) === Number(aid) && x.workflow === "verification"; });
       if (!a) return;
       const reason = prompt("Reason for rejection:", "Instrument or applicant details require correction.");
       if (reason === null) return;
@@ -1632,7 +1798,7 @@
 
     async function officerSchedule() {
       const aid = S.payload.aid;
-      const a = DB.applications.find(function(x) { return x.id === aid && x.workflow === "verification"; });
+      const a = DB.applications.find(function(x) { return Number(x.id) === Number(aid) && x.workflow === "verification"; });
       if (!a) return shell("", '<div class="card">Application not found.</div>', "officer");
       if (a.status !== "approved") return shell("", '<div class="card"><h3>Schedule unavailable</h3><p class="tiny">Only approved applications can be scheduled.</p><button class="btn btn-navy mt" onclick="go(\'officer-queue\')">Back to Queue</button></div>', "officer");
       const suggested = a.preferred_date || new Date(Date.now() + 86400000).toISOString().slice(0,10);
@@ -1640,7 +1806,7 @@
     }
 
     function confirmVerificationSchedule(aid) {
-      const a = DB.applications.find(function(x) { return x.id === aid && x.workflow === "verification"; });
+      const a = DB.applications.find(function(x) { return Number(x.id) === Number(aid) && x.workflow === "verification"; });
       const date = $("#schedule-date") ? $("#schedule-date").value : "";
       const time = $("#schedule-time") ? $("#schedule-time").value : "";
       const location = $("#schedule-location") ? $("#schedule-location").value.trim() : "";
@@ -1834,7 +2000,7 @@
     }
 
     function openVerificationPayment(aid) {
-      const a = DB.applications.find(function(x){ return x.id === aid && x.workflow === "verification"; });
+      const a = DB.applications.find(function(x){ return Number(x.id) === Number(aid) && x.workflow === "verification"; });
       if (!a || (a.status !== "completed" && a.status !== "payment_pending")) return;
       const amount = verificationFeeForApplication(a);
       const existing = document.getElementById("verification-payment-modal");
@@ -1843,7 +2009,7 @@
     }
 
     function completeVerificationPayment(aid, amount) {
-      const a = DB.applications.find(function(x){ return x.id === aid && x.workflow === "verification"; });
+      const a = DB.applications.find(function(x){ return Number(x.id) === Number(aid) && x.workflow === "verification"; });
       if (!a) return;
       a.payment = { status: "paid", amount: amount, paid_on: new Date().toISOString(), payment_id: "PAY-" + Date.now() };
       a.status = "payment_paid";
@@ -1938,6 +2104,7 @@
       "login-unified": unifiedLoginView,
       "scan-lab": scanLabView,
       "public-result": publicResultView,
+      "certificate": certificateView,
       guidelines: guidelinesView,
       "consumer-home": consumerHome,
       "consumer-instruments": consumerInstrumentsView,
@@ -1986,7 +2153,16 @@
 
     (async function boot() {
       const h = location.hash.replace("#", "");
-      if (h) S.view = h;
+      if (h) {
+        S.view = h;
+      } else {
+        const params = new URLSearchParams(location.search);
+        const verify = params.get("verify");
+        if (verify) {
+          S.view = "public-result";
+          S.payload = {q: verify};
+        }
+      }
       try {
         const bootstrap = await api("/api/bootstrap");
         if (Array.isArray(bootstrap.instruments)) DB.instruments = bootstrap.instruments;

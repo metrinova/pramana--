@@ -241,5 +241,67 @@ def guidelines(): return jsonify({'guidelines':[{'id':'GL-01','jurisdiction':'In
 @app.route('/api/public/analyze',methods=['POST'])
 def analyze(): return jsonify({'label':'GENUINE','headline':'Genuine OEM Instrument & Sealing Verified','confidence':96,'flags':['Nameplate typography matches registered mold','Lead wire seal imprint corresponds to registered LMO'],'parts':[],'compliance':{'verdict':'COMPLIANT','passed':['Model approval active'],'issues':[],'rules_applied':['Legal Metrology Act s.24']}})
 
+@app.post('/api/verification/forward-gatc')
+def forward_to_gatc():
+    u = current_user()
+
+    if not u:
+        return jsonify({'error': 'Authentication required'}), 401
+
+    if u.get('role') not in ('officer', 'admin'):
+        return jsonify({
+            'error': 'Only an officer or admin can forward an application to a GATC'
+        }), 403
+
+    b = request.get_json(silent=True) or {}
+
+    try:
+        aid = int(b.get('id'))
+        gid = int(b.get('gatc_id'))
+    except (TypeError, ValueError):
+        return jsonify({
+            'error': 'Application ID and GATC ID are required'
+        }), 400
+
+    if aid <= 0 or gid <= 0:
+        return jsonify({
+            'error': 'Application ID and GATC ID must be valid positive integers'
+        }), 400
+
+    c = conn()
+
+    r = c.execute(
+        'SELECT data FROM applications WHERE id=?',
+        (aid,)
+    ).fetchone()
+
+    if not r:
+        c.close()
+        return jsonify({'error': 'Application not found'}), 404
+
+    d = json.loads(r['data'])
+
+    d['gatc_id'] = gid
+    d['gatc_assigned_on'] = datetime.date.today().isoformat()
+    d['gatc_assigned_by'] = u.get('name', 'Officer')
+    d['status'] = 'gatc_assigned'
+
+    if b.get('analysis'):
+        d['photo_analysis'] = b['analysis']
+
+    c.execute(
+        'UPDATE applications SET data=? WHERE id=?',
+        (json.dumps(d), aid)
+    )
+
+    c.commit()
+    c.close()
+
+    return jsonify({
+        'ok': True,
+        'application': d
+    })
 if __name__=='__main__':
-    init_db(); app.run(host='127.0.0.1',port=5000,debug=True)
+    init_db(); app.run(host='127.0.0.1', port=5001, debug=True)
+    
+    
