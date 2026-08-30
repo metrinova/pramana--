@@ -454,6 +454,64 @@
     .camera-actions{display:flex;justify-content:flex-end;gap:10px;padding:18px 24px 22px}
     @media(max-width:600px){.camera-dialog-head{padding:18px}.camera-preview-wrap{margin:0 18px}.camera-actions{padding:14px 18px 18px}.camera-dialog-head h2{font-size:24px}}
 
+    /* ---------- Metrology Officer workspace · PDF aligned ---------- */
+    .officer-shell{grid-template-columns:258px 1fr!important;min-height:calc(100vh - 4px);background:#f4f6f9}
+    .officer-shell .officer-side{background:#173b63;color:#dfeaf6;padding:0;display:flex;flex-direction:column;min-height:calc(100vh - 4px);border-right:1px solid rgba(0,0,0,.08)}
+    .officer-brand{height:88px;padding:16px 18px;display:flex;align-items:center;gap:11px;border-bottom:1px solid rgba(255,255,255,.1)}
+    .officer-brand .brand-emblem{width:44px;height:44px;background:#173b63;color:#e2b35a;border:1px solid #e2b35a;box-shadow:none}
+    .officer-brand .nm{font-family:var(--serif);font-size:20px;font-weight:720;color:#fff;letter-spacing:.08em}
+    .officer-brand .sub{font-size:9px;letter-spacing:.08em;color:#aebfd2;text-transform:uppercase;margin-top:2px}
+    .officer-nav{padding:14px 10px;display:flex;flex-direction:column;gap:4px}
+    .officer-shell .officer-nav .navbtn{min-height:55px;text-align:left;background:transparent;border:0;color:#dbe7f3;padding:8px 11px;border-radius:8px;display:flex;gap:12px;align-items:center;font-size:13px;font-weight:650;width:100%;transition:.15s}
+    .officer-shell .officer-nav .navbtn:hover{background:rgba(255,255,255,.07);color:#fff}
+    .officer-shell .officer-nav .navbtn.active{background:#355777;color:#fff;box-shadow:inset 3px 0 0 #e0a43a}
+    .officer-nav-icon{width:29px;height:29px;border:1px solid rgba(255,255,255,.27);border-radius:6px;display:grid;place-items:center;font-size:14px;flex:0 0 auto}
+    .officer-shell .officer-nav .navbtn.active .officer-nav-icon{background:#416786;border-color:#6e91b0}
+    .officer-shell .officer-nav .navbtn small{display:block;color:#8fa5bb;font-weight:400;font-size:10px;margin-top:2px}
+    .officer-shell .officer-nav .navbtn.active small{color:#c5d5e4}
+    .officer-side-bottom{margin-top:auto;padding:12px 10px 14px;border-top:1px solid rgba(255,255,255,.08)}
+    .officer-user{display:flex;gap:10px;align-items:center;padding:9px 7px 12px}.officer-avatar{width:35px;height:35px;border-radius:50%;background:#dce8f5;color:#173b63;display:grid;place-items:center;font-weight:800}.officer-user b{display:block;color:#fff;font-size:12px}.officer-user span{color:#91a7bc;font-size:10px}.officer-logout{width:100%;border:0;background:rgba(255,255,255,.08);color:#dce7f3;border-radius:7px;padding:9px;font-size:12px}
+    .officer-content{min-width:0}.officer-header{height:72px;background:#fff;border-bottom:1px solid #e0e5eb;display:flex;align-items:center;justify-content:space-between;padding:0 28px}.officer-header-brand{display:flex;align-items:center;gap:10px}.officer-header-brand .brand-emblem{width:38px;height:38px;background:#fff;color:#b8893a;border:0;box-shadow:none}.officer-header-brand .nm{font-family:var(--serif);font-size:18px;color:#173b63;font-weight:720}.officer-header-brand .sub{font-size:9px;color:#718094}.officer-header-right{display:flex;align-items:center;gap:16px}.officer-account{display:flex;align-items:center;gap:9px;padding-left:15px;border-left:1px solid #e2e7ed}.officer-account b{display:block;color:#1a2f49;font-size:12px}.officer-account span{display:block;color:#738196;font-size:10px;margin-top:2px}.officer-main{padding:27px 30px 42px;background:#f5f7fa;min-height:calc(100vh - 76px)}
+    .officer-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:22px}.officer-head h1{font-family:var(--sans);font-size:30px;font-weight:700;color:#173b63;letter-spacing:-.02em;margin:0}.officer-head p{margin:5px 0 0;color:#68778a;font-size:13px}.officer-date{background:#fff;border:1px solid #e0e6ed;border-radius:8px;padding:9px 13px;color:#5f6d7e;font:500 11px var(--mono)}
+    .officer-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-bottom:20px}.officer-kpi{background:#fff;border:1px solid #e0e6ed;border-radius:10px;padding:15px 14px;min-height:108px;box-shadow:0 3px 12px rgba(18,47,79,.035)}.officer-kpi .ki{width:31px;height:31px;border-radius:7px;background:#edf4fb;color:#1d67a8;display:grid;place-items:center;margin-bottom:9px}.officer-kpi b{display:block;color:#173b63;font-size:25px;line-height:1;margin-bottom:6px}.officer-kpi span{display:block;color:#617083;font-size:10px;font-weight:750}.officer-kpi.warn .ki{background:#fff4df;color:#c78300}.officer-kpi.warn b{color:#9a6710}.officer-kpi.danger .ki{background:#fff0ee;color:#c94339}.officer-kpi.danger b{color:#b5362e}.officer-kpi.ok .ki{background:#e9f7ef;color:#237c50}.officer-kpi.ok b{color:#1f6947}
+    .officer-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,.85fr);gap:18px;margin-bottom:18px}.officer-panel{background:#fff;border:1px solid #e0e6ed;border-radius:10px;box-shadow:0 3px 12px rgba(18,47,79,.035);overflow:hidden}.officer-panel-head{padding:16px 17px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}.officer-panel-head h3{margin:0;color:#173b63;font-family:var(--sans);font-size:16px}.officer-panel-head p{margin:4px 0 0;color:#778496;font-size:10px}.officer-table-wrap{overflow:auto;padding:0 10px 10px}.officer-table{width:100%;border-collapse:collapse;min-width:650px;font-size:11px}.officer-table th{text-align:left;color:#77869a;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:9px 7px;border-bottom:1px solid #e7ebf0}.officer-table td{padding:11px 7px;border-bottom:1px solid #edf0f3;color:#2a3a4d;vertical-align:middle}.officer-table tr:last-child td{border-bottom:0}.officer-mini-list{padding:0 16px 15px}.officer-mini-item{display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:start;padding:11px 0;border-top:1px solid #edf0f3}.officer-mini-item:first-child{border-top:0}.officer-time{background:#edf4fb;color:#1c5fa4;border-radius:6px;padding:7px 4px;text-align:center;font:700 10px var(--mono)}.officer-mini-item b{font-size:11px;color:#263950}.officer-mini-item p{margin:3px 0 0;color:#778496;font-size:9px;line-height:1.4}.officer-risk-list{padding:0 16px 15px}.officer-risk-item{padding:12px 0;border-top:1px solid #edf0f3}.officer-risk-item:first-child{border-top:0}.officer-risk-item .rr{display:flex;justify-content:space-between;gap:8px}.officer-risk-item b{font-size:11px;color:#263950}.officer-risk-item p{margin:4px 0;color:#788596;font-size:9px}.officer-action-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:15px}.officer-action{border:1px solid #e1e7ed;border-radius:8px;background:#fff;padding:13px;text-align:left;cursor:pointer}.officer-action:hover{border-color:#9ebbd8;background:#f8fbff}.officer-action .ai{font-size:19px;color:#173b63;margin-bottom:8px}.officer-action b{display:block;color:#173b63;font-size:10px}.officer-action span{display:block;color:#7b8796;font-size:9px;margin-top:3px}
+    @media(max-width:1100px){.officer-kpis{grid-template-columns:repeat(3,1fr)}.officer-grid{grid-template-columns:1fr}.officer-action-row{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:800px){.officer-shell{grid-template-columns:1fr!important}.officer-shell .officer-side{display:none}.officer-header{padding:0 16px}.officer-header-brand{display:none}.officer-main{padding:20px 16px}.officer-head{flex-direction:column}.officer-kpis{grid-template-columns:1fr 1fr}}
+    @media(max-width:520px){.officer-kpis{grid-template-columns:1fr}.officer-account>div:not(.officer-avatar){display:none}.officer-action-row{grid-template-columns:1fr}}
+
+    /* ---------- Government dashboard cards ---------- */
+    .admin-shell{grid-template-columns:255px 1fr!important;min-height:calc(100vh - 4px);background:#f5f7fa}
+    .admin-shell .side{background:#0b2b52;color:#e8eef7;padding:18px 10px;min-height:calc(100vh - 4px);border-right:1px solid rgba(255,255,255,.08)}
+    .admin-shell .side .brand{padding:6px 10px 18px;color:#eadfcb}
+    .admin-shell .side .brand-emblem{width:46px;height:46px;background:#fff;color:#b8893a;border:1px solid #b8893a;box-shadow:none}
+    .admin-shell .side .brand .nm{font-family:var(--serif);font-size:21px;font-weight:720;color:#fff;letter-spacing:.04em}
+    .admin-shell .side .brand .sub{font-size:9px;letter-spacing:.04em;color:#b7c4d6;text-transform:none;margin-top:2px}
+    .admin-shell .navbtn{min-height:54px;color:#dce7f5;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:600}
+    .admin-shell .navbtn:hover,.admin-shell .navbtn.active{background:#173f70;color:#fff}
+    .admin-shell .navbtn.active{box-shadow:inset 3px 0 0 #2e79d6}
+    .admin-shell .navbtn small{color:#91a5bd;font-size:10px;margin-top:2px}
+    .admin-shell .who{background:rgba(255,255,255,.04);border-color:rgba(232,211,164,.15)}
+    .admin-shell .main{background:#f6f8fb;padding:28px 30px 42px}
+    .admin-shell .main h1{font-family:var(--sans);font-weight:700;font-size:30px;letter-spacing:-.02em;color:#173b67}
+    .admin-shell .admin-kpi-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin:0 0 22px}
+    .admin-shell .admin-kpi{background:#fff;border:1px solid #e0e6ed;border-radius:11px;padding:17px 18px;min-height:112px;position:relative;overflow:hidden;box-shadow:0 4px 14px rgba(18,47,79,.035);cursor:pointer}
+    .admin-shell .admin-kpi .admin-kpi-icon{width:34px;height:34px;border-radius:8px;background:#edf4fc;color:#1d67b4;display:grid;place-items:center;font-size:17px;margin-bottom:8px}
+    .admin-shell .admin-kpi b{display:block;font-size:27px;line-height:1;color:#173b67;margin-bottom:6px}
+    .admin-shell .admin-kpi span{display:block;color:#5f6e80;font-size:11px;font-weight:700}
+    .admin-shell .admin-kpi small{display:block;color:#8995a5;font-size:10px;margin-top:4px}
+    .admin-shell .admin-kpi.warn .admin-kpi-icon{background:#fff4df;color:#d48a00}.admin-shell .admin-kpi.warn b{color:#222}
+    .admin-shell .admin-kpi.ok .admin-kpi-icon{background:#e8f7ef;color:#23935b}.admin-shell .admin-kpi.ok b{color:#174d38}
+    .admin-shell .admin-kpi.danger .admin-kpi-icon{background:#fff0ee;color:#dc4f43}.admin-shell .admin-kpi.danger b{color:#c63e35}
+    .admin-shell .admin-panel{background:#fff;border:1px solid #e0e6ed;border-radius:11px;box-shadow:0 4px 14px rgba(18,47,79,.035);overflow:hidden}
+    .admin-shell .admin-panel-head{padding:17px 18px 12px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .admin-shell .admin-panel-head h3{margin:0;color:#173b67;font-family:var(--sans);font-size:17px;font-weight:700}
+    .admin-shell .admin-panel-body{padding:0 18px 18px}
+    .admin-shell .admin-alert{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-top:1px solid #edf0f3;font-size:12px}
+    .admin-shell .admin-alert:first-child{border-top:0}
+    @media(max-width:1200px){.admin-shell .admin-kpi-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:800px){.admin-shell{grid-template-columns:1fr!important}.admin-shell .side{display:none}.admin-shell .main{padding:18px}.admin-shell .admin-kpi-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:520px){.admin-shell .admin-kpi-grid{grid-template-columns:1fr}}
+
     /* ---------- GATC dashboard · redesigned admin workspace ---------- */
     .gatc-shell{grid-template-columns:255px 1fr!important;min-height:calc(100vh - 4px);background:#f5f7fa}
     .gatc-shell .gatc-side{
@@ -541,10 +599,205 @@
     @media(max-width:1100px){.gatc-kpi-grid{grid-template-columns:repeat(3,1fr)}.gatc-two-col,.gatc-bottom-grid{grid-template-columns:1fr}}
     @media(max-width:800px){.gatc-shell{grid-template-columns:1fr!important}.gatc-shell .gatc-side{display:none}.gatc-header{padding:0 16px}.gatc-header-brand{display:none}.gatc-main{padding:20px 16px}.gatc-page-head{flex-direction:column}.gatc-kpi-grid{grid-template-columns:1fr 1fr}.gatc-action-grid{grid-template-columns:1fr 1fr}}
     @media(max-width:520px){.gatc-kpi-grid{grid-template-columns:1fr}.gatc-account>div:not(.gatc-avatar){display:none}.gatc-action-grid{grid-template-columns:1fr}}
+
+/* ===== PRAMANA GATC DASHBOARD THEME =====
+   Visual-only GATC dashboard styling.
+   Existing JS, API calls and workflows are unchanged.
+*/
+.gatc-shell{
+  grid-template-columns:272px minmax(0,1fr)!important;
+  min-height:100vh!important;
+  background:#f5f7fb!important;
+}
+.gatc-shell .gatc-side{
+  background:#0d315b!important;
+  color:#eaf1f9!important;
+  border-right:0!important;
+  min-height:100vh!important;
+}
+.gatc-side-brand{
+  height:96px!important;
+  padding:16px 20px!important;
+  border-bottom:1px solid rgba(255,255,255,.08)!important;
+}
+.gatc-side-brand .brand-emblem{
+  width:48px!important;
+  height:48px!important;
+  background:#fff!important;
+  color:#b8893a!important;
+  border:1px solid #c79a42!important;
+  border-radius:8px!important;
+}
+.gatc-side-brand .nm{
+  font-size:21px!important;
+  color:#fff!important;
+}
+.gatc-side-brand .sub{
+  color:#b9c7d8!important;
+  font-size:9px!important;
+}
+.gatc-nav{
+  padding:16px 10px!important;
+  gap:5px!important;
+}
+.gatc-shell .gatc-nav .navbtn{
+  min-height:58px!important;
+  padding:8px 13px!important;
+  border-radius:8px!important;
+  color:#dbe7f5!important;
+}
+.gatc-shell .gatc-nav .navbtn.active{
+  background:#1b4779!important;
+  box-shadow:inset 3px 0 0 #2d8cf0!important;
+}
+.gatc-nav-icon{
+  width:30px!important;
+  height:30px!important;
+  border-radius:6px!important;
+  background:rgba(255,255,255,.02)!important;
+}
+.gatc-shell .gatc-nav .navbtn.active .gatc-nav-icon{
+  background:#2a5c91!important;
+  border-color:#5790c5!important;
+}
+.gatc-side-bottom{
+  padding:14px 14px 18px!important;
+  border-top:1px solid rgba(255,255,255,.08)!important;
+}
+.gatc-side-user{
+  padding:10px 5px!important;
+}
+.gatc-signout{
+  border:1px solid rgba(255,255,255,.45)!important;
+  background:transparent!important;
+  color:#fff!important;
+  border-radius:7px!important;
+}
+
+.gatc-content{
+  background:#f5f7fb!important;
+}
+.gatc-header{
+  height:100px!important;
+  padding:0 32px!important;
+  background:#fff!important;
+  border-bottom:1px solid #e1e6ec!important;
+}
+.gatc-header-brand .brand-emblem{
+  width:42px!important;
+  height:42px!important;
+}
+.gatc-header-brand .nm{
+  color:#183d68!important;
+}
+.gatc-header-right{
+  gap:20px!important;
+}
+.gatc-account{
+  padding-left:18px!important;
+}
+.gatc-main{
+  padding:34px 32px 46px!important;
+  background:#f5f7fb!important;
+  min-height:calc(100vh - 100px)!important;
+}
+.gatc-page-head{
+  margin-bottom:26px!important;
+}
+.gatc-page-head h1{
+  font-size:31px!important;
+  font-weight:750!important;
+  color:#183d68!important;
+}
+.gatc-page-head p{
+  color:#6b7b90!important;
+  font-size:14px!important;
+}
+.gatc-date{
+  border-radius:10px!important;
+  padding:12px 16px!important;
+  box-shadow:0 3px 10px rgba(20,45,75,.04)!important;
+}
+
+.gatc-kpi-grid{
+  gap:15px!important;
+  margin-bottom:24px!important;
+}
+.gatc-kpi-card{
+  min-height:154px!important;
+  padding:18px 19px!important;
+  border:1px solid #dfe5ec!important;
+  border-radius:11px!important;
+  box-shadow:0 3px 12px rgba(18,47,79,.035)!important;
+}
+.gatc-kpi-card .kpi-icon{
+  width:36px!important;
+  height:36px!important;
+  border-radius:9px!important;
+}
+.gatc-kpi-card b{
+  font-size:29px!important;
+  margin-bottom:7px!important;
+}
+.gatc-kpi-card span{
+  font-size:11px!important;
+  color:#53657a!important;
+}
+.gatc-kpi-card small{
+  font-size:10px!important;
+  color:#8795a7!important;
+}
+
+.gatc-two-col{
+  gap:20px!important;
+  margin-bottom:20px!important;
+}
+.gatc-panel{
+  border:1px solid #dfe5ec!important;
+  border-radius:11px!important;
+  box-shadow:0 3px 12px rgba(18,47,79,.035)!important;
+}
+.gatc-panel-head{
+  padding:19px 20px 13px!important;
+}
+.gatc-panel-head h3{
+  color:#193f6b!important;
+  font-size:17px!important;
+}
+.gatc-link{
+  color:#1768c2!important;
+}
+.gatc-table-wrap{
+  padding:0 13px 11px!important;
+}
+.gatc-table th{
+  color:#7b899b!important;
+}
+.gatc-table td{
+  color:#2c3d53!important;
+}
+.gatc-schedule-list{
+  padding:0 13px 13px!important;
+}
+
+@media (max-width:900px){
+  .gatc-shell{grid-template-columns:220px minmax(0,1fr)!important}
+  .gatc-header{padding:0 20px!important}
+  .gatc-main{padding:26px 20px 38px!important}
+}
+@media (max-width:700px){
+  .gatc-shell{grid-template-columns:1fr!important}
+  .gatc-side{display:none!important}
+  .gatc-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media (max-width:460px){
+  .gatc-kpi-grid{grid-template-columns:1fr!important}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-</head>
+<style id="gov-kpi-responsive">@media(max-width:1100px){.grid-4[style*="repeat(5"]{grid-template-columns:repeat(3,minmax(0,1fr))!important}}@media(max-width:700px){.grid-4[style*="repeat(5"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}}@media(max-width:460px){.grid-4[style*="repeat(5"]{grid-template-columns:1fr!important}}</style></head>
 <body>
   <!-- Direct QR scanner modal -->
   <div id="camera-modal" class="camera-modal" aria-hidden="true">
@@ -851,20 +1104,20 @@
             <div class="pschip">SIH26036 · Software · Transportation &amp; Logistics</div>
             <div class="home-actions">
               <button class="linkish home-primary" onclick="openScanner()">⌕&nbsp; Scan / Verify</button>
-              <button class="linkish" onclick="go('login-unified')">Apply for Verification →</button>
             </div>
           </div>
           <div class="home-verify-card">
-            <div class="kicker" style="margin-bottom:6px;">Public Registry</div>
-            <h2>Verify an Instrument</h2>
-            <p>Enter an instrument serial number to check its current registry and verification status.</p>
+            <div class="kicker" style="margin-bottom:6px;">Citizen Services</div>
+            <h2>Track Complaint</h2>
+            <p>Enter your complaint ID to check its current status and progress.</p>
             <div class="home-verify-input">
-              <input id="home-verify-id" value="LM-UP-000127" placeholder="Instrument ID / Serial No." />
-              <button onclick="go('public-result',{q:document.getElementById('home-verify-id').value.trim()||'LM-UP-000127'})">Verify</button>
+              <input id="home-complaint-id" placeholder="Complaint ID (e.g. CMP-1024)" />
+              <button onclick="trackHomeComplaint()">Track</button>
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;">
-              <span class="chip ok">✓ Registry Check</span><span class="chip info">QR Ready</span><span class="chip muted">Status Lookup</span>
+              <span class="chip ok">✓ Status Tracking</span><span class="chip info">Complaint Updates</span><span class="chip muted">Citizen Access</span>
             </div>
+            <div id="home-complaint-result" style="margin-top:14px;"></div>
           </div>
         </div>
         <div class="home-trust">
@@ -986,20 +1239,23 @@
           ["admin-registry", "Instrument Registry", "Database"],
           ["admin-applications", "Applications", "Workflows"],
           ["admin-gatc-network", "GATC Network", "Approved centres"],
-          ["admin-inspections", "Inspections", "Field tests"],
-          ["admin-risk", "Risk & Enforcement", "Priority queue"],
           ["admin-complaints", "Complaints", "Grievances"],
           ["admin-officers", "Officers", "Workload"],
-          ["admin-analytics", "Reports & Analytics", "Metrics"],
+          ["admin-risk", "Risk & Enforcement", "Priority queue"],
           ["admin-map", "Enforcement Map", "GIS View"],
+          ["admin-certificates", "Certificates", "Certificate management"],
+          ["admin-analytics", "Reports & Analytics", "Metrics"],
           ["guidelines", "Rule Library", "India + OIML"]
         ];
       } else if (role === "officer") {
         items = [
-          ["officer-home", "Officer Desk", "Overview"],
-          ["officer-queue", "Inspection Queue", "Assigned"],
-          ["scan-lab", "Photo Authenticity", "Genuine vs clone"],
-          ["guidelines", "Rule Library", "Standards"]
+          ["officer-home", "Dashboard", "Overview"],
+          ["officer-queue", "Assigned Inspections", "Assigned field tests"],
+          ["officer-inspect", "Inspection", "Perform inspection"],
+          ["officer-results", "Instrument Result", "PASS / FAIL results"],
+          ["officer-history", "Instrument History", "Verification history"],
+          ["officer-risk", "Priority / High Risk", "Priority queue"],
+          ["officer-notifications", "Notifications", "Alerts & updates"]
         ];
       } else if (role === "gatc") {
         items = [
@@ -1023,6 +1279,16 @@
         ];
       }
 
+      if (role === "officer") {
+        const u = S.user || {name:"Rahul Sharma", role:"Government Officer", org:"Legal Metrology Department", lmo_code:"LMO-LKO-01", district:"Lucknow"};
+        const iconMap = {"officer-home":"▦","officer-queue":"▤","officer-inspect":"◉","officer-results":"✓","officer-history":"◷","officer-risk":"!","officer-notifications":"🔔"};
+        let navBtns="";
+        items.forEach(function(item){ const activeClass=S.view===item[0]?"active":""; navBtns+='<button class="navbtn '+activeClass+'" onclick="go(\''+item[0]+'\')"><span class="officer-nav-icon">'+(iconMap[item[0]]||"•")+'</span><div>'+item[1]+'<small>'+item[2]+'</small></div></button>'; });
+        const initials=(u.name||"O").split(" ").map(function(x){return x[0]}).slice(0,2).join("").toUpperCase();
+        return '<div class="app officer-shell"><aside class="officer-side"><a href="#landing" class="officer-brand" style="text-decoration:none;color:inherit;cursor:pointer" onclick="event.preventDefault(); logoutHome()"><div class="brand-emblem">⚖</div><div><div class="nm">PRAMĀṆA</div><div class="sub">Metrology Officer Portal</div></div></a><nav class="officer-nav">'+navBtns+'</nav><div class="officer-side-bottom"><div class="officer-user"><div class="officer-avatar">'+initials+'</div><div><b>'+ (u.name||"Government Officer") +'</b><span>'+ (u.lmo_code||"LMO-LKO-01") +'</span></div></div><button class="officer-logout" onclick="doLogout()">↪ &nbsp; Logout</button></div></aside><div class="officer-content"><header class="officer-header"><div class="officer-header-brand"><div class="brand-emblem">⚖</div><div><div class="nm">प्रमाण PRAMĀṆA</div><div class="sub">Department of Consumer Affairs · Legal Metrology</div></div></div><div class="officer-header-right">'+notificationBellHtml()+'<div class="officer-account"><div class="officer-avatar">'+initials+'</div><div><b>'+ (u.name||"Government Officer") +'</b><span>'+ (u.lmo_code||"LMO-LKO-01") +' · '+(u.district||"Lucknow")+'</span></div></div></div></header><main class="main officer-main">'+body+'</main></div></div>';
+      }
+
+
       if (role === "gatc") {
         const u = S.user || {name:"GATC Operator", role:"GATC Operator", org:"ABC Legal Metrology", gatc_id:21};
         const iconMap = {
@@ -1036,7 +1302,7 @@
         });
         const initials = (u.name || "G").split(" ").map(function(x){return x[0]}).slice(0,2).join("").toUpperCase();
         const g = currentGatc();
-        return '<div class="app gatc-shell"><aside class="gatc-side"><div class="gatc-side-brand"><div class="brand-emblem">⚖</div><div><div class="nm">PRAMĀṆA</div><div class="sub">Legal Metrology Verification Platform</div></div></div><nav class="gatc-nav">' + navBtns + '</nav><div class="gatc-side-bottom"><div class="gatc-side-user"><div class="gatc-avatar">' + initials + '</div><div><b>' + (u.name || "GATC Operator") + '</b><span>' + (g.code || "GATC") + '</span></div></div><button class="gatc-signout" onclick="doLogout()">↪ &nbsp; Logout</button></div></aside><div class="gatc-content"><header class="gatc-header"><div class="gatc-header-brand"><div class="brand-emblem">⚖</div><div><div class="nm">प्रमाण PRAMĀṆA</div><div class="sub">Legal Metrology Verification Platform</div></div></div><div class="gatc-header-right"><button class="gatc-header-bell" onclick="toggleNotifications(event)" title="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span class="gatc-header-badge">3</span></button><div class="gatc-account"><div class="gatc-avatar">' + initials + '</div><div><b>ABC Legal Metrology</b><span>' + (g.code || "GATC-021") + '</span></div><span class="chev">⌄</span></div></div></header><div class="main gatc-main">' + body + '</div></div></div>';
+        return '<div class="app gatc-shell"><aside class="gatc-side"><div class="gatc-side-brand" onclick="go(&quot;login-unified&quot;)" style="cursor:pointer" title="Go to Login"><div class="brand-emblem">⚖</div><div><div class="nm">PRAMĀṆA</div><div class="sub">Legal Metrology Verification Platform</div></div></div><nav class="gatc-nav">' + navBtns + '</nav><div class="gatc-side-bottom"><div class="gatc-side-user"><div class="gatc-avatar">' + initials + '</div><div><b>' + (u.name || "GATC Operator") + '</b><span>' + (g.code || "GATC") + '</span></div></div><button class="gatc-signout" onclick="doLogout()">↪ &nbsp; Logout</button></div></aside><div class="gatc-content"><header class="gatc-header"><div class="gatc-header-brand"><div class="brand-emblem">⚖</div><div><div class="nm">प्रमाण PRAMĀṆA</div><div class="sub">Legal Metrology Verification Platform</div></div></div><div class="gatc-header-right"><button class="gatc-header-bell" onclick="toggleNotifications(event)" title="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span class="gatc-header-badge">3</span></button><div class="gatc-account"><div class="gatc-avatar">' + initials + '</div><div><b>ABC Legal Metrology</b><span>' + (g.code || "GATC-021") + '</span></div><span class="chev">⌄</span></div></div></header><div class="main gatc-main">' + body + '</div></div></div>';
       }
 
       let navBtns = "";
@@ -1056,7 +1322,7 @@
       });
 
       const u = S.user || { name: "Guest", role: "Consumer", org: "Public User", district: "Lucknow" };
-      return '<div class="app"><aside class="side">' + brand() + '<div style="margin: 12px 0;">' + navBtns + '</div><div class="who"><b>' + (u.name || "User") + '</b>' + (u.title || u.role) + '<br><span class="tiny">' + (u.org || "Public") + ' · ' + (u.district || "") + '</span><div class="mt"><button class="btn btn-ghost btn-full" onclick="doLogout()">Sign out</button></div></div></aside><div><div style="height:58px;display:flex;align-items:center;justify-content:flex-end;padding:0 28px;border-bottom:1px solid var(--rule);background:rgba(255,255,255,.82);"><div>' + notificationBellHtml() + '</div></div><div class="mobile-nav">' + mobileBtns + '</div><div class="main">' + body + '</div></div></div>';
+      return '<div class="app ' + (role === "admin" ? "admin-shell" : "") + '"><aside class="side">' + brand() + '<div style="margin: 12px 0;">' + navBtns + '</div><div class="who"><b>' + (u.name || "User") + '</b>' + (u.title || u.role) + '<br><span class="tiny">' + (u.org || "Public") + ' · ' + (u.district || "") + '</span><div class="mt"><button class="btn btn-ghost btn-full" onclick="doLogout()">Sign out</button></div></div></aside><div><div style="height:58px;display:flex;align-items:center;justify-content:flex-end;padding:0 28px;border-bottom:1px solid var(--rule);background:rgba(255,255,255,.82);"><div>' + notificationBellHtml() + '</div></div><div class="mobile-nav">' + mobileBtns + '</div><div class="main">' + body + '</div></div></div>';
     }
 
     function kpi(n, l) {
@@ -1159,6 +1425,48 @@
         cmpRows += '<tr><td class="mono"><b>' + c.id + '</b></td><td><span class="mono">' + c.serial + '</span><div class="tiny">' + c.type + '</div></td><td>' + c.type + '</td><td>' + c.district + '</td><td class="mono">' + c.date + '</td><td>' + chip(c.status) + '</td><td>' + c.assigned_officer + '</td></tr>';
       });
       return shell("", '<p class="crumb">Consumer Portal</p><div class="row"><h1>My Complaints &amp; Grievances</h1><button class="btn btn-danger right" onclick="openComplaintModal()">+ Report New Issue</button></div><p class="intro">Track reports submitted regarding suspected meter tampering or short measurements.</p><div class="card"><table class="table"><thead><tr><th>ID</th><th>Instrument</th><th>Type</th><th>District</th><th>Date</th><th>Status</th><th>Assigned Officer</th></tr></thead><tbody>' + cmpRows + '</tbody></table></div>', "user");
+    }
+
+    function trackHomeComplaint() {
+      const input = document.getElementById("home-complaint-id");
+      const out = document.getElementById("home-complaint-result");
+      if (!input || !out) return;
+
+      const complaintId = input.value.trim().toUpperCase();
+
+      if (!complaintId) {
+        out.innerHTML = '<div class="err" style="margin:0;">Please enter your Complaint ID.</div>';
+        input.focus();
+        return;
+      }
+
+      const complaint = (DB.complaints || []).find(function(c) {
+        return String(c.id || "").toUpperCase() === complaintId;
+      });
+
+      if (!complaint) {
+        out.innerHTML = '<div class="err" style="margin:0;">Complaint <b class="mono">' + complaintId + '</b> was not found. Please check the Complaint ID and try again.</div>';
+        return;
+      }
+
+      const status = complaint.status || "Under Review";
+      const priority = complaint.priority || "Standard";
+      const assigned = complaint.assigned_officer || "Not assigned";
+
+      out.innerHTML =
+        '<div style="border:1px solid var(--rule);background:#fff;border-radius:8px;padding:13px 14px;">' +
+          '<div class="row" style="margin-bottom:8px;">' +
+            '<b class="mono" style="color:var(--navy);">' + complaint.id + '</b>' +
+            chip(status) +
+          '</div>' +
+          '<div style="font-size:12px;color:var(--muted);line-height:1.6;">' +
+            '<div><b>Instrument:</b> <span class="mono">' + (complaint.serial || "—") + '</span></div>' +
+            '<div><b>Issue:</b> ' + (complaint.type || "—") + '</div>' +
+            '<div><b>Date:</b> <span class="mono">' + (complaint.date || "—") + '</span></div>' +
+            '<div><b>Priority:</b> ' + priority + '</div>' +
+            '<div><b>Assigned Officer:</b> ' + assigned + '</div>' +
+          '</div>' +
+        '</div>';
     }
 
     function openComplaintModal() {
@@ -1564,14 +1872,13 @@
     }
 
     async function adminHome() {
-      const st = await api("/api/stats");
+      await api("/api/stats");
       const highRiskList = DB.instruments.filter(function(i) { return i.oem_status === "third_party" || i.status === "expired"; });
       let highRiskRows = "";
       highRiskList.forEach(function(i) {
         highRiskRows += '<tr><td><b>' + i.serial + '</b><div class="tiny">' + i.premises + '</div></td><td>' + chip("NON_COMPLIANT") + '</td><td><span class="bad-text">Expired / Third-party parts</span></td><td><button class="btn btn-saffron" style="padding:6px 12px;font-size:12px;" onclick="go(\'admin-risk\')">Enforce ➔</button></td></tr>';
       });
-
-      return shell("", '<p class="crumb">Government Dashboard · Ministry of Consumer Affairs</p><h1>Director General Enforcement Console</h1><p class="intro">Monitor statewide instrument compliance, prioritize high-risk enforcement queues, assign field inspections, and review audit trails.</p><div class="grid-4 mb"><div class="card kpi" onclick="go(\'admin-registry\')" style="cursor:pointer;"><b>' + st.instruments + '</b><span>Total Registered Instruments</span></div><div class="card kpi" onclick="go(\'admin-applications\')" style="cursor:pointer;"><b>' + DB.applications.length + '</b><span>Pending Applications</span></div><div class="card kpi" onclick="go(\'admin-inspections\')" style="cursor:pointer;"><b>4</b><span>Today\'s Inspections</span></div><div class="card kpi" onclick="go(\'admin-risk\')" style="cursor:pointer;background:#f8e4df;border-color:var(--danger);"><b style="color:var(--danger);">' + highRiskList.length + '</b><span style="color:var(--danger);">High-Risk Instruments</span></div></div><div class="grid-2 mb"><div class="card"><h3>Priority Risk &amp; Enforcement Queue</h3><p class="tiny mb">Instruments requiring immediate government intervention based on failed MPE or active complaints.</p><table class="table"><thead><tr><th>Instrument</th><th>Risk Level</th><th>Reason</th><th>Action</th></tr></thead><tbody>' + highRiskRows + '</tbody></table></div><div class="card"><h3>Government Activity Alerts</h3><div style="display:flex;flex-direction:column;gap:10px;"><div class="part"><span>New complaint filed on Bharat Fuels Dispenser #3</span>' + chip("warn") + '</div><div class="part"><span>Inspection assigned to Rahul Sharma</span>' + chip("info") + '</div><div class="part"><span>Instrument verification completed for Sharma Kirana</span>' + chip("verified") + '</div><div class="part"><span>Weighbridge model approval verified (C3)</span>' + chip("ok") + '</div></div></div></div>', "admin");
+      return shell("", '<p class="crumb">Government Dashboard · Ministry of Consumer Affairs</p><div class="row"><div><h1>Director General Enforcement Console</h1><p class="intro">Monitor statewide instrument compliance, prioritize high-risk enforcement queues, assign field inspections, and review audit trails.</p></div></div><div class="admin-kpi-grid"><div class="admin-kpi" onclick="go(\'admin-registry\')"><div class="admin-kpi-icon">▤</div><b>12</b><span>Total Instruments</span><small>Registered statewide</small></div><div class="admin-kpi ok" onclick="go(\'admin-registry\')"><div class="admin-kpi-icon">✓</div><b>9</b><span>Verified Instruments</span><small>Currently verified</small></div><div class="admin-kpi warn" onclick="go(\'admin-applications\')"><div class="admin-kpi-icon">◷</div><b>2</b><span>Pending Verification</span><small>Awaiting review</small></div><div class="admin-kpi warn" onclick="go(\'admin-certificates\')"><div class="admin-kpi-icon">▣</div><b>3</b><span>Certificates Expiring Soon</span><small>Renewal required</small></div><div class="admin-kpi danger" onclick="go(\'admin-risk\')"><div class="admin-kpi-icon">×</div><b>1</b><span>Non-Compliant Instruments</span><small>Immediate attention</small></div><div class="admin-kpi warn" onclick="go(\'admin-officers\')"><div class="admin-kpi-icon">□</div><b>1</b><span>Pending Inspections</span><small>Awaiting field action</small></div></div><div class="grid-2 mb"><div class="admin-panel"><div class="admin-panel-head"><h3>Priority Risk &amp; Enforcement Queue</h3><button class="gatc-link" onclick="go(\'admin-risk\')">View all →</button></div><div class="admin-panel-body"><p class="tiny mb">Instruments requiring immediate government intervention based on failed MPE or active complaints.</p><table class="table"><thead><tr><th>Instrument</th><th>Risk Level</th><th>Reason</th><th>Action</th></tr></thead><tbody>' + (highRiskRows || '<tr><td colspan="4" class="tiny">No high-risk instruments.</td></tr>') + '</tbody></table></div></div><div class="admin-panel"><div class="admin-panel-head"><h3>Government Activity Alerts</h3></div><div class="admin-panel-body"><div class="admin-alert"><span>New complaint filed on Bharat Fuels Dispenser #3</span>' + chip("warn") + '</div><div class="admin-alert"><span>Inspection assigned to Rahul Sharma</span>' + chip("info") + '</div><div class="admin-alert"><span>Instrument verification completed for Sharma Kirana</span>' + chip("verified") + '</div><div class="admin-alert"><span>Weighbridge model approval verified (C3)</span>' + chip("ok") + '</div></div></div></div><div class="grid-2"><div class="admin-panel"><div class="admin-panel-head"><h3>Officer &amp; Inspection Management</h3><button class="gatc-link" onclick="go(\'admin-officers\')">View management →</button></div><div class="admin-panel-body"><div class="grid-2"><div class="card" style="margin:0;box-shadow:none;"><b>Officer Workload</b><div class="tiny mt">Assigned inspections across officers</div></div><div class="card" style="margin:0;box-shadow:none;"><b>Pending Inspections</b><div class="tiny mt">Field inspections awaiting action</div></div><div class="card" style="margin:0;box-shadow:none;"><b>Completed Inspections</b><div class="tiny mt">Completed field tests</div></div><div class="card" style="margin:0;box-shadow:none;"><b>Inspection Locations</b><div class="tiny mt">District-wise field activity</div></div></div></div></div><div class="admin-panel"><div class="admin-panel-head"><h3>Certificate Management</h3><button class="gatc-link" onclick="go(\'admin-certificates\')">Manage certificates →</button></div><div class="admin-panel-body"><p class="tiny">Search certificates by Instrument ID and view issued certificate records, validity and expiry details.</p></div></div></div>', "admin");
     }
 
     async function adminRegistry() {
@@ -1722,6 +2029,34 @@
       }, 100);
 
       return shell("", '<p class="crumb">Government Dashboard · GIS Intelligence</p><h1>Statewide Enforcement Map</h1><p class="intro">Real-time geographic distribution of weighing instruments and petrol dispensers across Uttar Pradesh.</p><div class="card"><div id="map-gov" style="width:100%;height:520px;border-radius:6px;"></div></div>', "admin");
+    }
+
+    async function adminCertificates() {
+      const certs = Array.isArray(DB.certificates) ? DB.certificates : [];
+      let rows = "";
+      certs.forEach(function(c) {
+        const serial = c.serial || c.instrument_id || "—";
+        const inst = DB.instruments.find(function(i){ return String(i.serial) === String(serial) || String(i.id) === String(c.instrument_id); }) || {};
+        rows += '<tr><td class="mono"><b>' + (c.cert_no || "—") + '</b></td><td class="mono">' + (inst.serial || serial) + '</td><td>' + (c.owner || inst.premises || "—") + '</td><td class="mono">' + (c.issue_date || inst.last_verified || "—") + '</td><td class="mono">' + (c.expiry_date || inst.next_due || "—") + '</td><td>' + chip(c.status || "valid") + '</td></tr>';
+      });
+      if (!rows) rows = '<tr><td colspan="6" class="tiny">No issued certificate records available.</td></tr>';
+      return shell("", '<p class="crumb">Government Dashboard · Certificate Management</p><div class="row"><div><h1>Certificate Management</h1><p class="intro">Search by Instrument ID and view issued verification certificates, validity and expiry details.</p></div><button class="btn btn-saffron" onclick="document.getElementById(\'admin-cert-new\').style.display=\'block\'">Add New Certificate</button></div><div class="card mb"><div class="row"><input id="cert-search" placeholder="Search Instrument ID or Certificate Number..." style="flex:1;" oninput="filterAdminCertificates(this.value)" /></div></div><div id="admin-cert-new" class="card mb" style="display:none;max-width:760px;"><h3>Add New Certificate</h3><div class="grid-2"><div class="field"><label>Instrument ID</label><input id="new-cert-instrument" placeholder="LM-UP-000127" /></div><div class="field"><label>Certificate Number</label><input id="new-cert-number" placeholder="CERT-2026-0001" /></div></div><div class="grid-2"><div class="field"><label>Issue Date</label><input id="new-cert-issue" type="date" /></div><div class="field"><label>Expiry Date</label><input id="new-cert-expiry" type="date" /></div></div><button class="btn btn-saffron" onclick="addAdminCertificate()">Save Certificate</button></div><div class="card"><table class="table" id="admin-cert-table"><thead><tr><th>Certificate No.</th><th>Instrument ID</th><th>Owner / Establishment</th><th>Issue Date</th><th>Expiry Date</th><th>Status</th></tr></thead><tbody>' + rows + '</tbody></table></div>', "admin");
+    }
+
+    function filterAdminCertificates(q) {
+      document.querySelectorAll("#admin-cert-table tbody tr").forEach(function(r){ r.style.display = r.innerText.toLowerCase().indexOf(q.toLowerCase()) !== -1 ? "" : "none"; });
+    }
+
+    function addAdminCertificate() {
+      const serial = $("#new-cert-instrument") ? $("#new-cert-instrument").value.trim() : "";
+      const certNo = $("#new-cert-number") ? $("#new-cert-number").value.trim() : "";
+      const issue = $("#new-cert-issue") ? $("#new-cert-issue").value : "";
+      const expiry = $("#new-cert-expiry") ? $("#new-cert-expiry").value : "";
+      if (!serial || !certNo || !issue || !expiry) { alert("Please complete all certificate fields."); return; }
+      if (!Array.isArray(DB.certificates)) DB.certificates = [];
+      DB.certificates.push({cert_no:certNo, serial:serial, issue_date:issue, expiry_date:expiry, status:"Valid"});
+      try { fetch("/api/certificates", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(DB.certificates[DB.certificates.length-1])}).catch(function(){}); } catch(e) {}
+      go("admin-certificates");
     }
 
     async function verificationApplyView() {
@@ -1971,12 +2306,27 @@
       setTimeout(function() { go("officer-queue"); }, 1400);
     }
 
-    async function officerHome() {
-      let queueRows = "";
-      DB.applications.forEach(function(a) {
-        queueRows += '<tr><td class="mono">' + a.public_id + '</td><td class="mono">' + a.serial + '</td><td>' + a.org + '</td><td>' + chip(a.status) + '</td><td><button class="btn btn-navy" style="padding:6px 12px;font-size:12px;" onclick="go(\'officer-inspect\', {iid:' + a.instrument_id + '})">Start Field Test</button></td></tr>';
-      });
-      return shell("", '<p class="crumb">Officer Portal · ' + (S.user?.lmo_code || "LMO-01") + '</p><h1>Inspector Field Desk</h1><p class="intro">Conduct OIML R 76 increasing-load verification tests and record digitally signed inspection results.</p><div class="grid-3 mb">' + kpi(6, "Assigned Inspections") + kpi(18, "Completed This Month") + kpi(1, "Overdue") + '</div><div class="card mb"><h3>Owner / Trader Verification Requests</h3><p class="tiny">Approve applications before assigning a date and time.</p><button class="btn btn-saffron mt" onclick="go(\'officer-queue\')">Open Verification Queue</button></div><div class="card"><h3>My Inspection Queue</h3><table class="table"><thead><tr><th>Application</th><th>Instrument</th><th>Establishment</th><th>Status</th><th>Action</th></tr></thead><tbody>' + queueRows + '</tbody></table></div>', "officer");
+async function officerHome() {
+      const today = new Date().toISOString().slice(0,10);
+      const officerName = S.user && S.user.name ? S.user.name : "Rahul Sharma";
+      const assigned = DB.applications.filter(function(a){ return a.assigned_officer && a.assigned_officer.indexOf(officerName)!==-1; });
+      const allAssigned = assigned.length ? assigned : DB.applications.filter(function(a){ return a.assigned_officer; });
+      const todayInspections = allAssigned.filter(function(a){ return a.schedule && a.schedule.date===today; });
+      const upcoming = allAssigned.filter(function(a){ return a.schedule && a.schedule.date>=today; });
+      const pendingApps = DB.applications.filter(function(a){ return a.workflow==="verification" && (a.status==="pending" || a.status==="submitted"); });
+      const expired = DB.instruments.filter(function(i){ return String(i.status).toLowerCase()==="expired"; });
+      const highRisk = DB.instruments.filter(function(i){ return String(i.status).toLowerCase()==="expired" || (i.compliance&&i.compliance.verdict==="NON_COMPLIANT") || DB.complaints.some(function(c){return c.instrument_id===i.id && c.priority==="High";}); });
+      const completed = DB.audit.filter(function(x){ return x.actor_name===officerName && /PASS|VERIFY|INSPECT|RESULT/i.test(x.action||""); }).length || 1;
+      function k(v,label,icon,cls){ return '<div class="officer-kpi '+(cls||'')+'"><div class="ki">'+icon+'</div><b>'+v+'</b><span>'+label+'</span></div>'; }
+      let rows="";
+      const queue=allAssigned.slice().sort(function(a,b){function score(x){const i=DB.instruments.find(function(z){return z.id===x.instrument_id})||{};let n=0;if(String(i.status).toLowerCase()==="expired")n+=40;if(i.compliance&&i.compliance.verdict==="NON_COMPLIANT")n+=20;if(DB.complaints.some(function(c){return c.instrument_id===x.instrument_id&&c.priority==="High"}))n+=25;if(x.schedule)n+=5;return n}return score(b)-score(a)}).slice(0,6);
+      queue.forEach(function(a){ const i=DB.instruments.find(function(x){return x.id===a.instrument_id})||{}; const high=String(i.status).toLowerCase()==="expired"||(i.compliance&&i.compliance.verdict==="NON_COMPLIANT")||DB.complaints.some(function(c){return c.instrument_id===i.id&&c.priority==="High"}); const medium=DB.complaints.some(function(c){return c.instrument_id===i.id}); const risk=high?'<span class="chip bad">High</span>':medium?'<span class="chip warn">Medium</span>':'<span class="chip info">Low</span>'; const ap=a.schedule?((a.schedule.date||"")+" · "+(a.schedule.time||"")):"Not scheduled"; rows+='<tr><td><b class="mono">'+a.serial+'</b><div class="tiny">'+(a.instrument_name||i.name||"Instrument")+'</div></td><td>'+(a.org||i.premises||"—")+'<div class="tiny">'+(a.district||i.district||"—")+'</div></td><td>'+risk+'</td><td class="mono">'+ap+'</td><td><button class="btn '+(high?'btn-danger':'btn-navy')+'" style="padding:6px 11px;font-size:11px;" onclick="go(\'officer-inspect\',{iid:'+a.instrument_id+'})">Inspect</button></td></tr>'; });
+      if(!rows) rows='<tr><td colspan="5" style="text-align:center;padding:28px;color:#7b8796;">No assigned inspections.</td></tr>';
+      let appts=""; upcoming.slice(0,4).forEach(function(a){appts+='<div class="officer-mini-item"><div class="officer-time">'+(a.schedule.time||"—")+'</div><div><b>'+a.serial+'</b><p>'+(a.org||"—")+' · '+(a.schedule.location||a.district||"—")+'</p></div><span class="chip '+(a.status==="scheduled"?'info':'warn')+'">'+String(a.status||"Pending").replace(/_/g," ")+'</span></div>';});
+      if(!appts) appts='<div class="tiny" style="padding:14px 0;">No upcoming appointments.</div>';
+      let risks=""; highRisk.slice(0,4).forEach(function(i){const cs=DB.complaints.filter(function(c){return c.instrument_id===i.id});const why=[];if(String(i.status).toLowerCase()==="expired")why.push("Expired certificate");if(i.compliance&&i.compliance.verdict==="NON_COMPLIANT")why.push("Previous failure");if(cs.length)why.push("Complaint");risks+='<div class="officer-risk-item"><div class="rr"><b>'+i.serial+'</b><span class="chip bad">HIGH</span></div><p>'+why.join(" · ")+'</p><button class="btn btn-danger" style="padding:5px 9px;font-size:10px;" onclick="go(\'officer-inspect\',{iid:'+i.id+'})">Inspect</button></div>';});
+      if(!risks) risks='<div class="tiny" style="padding:14px 0;">No high-risk instruments flagged.</div>';
+      return shell("", '<div class="officer-head"><div><div class="crumb">METROLOGY OFFICER · '+(S.user?.lmo_code||"LMO-LKO-01")+'</div><h1>Officer Dashboard</h1><p>Daily operational view for inspections, instrument history, results and risk-led enforcement.</p></div><div class="officer-date">'+new Date().toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"})+'</div></div><div class="officer-kpis">'+k(todayInspections.length,"Today’s Inspections","◉")+k(pendingApps.length,"Pending Applications","▤",pendingApps.length?"warn":"")+k(upcoming.length,"Upcoming Appointments","▣")+k(highRisk.length,"High-Risk Instruments","!","danger")+k(expired.length,"Expired Instruments","⌁","danger")+k(completed,"Completed Inspections","✓","ok")+'</div><div class="officer-grid"><section class="officer-panel"><div class="officer-panel-head"><div><h3>Assigned Inspections</h3><p>Priority: High Risk → Expired → Complaints → Upcoming</p></div><button class="gatc-link" onclick="go(\'officer-queue\')">View all</button></div><div class="officer-table-wrap"><table class="officer-table"><thead><tr><th>Instrument</th><th>Location</th><th>Risk</th><th>Appointment</th><th>Action</th></tr></thead><tbody>'+rows+'</tbody></table></div></section><section class="officer-panel"><div class="officer-panel-head"><div><h3>Upcoming Appointments</h3><p>Scheduled field verification</p></div></div><div class="officer-mini-list">'+appts+'</div></section></div><div class="officer-grid"><section class="officer-panel"><div class="officer-panel-head"><div><h3>Priority / High Risk</h3><p>Failure, complaint, expiry and non-compliance signals</p></div><button class="gatc-link" onclick="go(\'officer-risk\')">Open queue</button></div><div class="officer-risk-list">'+risks+'</div></section><section class="officer-panel"><div class="officer-panel-head"><div><h3>Officer Actions</h3><p>Common field operations</p></div></div><div class="officer-action-row"><button class="officer-action" onclick="go(\'officer-inspect\')"><div class="ai">◉</div><b>Start Inspection</b><span>Scan / search instrument</span></button><button class="officer-action" onclick="go(\'officer-results\')"><div class="ai">✓</div><b>Instrument Result</b><span>PASS / FAIL result lookup</span></button><button class="officer-action" onclick="go(\'officer-history\')"><div class="ai">◷</div><b>Instrument History</b><span>Previous verification events</span></button><button class="officer-action" onclick="go(\'officer-notifications\')"><div class="ai">🔔</div><b>Notifications</b><span>Alerts and reinspection</span></button></div></section></div>', "officer");
     }
 
     async function officerInspect() {
@@ -2272,11 +2622,16 @@
       "admin-officers": adminOfficers,
       "admin-analytics": adminAnalytics,
       "admin-map": adminMap,
+      "admin-certificates": adminCertificates,
       "officer-home": officerHome,
       "officer-queue": officerQueue,
       "officer-review": officerReview,
       "officer-schedule": officerSchedule,
       "officer-inspect": officerInspect,
+      "officer-results": officerResults,
+      "officer-history": officerHistory,
+      "officer-risk": officerRisk,
+      "officer-notifications": officerNotifications,
       "gatc-home": gatcHome,
       "gatc-requests": gatcRequests,
       "gatc-schedule": gatcSchedule,
@@ -2538,6 +2893,38 @@
     document.addEventListener("keydown",function(e){
       if (e.key === "Escape") closeCamera();
     });
+
+
+    // Restored Officer pages.
+    async function officerResults() {
+      const q = (S.payload && S.payload.serial) || "";
+      const inst = q ? DB.instruments.find(function(i){ return String(i.serial).toUpperCase() === String(q).toUpperCase(); }) : null;
+      const result = inst && inst.compliance ? inst.compliance.verdict : "";
+      const resultHtml = inst ? '<div class="card mt"><div class="row"><div><h3>' + inst.serial + '</h3><p class="tiny">' + inst.name + '</p></div>' + chip(result || inst.status) + '</div><table class="table"><tr><th>Owner / Establishment</th><td>' + (inst.premises || "—") + '</td></tr><tr><th>Verification Status</th><td>' + chip(inst.status) + '</td></tr><tr><th>OEM Status</th><td>' + chip(inst.oem_status) + '</td></tr><tr><th>Compliance Score</th><td><b>' + ((inst.compliance && inst.compliance.score) || "—") + '</b></td></tr><tr><th>Last Verified</th><td class="mono">' + (inst.last_verified || "—") + '</td></tr></table><h3 class="mt">Result</h3><ul>' + ((inst.compliance && inst.compliance.passed) || []).map(function(x){return '<li class="ok-text">' + x + '</li>';}).join("") + ((inst.compliance && inst.compliance.issues) || []).map(function(x){return '<li class="bad-text">' + x + '</li>';}).join("") + '</ul></div>' : '';
+      return shell("", '<p class="crumb">Metrology Officer · Instrument Result</p><h1>Instrument Result</h1><p class="intro">Search an instrument by ID and review the recorded PASS / FAIL compliance result.</p><div class="card" style="max-width:850px;"><div class="field"><label>Instrument ID</label><input id="officer-result-search" class="mono" value="' + q + '" placeholder="LM-UP-000127" /><button class="btn btn-navy mt" onclick="go(\'officer-results\',{serial:document.getElementById(\'officer-result-search\').value.trim()})">Search Result</button></div></div>' + (q && !inst ? '<div class="card mt"><p class="tiny">No instrument found for <b class="mono">' + q + '</b>.</p></div>' : resultHtml), "officer");
+    }
+
+    async function officerHistory() {
+      const q = (S.payload && S.payload.serial) || "";
+      const inst = q ? DB.instruments.find(function(i){ return String(i.serial).toUpperCase() === String(q).toUpperCase(); }) : DB.instruments[0];
+      const history = DB.audit.filter(function(x){ return !inst || x.entity_id === inst.serial; });
+      const complaints = DB.complaints.filter(function(c){ return !inst || c.instrument_id === inst.id; });
+      const rows = history.map(function(h){ return '<tr><td class="mono">' + h.ts + '</td><td>' + h.action + '</td><td>' + h.actor_name + '</td><td class="mono">' + h.entity_id + '</td></tr>'; }).join("") || '<tr><td colspan="4" style="text-align:center;padding:24px;">No audit history recorded for this instrument.</td></tr>';
+      const complaintRows = complaints.map(function(c){ return '<tr><td class="mono">' + c.date + '</td><td>' + c.type + '</td><td>' + chip(c.priority === "High" ? "fail" : c.status) + '</td><td>' + c.description + '</td></tr>'; }).join("") || '<tr><td colspan="4" style="text-align:center;padding:24px;">No complaints linked to this instrument.</td></tr>';
+      return shell("", '<p class="crumb">Metrology Officer · Instrument History</p><h1>Instrument History</h1><p class="intro">Scan or search an instrument to review current status, last verification and previous history.</p><div class="card"><div class="field"><label>Instrument ID</label><div style="display:flex;gap:10px;flex-wrap:wrap;"><input id="officer-history-search" class="mono" style="flex:1;min-width:240px;" value="' + (q || (inst ? inst.serial : "")) + '" placeholder="LM-UP-000127" /><button class="btn btn-navy" onclick="go(\'officer-history\',{serial:document.getElementById(\'officer-history-search\').value.trim()})">Search</button></div></div></div>' + (inst ? '<div class="grid-2 mt"><div class="card"><h3>' + inst.serial + '</h3><p><b>Owner / Location</b><br>' + inst.premises + '</p><p><b>Status</b><br>' + chip(inst.status) + '</p><p><b>Last Inspection / Verification</b><br><span class="mono">' + (inst.last_verified || "—") + '</span></p></div><div class="card"><h3>Previous History</h3><ul><li class="ok-text">✓ Passed — ' + (inst.last_verified || "Jan 2026") + '</li><li class="bad-text">✗ Failed — Aug 2025 ⚠</li>' + (complaints.length ? '<li>Complaint — ' + complaints[0].date + '</li>' : '') + '</ul></div></div><div class="card mt"><h3>Audit / Verification Events</h3><table class="table"><thead><tr><th>Date</th><th>Action</th><th>Officer</th><th>Instrument</th></tr></thead><tbody>' + rows + '</tbody></table></div><div class="card mt"><h3>Complaints</h3><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Status</th><th>Details</th></tr></thead><tbody>' + complaintRows + '</tbody></table></div>' : '<div class="card mt"><p class="tiny">Instrument not found.</p></div>'), "officer");
+    }
+
+    async function officerRisk() {
+      const risks = DB.instruments.filter(function(i){ return String(i.status).toLowerCase() === "expired" || (i.compliance && i.compliance.verdict === "NON_COMPLIANT") || DB.complaints.some(function(c){return c.instrument_id === i.id && c.priority === "High";}); });
+      const rows = risks.map(function(i){ const complaints=DB.complaints.filter(function(c){return c.instrument_id===i.id;}); const reason=[]; if(String(i.status).toLowerCase()==="expired") reason.push("Expired certificate"); if(i.compliance&&i.compliance.verdict==="NON_COMPLIANT") reason.push("Previous failure / non-compliance"); if(complaints.length) reason.push("Complaint"); return '<tr><td><b class="mono">' + i.serial + '</b><div class="tiny">' + i.name + '</div></td><td><span class="chip bad">HIGH RISK</span></td><td>' + reason.join(" · ") + '</td><td>' + chip(i.status) + '</td><td><button class="btn btn-danger" style="padding:6px 12px;font-size:12px;" onclick="go(\'officer-inspect\',{iid:' + i.id + '})">Inspect</button></td></tr>'; }).join("") || '<tr><td colspan="5" style="text-align:center;padding:28px;">No high-risk instruments currently flagged.</td></tr>';
+      return shell("", '<p class="crumb">Metrology Officer · Priority / High Risk</p><h1>Priority / High-Risk Queue</h1><p class="intro">Prioritize instruments requiring immediate inspection based on failure, complaints, expired certificates and repeated non-compliance.</p><div class="grid-3 mb">' + kpi(12,"High-Risk Instruments") + kpi(DB.complaints.filter(function(c){return c.priority === "High";}).length,"High-Priority Complaints") + kpi(DB.instruments.filter(function(i){return String(i.status).toLowerCase()==="expired";}).length,"Expired Certificates") + '</div><div class="card"><table class="table"><thead><tr><th>Instrument</th><th>Risk</th><th>Reason</th><th>Status</th><th>Action</th></tr></thead><tbody>' + rows + '</tbody></table></div><div class="card mt"><h3>Outside Jurisdiction</h3><p class="tiny">Select an instrument, record the risk/complaint, enter the compliant ID if applicable, and request authorisation before inspection.</p><button class="btn btn-navy" onclick="go(\'officer-history\')">Review Instrument History</button></div>', "officer");
+    }
+
+    async function officerNotifications() {
+      const notes = getNotificationsForCurrentUser();
+      const rows = notes.map(function(n){ return '<div class="card mb" style="cursor:pointer;" onclick="openNotification(' + n.id + ',\'' + (n.view || '') + '\')"><div class="row"><b style="color:var(--navy);">' + (n.icon || '🔔') + ' &nbsp;' + n.title + '</b><span class="tiny right">' + (n.time || '') + '</span></div><p class="tiny" style="margin:7px 0 0;">' + n.message + '</p></div>'; }).join("");
+      return shell("", '<p class="crumb">Metrology Officer · Notifications</p><div class="row"><div><h1>Notifications</h1><p class="intro">New assignments, high-risk alerts, expired instruments, reinspection requirements and failed inspection notifications.</p></div><button class="btn btn-navy right" onclick="markNotificationsRead();render();">Mark all read</button></div>' + (rows || '<div class="card"><p class="tiny">No notifications.</p></div>'), "officer");
+    }
 
 </script>
 </body>
