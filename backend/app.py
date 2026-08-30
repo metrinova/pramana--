@@ -302,6 +302,6 @@ def forward_to_gatc():
         'application': d
     })
 if __name__=='__main__':
-    init_db(); app.run(host='127.0.0.1', port=5001, debug=True)
+    init_db(); app.run(host='127.0.0.1', port=8001, debug=True)
     
     
