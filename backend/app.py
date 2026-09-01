@@ -30,7 +30,8 @@ def init_db():
     users=[
       (1,'Rajesh Sharma','trader@pramana.in','user','Sharma Stores','Lucknow',None,'password123'),
       (2,'Rahul Sharma','officer@pramana.in','officer','District Inspectorate','Lucknow','LMO-LKO-01','password123'),
-      (99,'Director General','admin@pramana.in','admin','Legal Metrology Dept, UP','Lucknow','LMO-HQ-00','password123')]
+      (99,'Director General','admin@pramana.in','admin','Legal Metrology Dept, UP','Lucknow','LMO-HQ-00','password123'),
+      (21,'GATC Operator','gatc@pramana.in','gatc','ABC Legal Metrology Verification Centre','Lucknow','GATC-021','password123')]
     for u in users: cur.execute('INSERT OR IGNORE INTO users VALUES (?,?,?,?,?,?,?,?)',u)
     if cur.execute('SELECT COUNT(*) FROM instruments').fetchone()[0]==0:
       instruments=json.load(open(os.path.join(os.path.dirname(BASE),'db_seed.json')))['instruments']
@@ -38,6 +39,40 @@ def init_db():
     seed=json.load(open(os.path.join(os.path.dirname(BASE),'db_seed.json')))
     if cur.execute('SELECT COUNT(*) FROM applications').fetchone()[0]==0:
       for x in seed['applications']: cur.execute('INSERT INTO applications(id,data) VALUES (?,?)',(x['id'],json.dumps(x)))
+    # Keep all existing application records untouched. For the GATC portal,
+    # add one demo assignment only when this database has no instrument assigned
+    # to GATC-021 yet. This makes the full GATC workflow demonstrable.
+    existing_gatc_assignment = False
+    for r in cur.execute('SELECT data FROM applications').fetchall():
+      try:
+        if int((json.loads(r['data']) or {}).get('gatc_id') or 0) == 21:
+          existing_gatc_assignment = True
+          break
+      except Exception:
+        pass
+    if not existing_gatc_assignment:
+      inst_row = cur.execute('SELECT data FROM instruments WHERE id=2').fetchone()
+      inst = json.loads(inst_row['data']) if inst_row else {}
+      nid = cur.execute('SELECT COALESCE(MAX(id),100)+1 FROM applications').fetchone()[0]
+      demo_application = {
+        'id': nid,
+        'public_id': 'APP-2026-GATC-001',
+        'instrument_id': 2,
+        'instrument_code': 'IN-LM-UP-001245',
+        'kind': 'reverification',
+        'status': 'gatc_assigned',
+        'applicant_name': 'Amit Traders',
+        'org': 'Amit Traders',
+        'serial': inst.get('serial', 'LM-UP-001245'),
+        'instrument_name': inst.get('name', 'Fuel Dispenser'),
+        'district': 'Lucknow',
+        'submitted_date': datetime.date.today().isoformat(),
+        'gatc_id': 21,
+        'gatc_assigned_on': datetime.date.today().isoformat(),
+        'previous_verifications': 2,
+        'last_verification': 'Jan 2026'
+      }
+      cur.execute('INSERT INTO applications(id,data) VALUES (?,?)',(nid,json.dumps(demo_application)))
     if cur.execute('SELECT COUNT(*) FROM complaints').fetchone()[0]==0:
       for x in seed['complaints']: cur.execute('INSERT INTO complaints(id,data) VALUES (?,?)',(x['id'],json.dumps(x)))
     if cur.execute('SELECT COUNT(*) FROM certificates').fetchone()[0]==0:
@@ -61,6 +96,9 @@ def save_json(table, keycol, key, data):
 
 @app.get('/')
 def index(): return send_from_directory(FRONTEND,'index.html')
+@app.get('/pramana-logo.png')
+def pramana_logo():
+    return send_from_directory(FRONTEND, 'pramana-logo.png')
 
 @app.get('/api/bootstrap')
 def bootstrap():
@@ -120,7 +158,8 @@ def login():
         'pramana_session',
         token,
         httponly=True,
-        samesite='Lax'
+        samesite='Lax',
+        path='/'
     )
 
     return resp
@@ -132,7 +171,8 @@ def logout():
 @app.get('/api/me')
 def me():
     u=current_user()
-    if not u: return jsonify({'error':'Authentication required'}),401
+    if not u:
+        return jsonify({'error':'Authentication required'}),401
     return jsonify({'user':u})
 
 @app.get('/api/instruments')
@@ -302,6 +342,5 @@ def forward_to_gatc():
         'application': d
     })
 if __name__=='__main__':
-    init_db(); app.run(host='127.0.0.1', port=8001, debug=True)
-    
+    init_db(); app.run(host='127.0.0.1', port=5000, debug=True)
     
